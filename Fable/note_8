@@ -1,0 +1,19 @@
+Grok's failure analysis is excellent — both root causes are clear, and the wallet log makes the key point precisely: **"port" (0.36×) and the moan (0.70×) are inseparable by level or duration; only structure separates them.** And Grok's measurements hand us exactly the structural signals: the gap *before* "port" is 0.10 s (a plosive stop-closure), the gap before the moan is 0.46 s (pad silence); and in whisper_stop, the real word "stop" is followed by 1.14 s of tail, while every measured true moan is followed by ≤ 0.54 s.
+
+So v1.1.4 adds two structural gates and fixes the reference bug:
+
+1. **Detachment gate** (`TRIM_PAD_GAP_S = 0.15`): a group only qualifies as a pad burst if the gap before it is ≥ 0.15 s. "port" (0.10 s pre-gap) becomes `kept:attached`; the wallet moan (0.46 s) still strips. Grouping resolution stays at 0.10 s so structure is preserved — this is Grok's repair direction #2 as a strip criterion rather than a merge change.
+
+2. **Terminal-proximity gate** (`TRIM_TERMINAL_SIL_S = 0.8`): a burst must sit near the clip end — silence after it ≤ 0.8 s. All measured moans: 0.50–0.54 s ✓ strippable. Whisper's "stop": 1.14 s of tail → `kept:long-tail`, and the cut then lands just after "stop" — which *also* removes whisper's audible pad region as trailing sub-threshold silence. One gate fixes both whisper problems.
+
+3. **Reference fix** (Grok's #1): ref is now the p90 of frames ≥ 0.1× the clip's max RMS — actual speech energy, not a positional head window that can be leading silence — plus a hard `TRIM_REF_FLOOR = 1e-3` fail-safe that refuses to trim silence-referenced clips (kills the warmup `peak/ref=434` nonsense too).**v1.1.4** is ready. A strip now requires all five of: weak (< 0.9× ref), short (< 0.6 s), **detached** (pre-gap ≥ 0.15 s), **terminal** (≤ 0.8 s of tail after it), and inside the pad window. The reference RMS is computed from the loudest frames anywhere in the clip instead of a positional head, with a 1e-3 floor below which trimming is refused entirely. Debug lines now print `gap=` and `tail=` per group alongside `peak/ref`, so both new gates are tunable from logs.
+
+The suite includes frame-accurate replicas of both v1.1.3 failures built from Grok's measured numbers. Wallet replica: cut lands at end-of-"port" + margin — moan stripped (`gap=0.46` ✓), "port" saved by `kept:attached` (`gap=0.10`). Whisper replica: healthy ref, "stop" saved by `kept:long-tail` (1.14 s tail > 0.8), and the cut right after "stop" removes the entire pad region including sub-threshold texture — so whisper's audible moan goes away as a side effect of the same gate. All prior strips (peter, full_repro, fox double-burst) and keeps (1.39× continuation, list pause) still pass.
+
+Two calibration caveats for Grok's re-probe, flagged honestly because the new gates were tuned on incomplete data:
+
+1. **Pre-gap values for the s1/s4/full_repro/fox moans were never logged** — only wallet (0.46 s) and whisper (0.48 s) have measured pad gaps. If any previously-stripped moan sits closer than 0.15 s to its preceding speech, it'll now show `kept:attached` and be audible again. The debug line will say so explicitly, and the fix would be lowering `TRIM_PAD_GAP_S` toward 0.12 — the log data from this run closes that gap in the evidence either way.
+
+2. **The fox double-burst inter-gap** matters the same way: if the two bursts are separated by < 0.15 s the walk stops at the terminal burst and both survive. Again, `kept:attached` in the log is the tell.
+
+Re-probe set per Grok's item 3: `s2_wallet` (passport intact **and** moan gone — the case that needs both), `whisper_stop` (stop intact, pad gone), then regression on `s3_peter`, `full_repro`, `fox`, `s1_well`, `s4_swans`. After that, the last open item on this thread is unchanged: the WebUI Read Aloud re-test under RTF ≫ 1, which no trim logic touches.

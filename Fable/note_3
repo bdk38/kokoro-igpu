@@ -1,0 +1,15 @@
+Good — pulled the exact server source from the transcript so the patch lands on the real code, not my memory of it. Writing the updated `kokoro_server.py` now with the trim baked in.The original `kokoro_server.py` is still in outputs from the earlier session — I'll patch it in place.Done — `kokoro_server.py` v1.1, patched in place against the exact v1.0 source from our session (pulled from the transcript, not memory). Drop-in replacement for `scripts/kokoro_server.py`; no new dependencies, no env changes.
+
+What changed, all localized:
+
+**New `trim_pad_tail()`** — estimates the pad region proportionally from token counts, widens it by 1.5× for safety, then finds the last frame inside that window whose 20 ms RMS is ≥15% of the chunk's own speech energy (90th percentile of the untrimmed head). Cuts 30 ms after that frame with a 10 ms fade to zero. Two hard safety properties: audio outside the search window can *never* be cut, and if there's no confident cut point the chunk passes through untouched — fail-safe leans toward "leave the breath in" rather than "clip a word."
+
+**`OvBackend.infer`** — now trims whenever it padded, using the real/bucket token counts it already had. Exact-bucket chunks and the entire ORT-CPU path are untouched, so the fidelity reference is unaffected.
+
+Verification: full test suite passed, and it earned its keep — the first run caught a genuine bug where short sentences with big pad fractions (20 tokens in a 96 bucket, your paragraph-mode worst case inverted) skipped trimming entirely because the search window swallowed the reference region. Fixed by always reserving a 200 ms head for the RMS reference. After the fix: 3.5 s chunk with a 0.5 s synthetic breath → trimmed 0.459 s with speech intact; the short/high-pad case now trims correctly too; mocked-OV integration test confirms pad→infer→trim wiring and that unpadded chunks pass through byte-identical.
+
+One honest caveat from testing: a tail at only −14 dB below speech survives the gate (threshold sits at about −16.5 dB). Real breaths are typically −20 dB or quieter, so this shouldn't bite — but if you ever hear a faint remnant, `TRIM_RMS_RATIO` is the one knob to raise (0.15 → 0.25).
+
+Handoff for Grok is simple: replace the file, restart the server with `KOKORO_BACKEND=ov-gpu` (or ov-cpu), and re-run the same paragraph-mode Open WebUI text that exhibited the breath. Your ear is the acceptance test.
+
+That closes the artifact. Next up by our list is still the two OpenVINO issue drafts — want me to write those now?

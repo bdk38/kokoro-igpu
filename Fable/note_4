@@ -1,0 +1,29 @@
+I've also added the patched version that Grok merged so that we are working with the latest files. I've run the listening test and there wasn't any improvement. I tend to lean to the problem may have gotten worse. Something else that I'm noticing is that it seems to struggle with some punctuation. This wasn't as evident as before. Also there isn't any change when switching voices. It's the same voice regardless. This is not new to your path. Groks voice modifications didn't have any effect, other that recognizing names.
+
+The merged file itself reads clean — Grok's merge is structurally correct (blend layer + trim layer, no collisions, and it even added `model_config = {"extra": "ignore"}` which the standalone v1.1 lacked). So the symptoms you're describing are unlikely to be a merge error, and that's actually the most important clue you've given me:
+
+**"No change when switching voices — and Grok's voice patch also had no audible effect" strongly suggests the audio you're hearing isn't coming from the code path you're testing.** Different style vectors produce obviously different voices in this model; we proved that months ago in the harness. If `am_michael` sounds like `af_bella`, either the request isn't reaching the server, the server isn't running the file you think it is, or the audio being played is cached. And if that's true, it also invalidates the pad-trim listen test — "no improvement, maybe worse" is exactly what replayed pre-patch audio would sound like. This is our own project lesson again: test the metric (here, the test path) before trusting the failure.
+
+Three concrete suspects, in order of likelihood:
+
+**1. Open WebUI is caching TTS audio client-side.** Open WebUI stores generated speech and can replay it without re-hitting the server, and depending on version the cache key may not include the voice. Decisive check, no code needed: watch the server's stdout while you switch voices and replay. Every real synthesis prints a line like `[speech] voice=af_bella tokens=... rtf=...`. Switch to `bm_george`, replay the message, and see whether (a) a new line appears at all, and (b) what voice label it shows. No new line → everything you've listened to lately is cache, including the pad-trim test. New line with the old voice → Open WebUI isn't applying your voice selection (admin vs. per-user audio settings are separate places). New line with the correct voice but identical audio → then it's genuinely server-side and we dig into the voices bin.
+
+**2. Stale server process / wrong file on disk.** Confirm the running process is the merged file: `curl http://127.0.0.1:8880/health` (check model path), and check the process start time against the file mtime. A `pkill -f kokoro_server` before relaunch removes doubt.
+
+**3. Backend mismatch for the pad-trim test specifically.** The trim only runs on OV backends — ORT never pads, so on the default `ort-cpu` backend the patch is a no-op *and* the breath artifact shouldn't exist there in the first place. Check the `X-Kokoro-Backend` response header or the startup log. If your listen test ran on ort-cpu, it couldn't show improvement by construction.
+
+The definitive A/B that bypasses Open WebUI entirely:
+
+```bash
+for v in af_bella am_michael bm_george; do
+  curl -s -X POST http://127.0.0.1:8880/v1/audio/speech \
+    -H 'Content-Type: application/json' \
+    -d "{\"model\":\"kokoro\",\"input\":\"The quick brown fox jumps over the lazy dog.\",\"voice\":\"$v\",\"response_format\":\"wav\"}" \
+    -D "hdr_$v.txt" --output "ab_$v.wav"
+done
+md5sum ab_*.wav
+```
+
+If the three MD5s differ and the wavs sound like three different people, the server is fine and the whole problem is in the Open WebUI leg. If they're byte-identical, we have a real server bug and I'll want to inspect `voices-v1.0.bin` next (a two-line numpy check of pairwise style-row distances will tell us if the bin itself is degenerate).
+
+On the punctuation issue — I want to hold that until the path is verified, because it has two very different readings. If you mean *pauses/prosody around punctuation sound wrong or sentence endings feel clipped*, that could be the trim gate eating quiet trailing consonants (a real tunable: `TRIM_RMS_RATIO`/`TRIM_MARGIN_S`), but only on OV. If you mean it *speaks* punctuation or stumbles over specific marks, that's the phonemizer leg. Can you give me one example sentence that exhibits it, and confirm which backend you heard it on? But run the log-watch and curl A/B first — if caching is confirmed, the punctuation observation may date from older audio too.

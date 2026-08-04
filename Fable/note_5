@@ -1,0 +1,30 @@
+# note_5 — status handoff (user + Grok), 2026-08-04
+
+## Confirmed by user ears
+- Direct voice A/B WAVs differ (server fine).
+- Sticky same-voice issue was Open WebUI Admin > Settings > Models blend config.
+- Pad moan/breath: GONE on v1.1.1 probe WAVs; no last-word clipping on those files.
+
+## New open bug (Open WebUI Read Aloud)
+Repro paragraph (read aloud exactly):
+
+Well, honestly, I think we should wait; however, the choice is yours. Wait, did you remember the keys, the wallet, and the passport? Peter packed a heavy box of bright blue berries. Seven silver swans swam smoothly south across the sea.
+
+Skips heard:
+1. after "the wallet," drops "and the passport?" then continues at Peter...
+2. after "Seven silver swans" drops the rest of the last sentence.
+
+## Server facts Grok captured
+- Live server v1.1.1 ov-gpu f32, merged blend+trim.
+- WebUI sends multiple POSTs (not one full-string request). Example token sizes ~71/63/111/113 for af_bella.
+- Full string through our chunk_text alone = 1 chunk (~247 tokens).
+- Prior: Infer Request is busy under concurrency; some 400s during UI churn.
+- Trim v1.1.1 uses first sustained quiet in pad window — likely false-cuts on comma pauses (list prosody). That is the top hypothesis for skip (1).
+
+## Canonical note
+See notes/10-status-trim-and-skips.md and Grok/note_5-status-trim-skips.md.
+
+## Suggested next engineering
+1. Curl full repro as single request; save WAV; compare to WebUI.
+2. Trim only when quiet is followed by weaker secondary burst (pad-moan shape), not on first quiet alone.
+3. OV infer mutex.
