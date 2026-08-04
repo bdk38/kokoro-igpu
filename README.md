@@ -188,6 +188,20 @@ requirements.txt         runtime deps
 3. Residual GPU fidelity delta vs CPU (~2 dB down, mild muffling).
 4. Broader intel_gpu gaps that forced surgery: 3D `linear_onnx` Interpolate, dynamic-rank partition Parameters.
 
+
+## Contributors
+
+Human project lead: **[@bdk38](https://github.com/bdk38)**
+
+AI contributors (full write-ups in-repo):
+
+- **Claude / Fable (Anthropic)** — diagnosis, graph surgery, tooling  
+  See [Fable/CONTRIBUTOR-Claude.md](Fable/CONTRIBUTOR-Claude.md)
+- **Grok (xAI)** — hardware validation, metrics, Open WebUI path  
+  See [Grok/CONTRIBUTOR-Grok.md](Grok/CONTRIBUTOR-Grok.md)
+
+Also see [CONTRIBUTORS.md](CONTRIBUTORS.md) for how credit is represented (including why GitHub’s automatic Contributors graph is incomplete for AI collaborators).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
