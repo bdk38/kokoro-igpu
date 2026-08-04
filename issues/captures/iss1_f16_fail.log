@@ -1,0 +1,29 @@
+[ov] version: 2026.2.1-21919-ede283a88e3-releases/2026/2
+[ov] devices: ['CPU', 'GPU']
+[feeds] tokens=(1, 32) style=(1, 256) speed=[1.]
+[model] read in 0.31s; inputs:
+        tokens: [1,?] <Type: 'int64_t'>
+        style: [1,256] <Type: 'float32'>
+        speed: [1] <Type: 'float32'>
+[model] reshaping to static: {'tokens': '[1,32]', 'style': '[1,256]', 'speed': '[1]'}
+[compile] device=GPU config={'PERFORMANCE_HINT': 'LATENCY', 'INFERENCE_PRECISION_HINT': 'f16'}
+[compile] OK in 9.33s
+[compile] execution devices: ['GPU.0']
+Traceback (most recent call last):
+  File "/data/intel-igpu-tts/scripts/test_kokoro_ov_direct.py", line 250, in <module>
+    main()
+  File "/data/intel-igpu-tts/scripts/test_kokoro_ov_direct.py", line 203, in main
+    _, dt = one_run()
+            ^^^^^^^^^
+  File "/data/intel-igpu-tts/scripts/test_kokoro_ov_direct.py", line 196, in one_run
+    result = infer.infer(feeds)
+             ^^^^^^^^^^^^^^^^^^
+  File "/data/intel-igpu-tts/venv/lib/python3.12/site-packages/openvino/_ov_api.py", line 202, in infer
+    return OVDict(super().infer(_data_dispatch(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Exception from src/inference/src/cpp/infer_request.cpp:224:
+Check 'DimType::merge(merged_dimension, arg0_col_dim, arg1_row_dim) || arg0_col_dim.is_dynamic() || arg1_row_dim.is_dynamic()' failed at src/core/shape_inference/include/matmul_shape_inference.hpp:65:
+While validating node 'opset1::MatMul MatMul_66245 () -> ()' with friendly_name 'MatMul_66245':
+Incompatible MatMul matrix dimension. First input dimension=9 at COL_INDEX_DIM=2 doesn't match the second input dimension=1 at ROW_INDEX_DIM=0
+
+

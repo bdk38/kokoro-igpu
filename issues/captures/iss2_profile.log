@@ -1,0 +1,44 @@
+[ov] version: 2026.2.1-21919-ede283a88e3-releases/2026/2
+[ov] devices: ['CPU', 'GPU']
+[feeds] tokens=(1, 32) style=(1, 256) speed=[1.]
+[model] read in 0.35s; inputs:
+        tokens: [1,?] <Type: 'int64_t'>
+        style: [1,256] <Type: 'float32'>
+        speed: [1] <Type: 'float32'>
+[model] reshaping to static: {'tokens': '[1,32]', 'style': '[1,256]', 'speed': '[1]'}
+[compile] device=GPU config={'PERFORMANCE_HINT': 'LATENCY', 'INFERENCE_PRECISION_HINT': 'f32', 'PERF_COUNT': 'YES'}
+[compile] OK in 2.22s
+[compile] execution devices: ['GPU.0']
+[warmup 0] 9.264s
+=== INFER WINDOW START (watch intel_gpu_top now) ===
+[run 0] 1.464s
+[run 1] 1.448s
+=== INFER WINDOW END ===
+[timing] mean=1.456s over 2 runs
+[OV GPU f32] shape=(54000,) nan=0 inf=0 min=-0.4211 max=0.4886 std=0.0518
+[profile] top ops by real time:
+      224.507 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.1/convs1.2/Conv/Without
+      213.165 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.1/convs2.0/Conv/Without
+      209.970 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.1/convs1.1/Conv/Without
+      206.613 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.1/convs1.0/Conv/Without
+      158.395 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.2/convs2.0/Conv/Without
+      154.957 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.2/convs1.2/Conv/Without
+      153.084 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.2/convs1.1/Conv/Without
+      137.301 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.2/convs1.0/Conv/Without
+      129.720 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.4/convs1.0/Conv/Without
+      129.210 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.4/convs1.2/Conv/Without
+      126.211 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.4/convs2.0/Conv/Without
+      124.436 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.4/convs1.1/Conv/Without
+       85.919 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.0/convs1.1/Conv/Without
+       85.266 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.0/convs2.0/Conv/Without
+       84.240 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.0/convs1.0/Conv/Without
+       82.172 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/noise_res.0/convs1.2/Conv/Without
+       63.662 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.3/convs2.0/Conv/Without
+       61.649 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.3/convs2.2/Conv/Without
+       59.149 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.3/convs1.0/Conv/Without
+       58.349 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.3/convs1.2/Conv/Without
+       57.708 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.3/convs1.1/Conv/Without
+       53.869 ms  TensorIterator       undef                    LSTMSequence_43378
+       51.487 ms  TensorIterator       undef                    LSTMSequence_43377
+       41.755 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.0/convs1.0/Conv/Without
+       40.985 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.0/convs2.0/Conv/Without

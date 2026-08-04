@@ -39,3 +39,8 @@ models/patched/*.onnx
 *.log
 !artifacts/logs/
 !artifacts/logs/**
+
+# Issue filing evidence logs
+!issues/captures/
+!issues/captures/**
+
