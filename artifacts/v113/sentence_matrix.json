@@ -1,0 +1,300 @@
+{
+  "s1_well": {
+    "http": "200",
+    "curl_s": 24.679763,
+    "rtf": "4.83",
+    "text": "Well, honestly, I think we should wait; however, the choice is yours.",
+    "dur": 5.11,
+    "peak": 0.5481,
+    "ref90": 0.1313,
+    "groups": 4,
+    "ginfo": [
+      {
+        "start": 0.4,
+        "end": 0.74,
+        "dur": 0.34,
+        "peak_over_ref": 1.287
+      },
+      {
+        "start": 1.06,
+        "end": 1.6,
+        "dur": 0.54,
+        "peak_over_ref": 1.793
+      },
+      {
+        "start": 1.96,
+        "end": 2.92,
+        "dur": 0.96,
+        "peak_over_ref": 1.884
+      },
+      {
+        "start": 3.44,
+        "end": 5.08,
+        "dur": 1.64,
+        "peak_over_ref": 1.139
+      }
+    ],
+    "tail06_peak": 0.3558,
+    "tail06_rms": 0.0717,
+    "tail02_peak": 0.3558,
+    "tail02_rms": 0.0807
+  },
+  "s2_wallet": {
+    "http": "200",
+    "curl_s": 21.653323,
+    "rtf": "5.37",
+    "text": "Wait, did you remember the keys, the wallet, and the passport?",
+    "dur": 4.03,
+    "peak": 0.5235,
+    "ref90": 0.149,
+    "groups": 4,
+    "ginfo": [
+      {
+        "start": 0.4,
+        "end": 0.68,
+        "dur": 0.28,
+        "peak_over_ref": 1.185
+      },
+      {
+        "start": 0.78,
+        "end": 0.82,
+        "dur": 0.04,
+        "peak_over_ref": 0.426
+      },
+      {
+        "start": 1.34,
+        "end": 3.12,
+        "dur": 1.78,
+        "peak_over_ref": 1.514
+      },
+      {
+        "start": 3.46,
+        "end": 4.0,
+        "dur": 0.54,
+        "peak_over_ref": 1.209
+      }
+    ],
+    "tail06_peak": 0.502,
+    "tail06_rms": 0.0885,
+    "tail02_peak": 0.502,
+    "tail02_rms": 0.1041
+  },
+  "s3_peter": {
+    "http": "200",
+    "curl_s": 18.986682,
+    "rtf": "5.95",
+    "text": "Peter packed a heavy box of bright blue berries.",
+    "dur": 3.19,
+    "peak": 0.5335,
+    "ref90": 0.1194,
+    "groups": 3,
+    "ginfo": [
+      {
+        "start": 0.38,
+        "end": 2.26,
+        "dur": 1.88,
+        "peak_over_ref": 1.741
+      },
+      {
+        "start": 2.42,
+        "end": 2.88,
+        "dur": 0.46,
+        "peak_over_ref": 1.109
+      },
+      {
+        "start": 3.06,
+        "end": 3.16,
+        "dur": 0.1,
+        "peak_over_ref": 1.783
+      }
+    ],
+    "tail06_peak": 0.5335,
+    "tail06_rms": 0.0772,
+    "tail02_peak": 0.5335,
+    "tail02_rms": 0.1047
+  },
+  "s4_swans": {
+    "http": "200",
+    "curl_s": 21.964002,
+    "rtf": "5.32",
+    "text": "Seven silver swans swam smoothly south across the sea.",
+    "dur": 4.13,
+    "peak": 0.4764,
+    "ref90": 0.1219,
+    "groups": 2,
+    "ginfo": [
+      {
+        "start": 0.4,
+        "end": 1.78,
+        "dur": 1.38,
+        "peak_over_ref": 1.447
+      },
+      {
+        "start": 1.98,
+        "end": 4.12,
+        "dur": 2.14,
+        "peak_over_ref": 1.405
+      }
+    ],
+    "tail06_peak": 0.2724,
+    "tail06_rms": 0.0556,
+    "tail02_peak": 0.1845,
+    "tail02_rms": 0.057
+  },
+  "fox": {
+    "http": "200",
+    "curl_s": 18.412727,
+    "rtf": "6.00",
+    "text": "The quick brown fox jumps over the lazy dog.",
+    "dur": 3.07,
+    "peak": 0.5609,
+    "ref90": 0.1152,
+    "groups": 3,
+    "ginfo": [
+      {
+        "start": 0.36,
+        "end": 0.68,
+        "dur": 0.32,
+        "peak_over_ref": 2.049
+      },
+      {
+        "start": 0.8,
+        "end": 1.44,
+        "dur": 0.64,
+        "peak_over_ref": 1.184
+      },
+      {
+        "start": 1.56,
+        "end": 3.04,
+        "dur": 1.48,
+        "peak_over_ref": 1.316
+      }
+    ],
+    "tail06_peak": 0.3752,
+    "tail06_rms": 0.0611,
+    "tail02_peak": 0.1286,
+    "tail02_rms": 0.0341
+  },
+  "whisper_stop": {
+    "http": "200",
+    "curl_s": 22.466804,
+    "rtf": "4.70",
+    "text": "He paused, then whispered, stop.",
+    "dur": 4.775,
+    "peak": 0.5489,
+    "ref90": 0.1143,
+    "groups": 3,
+    "ginfo": [
+      {
+        "start": 0.38,
+        "end": 1.1,
+        "dur": 0.72,
+        "peak_over_ref": 1.913
+      },
+      {
+        "start": 1.52,
+        "end": 2.64,
+        "dur": 1.12,
+        "peak_over_ref": 1.874
+      },
+      {
+        "start": 3.28,
+        "end": 3.64,
+        "dur": 0.36,
+        "peak_over_ref": 0.841
+      }
+    ],
+    "tail06_peak": 0.0345,
+    "tail06_rms": 0.003,
+    "tail02_peak": 0.0077,
+    "tail02_rms": 0.0003
+  },
+  "full_repro": {
+    "http": "200",
+    "curl_s": 70.436717,
+    "rtf": "4.37",
+    "text": "Well, honestly, I think we should wait; however, the choice is yours. Wait, did you remember the keys, the wallet, and the passport? Peter packed a heavy box of bright blue berries. Seven silver swans swam smoothly south across the sea.",
+    "dur": 16.11,
+    "peak": 0.6293,
+    "ref90": 0.1368,
+    "groups": 12,
+    "ginfo": [
+      {
+        "start": 0.36,
+        "end": 1.1,
+        "dur": 0.74,
+        "peak_over_ref": 1.331
+      },
+      {
+        "start": 1.34,
+        "end": 2.14,
+        "dur": 0.8,
+        "peak_over_ref": 1.508
+      },
+      {
+        "start": 2.5,
+        "end": 3.88,
+        "dur": 1.38,
+        "peak_over_ref": 1.427
+      },
+      {
+        "start": 4.08,
+        "end": 4.18,
+        "dur": 0.1,
+        "peak_over_ref": 0.869
+      },
+      {
+        "start": 5.08,
+        "end": 5.44,
+        "dur": 0.36,
+        "peak_over_ref": 1.004
+      },
+      {
+        "start": 5.88,
+        "end": 7.46,
+        "dur": 1.58,
+        "peak_over_ref": 1.585
+      },
+      {
+        "start": 7.66,
+        "end": 8.18,
+        "dur": 0.52,
+        "peak_over_ref": 0.914
+      },
+      {
+        "start": 8.3,
+        "end": 8.5,
+        "dur": 0.2,
+        "peak_over_ref": 0.456
+      },
+      {
+        "start": 9.06,
+        "end": 10.8,
+        "dur": 1.74,
+        "peak_over_ref": 1.627
+      },
+      {
+        "start": 10.92,
+        "end": 11.4,
+        "dur": 0.48,
+        "peak_over_ref": 0.898
+      },
+      {
+        "start": 11.58,
+        "end": 11.68,
+        "dur": 0.1,
+        "peak_over_ref": 0.845
+      },
+      {
+        "start": 12.42,
+        "end": 16.08,
+        "dur": 3.66,
+        "peak_over_ref": 2.273
+      }
+    ],
+    "tail06_peak": 0.3203,
+    "tail06_rms": 0.0639,
+    "tail02_peak": 0.1297,
+    "tail02_rms": 0.0306
+  }
+}

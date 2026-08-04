@@ -7,27 +7,23 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 
-# Runtime caches and logs
+# Runtime caches and local server logs (evidence copies live under artifacts/logs/)
 cache/
 logs/
 *.log
+!artifacts/logs/**
+!artifacts/logs/**/*.log
 
-# Model weights (download + patch locally; see README)
+# Model weights — download + patch locally (see README). Not in git/LFS.
 models/**/*.onnx
 models/**/*.bin
 models/v1/
-models/original-webui-models
+models/original-webui-models/
 models/patched/*.onnx
 
 # Keep directory placeholders
 !models/**/.gitkeep
 !models/patched/.gitkeep
-
-# Large / local-only artifacts (selected samples are force-added)
-artifacts/**/*.wav
-artifacts/**/*.bin
-artifacts/**/*.mp3
-!artifacts/samples/**
 
 # Editor / OS
 .DS_Store
@@ -39,3 +35,5 @@ artifacts/**/*.mp3
 .env
 .env.*
 *.pem
+# credential store must never be committed
+**/github-credentials

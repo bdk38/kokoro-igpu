@@ -1,0 +1,1 @@
+{"status":"ok","backend":"ov-gpu","model":"/data/intel-igpu-tts/models/patched/kokoro-v0_19.gpu4d.stft.onnx","gpu_precision":"f32"}

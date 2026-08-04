@@ -1,0 +1,1 @@
+{"status":"ok","backend":"ort-cpu","model":"/data/intel-igpu-tts/models/kokoro-v0_19.onnx","gpu_precision":null}
