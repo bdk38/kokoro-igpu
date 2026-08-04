@@ -37,6 +37,12 @@ Open WebUI wiring (Admin -> Settings -> Audio):
   API Key: anything (not checked)
   TTS Voice: af_bella (or any /v1/audio/voices entry, or OpenAI aliases)
   Response format: wav (mp3 works if ffmpeg is installed on the host)
+  Response Splitting: depends on backend (see notes/15):
+    ort-cpu (RTF ~0.4)  -> Punctuation is fine and gives fast first-audio
+    ov-gpu  (RTF 4-6)   -> use None or Paragraphs. Punctuation fires one
+      slow request per sentence; the client can drop late segments and
+      Read Aloud skips mid-passage. Confirmed by A/B with identical
+      server build (notes/15-webui-response-splitting.md).
 
 Notes:
   - Long input is chunked at sentence boundaries to stay under the model's
@@ -44,6 +50,15 @@ Notes:
   - OV backends compile per token-length; the server pads chunk tokens to
     bucket sizes (96/192/288/384/512) and caches compiled models per
     bucket, so steady-state requests reuse compiles. ORT is fully dynamic.
+  - The NSF vocoder renders trailing pad tokens as a short breath-like
+    burst after a quiet gap at chunk ends. OV-path chunks are therefore
+    trimmed after inference: audio is segmented into gap-separated speech
+    groups, and trailing groups are stripped only if they look like pad
+    energy (gap-separated AND weak AND short). Natural mid-sentence
+    pauses never trigger a cut because the speech that follows them fails
+    the weak/short tests. Always on; fails safe (keeps audio when in
+    doubt). ORT path never pads, so it is never trimmed.
+    Set KOKORO_TRIM_DEBUG=1 to log per-chunk trim decisions.
   - mp3/opus/flac need ffmpeg on PATH; otherwise the server falls back to
     wav and says so in the X-Kokoro-Format header.
 """
@@ -55,6 +70,7 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import wave
 
@@ -68,6 +84,26 @@ SR = 24000
 MAX_TOKENS = 510
 PAD_BUCKETS = [96, 192, 288, 384, 512]
 CHUNK_GAP_S = 0.12
+
+# pad-tail trim (OV bucket-padded chunks only)
+TRIM_FRAME_S = 0.02        # RMS analysis frame (20 ms)
+TRIM_MARGIN_S = 0.03       # keep this much after the last speech frame
+TRIM_FADE_S = 0.01         # fade length at the cut
+TRIM_SEARCH_FACTOR = 1.5   # search window = pad fraction x this
+TRIM_RMS_RATIO = 0.15      # frame counts as speech at >= 15% of ref RMS
+TRIM_QUIET_S = 0.10        # gap length separating speech groups
+TRIM_MOAN_MAX_S = 0.6      # pad burst must be shorter than this
+                           # (measured ov-gpu bursts: 0.22-0.40 s)
+TRIM_MOAN_RMS_RATIO = 0.9  # pad burst peak must stay below this x ref RMS
+                           # (measured ov-gpu bursts: 0.64-0.83x ref;
+                           # measured real continuation speech: ~1.39x)
+TRIM_PAD_GAP_S = 0.15      # burst must be detached: gap before it >= this
+                           # (measured: intra-word stop closure ~0.10 s,
+                           # pre-moan pad gaps 0.46-0.48 s)
+TRIM_REF_FLOOR = 1e-3      # refuse to trim when speech reference RMS is
+                           # this low (silence-referenced clip)
+TRIM_DEBUG = os.environ.get("KOKORO_TRIM_DEBUG", "0") == "1"
+
 
 MODEL_PATH = os.environ.get(
     "KOKORO_MODEL", "/data/intel-igpu-tts/models/kokoro-v0_19.onnx")
@@ -167,6 +203,140 @@ def chunk_text(text, lang):
 
 
 # ----------------------------------------------------------------------
+# pad-tail trim
+# ----------------------------------------------------------------------
+
+def trim_pad_tail(audio, n_real, n_bucket, sr=SR):
+    """Remove the voiced tail the vocoder synthesizes from bucket pad tokens.
+
+    Measured failure shape (see 10-status-trim-and-skips.md):
+
+        real speech -> short quiet gap -> weak voiced burst (moan) -> silence
+
+    v1.1.1 cut at the *first* sustained quiet and fired on comma pauses.
+    v1.1.2/3 segmented into speech groups but a soft word-final syllable
+    after a stop-closure gap ("pass^port") matched the weak+short profile
+    of a moan, and a leading-silence head broke the reference RMS.
+
+    A trailing group is stripped only when it passes ALL of:
+
+      1. weak:     peak RMS < TRIM_MOAN_RMS_RATIO x speech reference
+                   (measured moans 0.23-0.77x; real speech >= 1.05x)
+      2. short:    duration < TRIM_MOAN_MAX_S (moans 0.12-0.40 s)
+      3. detached: gap before it >= TRIM_PAD_GAP_S (a stop-closure gap
+                   ~0.10 s keeps word-final syllables attached; pad gaps
+                   measure 0.40-0.78 s)
+      4. in the pad search window (head is sacred)
+
+    A terminal-silence gate existed in v1.1.4 and was removed: across the
+    full probe set every group it kept was an ear-confirmed pad moan and
+    it never protected real speech (Kokoro renders final words attached
+    to preceding speech, not detached). Tail length is still logged as
+    data in case a weak+short+detached real word ever appears.
+
+    The speech reference is the p90 of frames at >= 10% of the clip's max
+    frame RMS (not a positional head, which can be leading silence), with
+    a hard floor below which trimming is refused. If no group qualifies,
+    only trailing silence after the last group is trimmed. No confident
+    structure -> audio returned unchanged.
+    """
+    audio = np.asarray(audio, dtype=np.float32).reshape(-1)
+    if n_bucket <= n_real or audio.size == 0:
+        return audio
+    pad_frac = (n_bucket - n_real) / float(n_bucket)
+    search = int(audio.size * min(1.0, pad_frac * TRIM_SEARCH_FACTOR))
+    frame = max(1, int(sr * TRIM_FRAME_S))
+    # always keep a head region as the speech-RMS reference, even when the
+    # pad fraction is large (short sentence in a big bucket)
+    ref_min = min(audio.size // 2, max(frame * 5, int(sr * 0.2)))
+    keep_min = max(audio.size - search, ref_min)  # never cut before this
+    if audio.size - keep_min < frame or keep_min < frame:
+        return audio
+
+    n_fr = audio.size // frame
+    if n_fr < 3:
+        return audio
+    rms = np.sqrt(np.mean(
+        audio[:n_fr * frame].reshape(-1, frame).astype(np.float64) ** 2,
+        axis=1))
+
+    # speech reference from the loudest material anywhere in the clip;
+    # a positional head window can be leading silence (whisper probe:
+    # ref collapsed to 2e-4 and every ratio went nonsensical)
+    loud = rms[rms >= 0.1 * float(rms.max())]
+    ref = float(np.percentile(loud, 90)) if loud.size else 0.0
+    if ref < TRIM_REF_FLOOR:
+        return audio
+    thresh = ref * TRIM_RMS_RATIO
+
+    speech_idx = np.nonzero(rms >= thresh)[0]
+    if speech_idx.size == 0:
+        return audio
+
+    # merge speech frames into groups; gaps shorter than TRIM_QUIET_S do
+    # not separate groups (they are intra-speech texture, not structure)
+    need = max(2, int(round(TRIM_QUIET_S / TRIM_FRAME_S)))
+    groups = []                     # (start_frame, end_frame_exclusive)
+    g_start = prev = int(speech_idx[0])
+    for j in speech_idx[1:]:
+        j = int(j)
+        if j - prev - 1 >= need:
+            groups.append((g_start, prev + 1))
+            g_start = j
+        prev = j
+    groups.append((g_start, prev + 1))
+
+    moan_max = max(1, int(round(TRIM_MOAN_MAX_S / TRIM_FRAME_S)))
+    burst_lvl = ref * TRIM_MOAN_RMS_RATIO
+
+    pad_gap = max(1, int(round(TRIM_PAD_GAP_S / TRIM_FRAME_S)))
+
+    end_f = groups[-1][1]
+    gi = len(groups) - 1
+    stripped = 0
+    while gi > 0:
+        s, e = groups[gi]
+        peak = float(rms[s:e].max())
+        gap_before = s - groups[gi - 1][1]
+        after = (groups[gi + 1][0] if gi + 1 < len(groups) else n_fr) - e
+        if s * frame < keep_min:
+            verdict = "kept:in-head"
+        elif (e - s) > moan_max:
+            verdict = "kept:too-long"
+        elif peak >= burst_lvl:
+            verdict = "kept:too-loud"
+        elif gap_before < pad_gap:
+            verdict = "kept:attached"
+        else:
+            verdict = "stripped"
+        if TRIM_DEBUG:
+            print(f"[trim]   g{gi}: {s * frame / sr:.2f}-{e * frame / sr:.2f}s "
+                  f"dur={(e - s) * frame / sr:.2f}s peak/ref={peak / ref:.2f} "
+                  f"gap={gap_before * frame / sr:.2f}s "
+                  f"tail={after * frame / sr:.2f}s -> {verdict}", flush=True)
+        if verdict != "stripped":
+            break
+        gi -= 1
+        end_f = groups[gi][1]
+        stripped += 1
+
+    cut = min(audio.size, end_f * frame + int(sr * TRIM_MARGIN_S))
+    if TRIM_DEBUG:
+        print(f"[trim] n_real={n_real} n_bucket={n_bucket} "
+              f"audio={audio.size / sr:.2f}s groups={len(groups)} "
+              f"stripped={stripped} cut={cut / sr:.2f}s "
+              f"ref={ref:.4f} thresh={thresh:.4f}", flush=True)
+    if cut >= audio.size:
+        return audio
+
+    out = audio[:cut].copy()
+    fade = min(int(sr * TRIM_FADE_S), out.size)
+    if fade > 0:
+        out[-fade:] *= np.linspace(1.0, 0.0, fade, dtype=np.float32)
+    return out
+
+
+# ----------------------------------------------------------------------
 # backends
 # ----------------------------------------------------------------------
 
@@ -199,6 +369,10 @@ class OvBackend:
         self.cache_dir = cache_dir
         self.name = f"ov-{device.lower()}"
         self._compiled = {}     # bucket -> (compiled, infer_request)
+        # one infer request per bucket + FastAPI thread pool = "Infer
+        # Request is busy" under concurrent posts; serialize infers (the
+        # device serializes anyway) and protect compile-dict updates
+        self._lock = threading.Lock()
 
     def _bucket(self, n):
         for b in PAD_BUCKETS:
@@ -235,11 +409,17 @@ class OvBackend:
     def infer(self, tokens, style, speed):
         n = tokens.shape[1]
         bucket = self._bucket(n)
-        if n < bucket:  # pad with pad-token 0; trailing pads add near-silence
+        padded = n < bucket
+        if padded:  # pad with pad-token 0; the vocoder voices these -> trim
             tokens = np.pad(tokens, ((0, 0), (0, bucket - n)))
-        _, req = self._get(bucket)
-        result = req.infer({"tokens": tokens, "style": style, "speed": speed})
-        return list(result.values())[0]
+        with self._lock:
+            _, req = self._get(bucket)
+            result = req.infer(
+                {"tokens": tokens, "style": style, "speed": speed})
+        audio = np.asarray(list(result.values())[0]).reshape(-1)
+        if padded:
+            audio = trim_pad_tail(audio, n, bucket)
+        return audio
 
 
 def make_backend(name):
@@ -412,7 +592,7 @@ def build_app():
     from fastapi.responses import Response
     from pydantic import BaseModel
 
-    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.0")
+    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.1.5")
     state = {"backend": None}
 
     class SpeechRequest(BaseModel):
