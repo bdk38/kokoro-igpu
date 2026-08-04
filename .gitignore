@@ -10,9 +10,6 @@ __pycache__/
 # Runtime caches and local server logs (evidence copies live under artifacts/logs/)
 cache/
 logs/
-*.log
-!artifacts/logs/**
-!artifacts/logs/**/*.log
 
 # Model weights — download + patch locally (see README). Not in git/LFS.
 models/**/*.onnx
@@ -37,3 +34,8 @@ models/patched/*.onnx
 *.pem
 # credential store must never be committed
 **/github-credentials
+
+# Ignore loose logs everywhere, then re-include evidence logs under artifacts/
+*.log
+!artifacts/logs/
+!artifacts/logs/**

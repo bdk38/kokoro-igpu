@@ -1,0 +1,100 @@
+# Sanitized evidence log for kokoro-igpu
+# Source: server_v115.log
+# Purpose: trim/speech decisions backing artifacts/v11x WAVs
+# Secrets scanned: none found; home paths redacted
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [2791146]
+INFO:     Waiting for application startup.
+[server] model=models/patched/kokoro-v0_19.gpu4d.stft.onnx
+[server] voices=models/voices-v1.0.bin
+[server] backend=ov-gpu precision=f32
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+[ov-gpu] compiled bucket=96 in 0.9s
+[trim]   g1: 1.44-1.72s dur=0.28s peak/ref=0.63 gap=0.40s tail=1.78s -> stripped
+[trim] n_real=13 n_bucket=96 audio=3.50s groups=2 stripped=1 cut=1.07s ref=0.1853 thresh=0.0278
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8880 (Press CTRL+C to quit)
+[server] warmup OK
+[trim]   g4: 5.72-5.84s dur=0.12s peak/ref=0.35 gap=0.64s tail=0.40s -> stripped
+[trim]   g3: 3.44-5.08s dur=1.64s peak/ref=1.05 gap=0.52s tail=0.64s -> kept:in-head
+[trim] n_real=73 n_bucket=96 audio=6.25s groups=5 stripped=1 cut=5.11s ref=0.1419 thresh=0.0213
+[speech] voice=af_bella tokens=71 audio=5.11s infer=24.71s rtf=4.84
+INFO:     127.0.0.1:50792 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g5: 4.82-5.08s dur=0.26s peak/ref=0.68 gap=0.46s tail=0.48s -> stripped
+[trim]   g4: 4.10-4.36s dur=0.26s peak/ref=0.36 gap=0.10s tail=0.46s -> kept:attached
+[trim] n_real=65 n_bucket=96 audio=5.58s groups=6 stripped=1 cut=4.39s ref=0.1569 thresh=0.0235
+[speech] voice=af_bella tokens=63 audio=4.39s infer=21.92s rtf=4.99
+INFO:     127.0.0.1:49024 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g4: 3.78-3.98s dur=0.20s peak/ref=0.66 gap=0.62s tail=0.82s -> stripped
+[trim]   g3: 3.06-3.16s dur=0.10s peak/ref=1.61 gap=0.18s tail=0.62s -> kept:too-loud
+[trim] n_real=53 n_bucket=96 audio=4.80s groups=5 stripped=1 cut=3.19s ref=0.1324 thresh=0.0199
+[speech] voice=af_bella tokens=51 audio=3.19s infer=18.97s rtf=5.95
+INFO:     127.0.0.1:53484 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g2: 4.88-5.00s dur=0.12s peak/ref=0.23 gap=0.78s tail=0.64s -> stripped
+[trim]   g1: 1.98-4.10s dur=2.12s peak/ref=1.33 gap=0.20s tail=0.78s -> kept:in-head
+[trim] n_real=61 n_bucket=96 audio=5.65s groups=3 stripped=1 cut=4.13s ref=0.1290 thresh=0.0193
+[speech] voice=af_bella tokens=59 audio=4.13s infer=22.13s rtf=5.36
+INFO:     127.0.0.1:52460 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g4: 3.78-4.00s dur=0.22s peak/ref=0.53 gap=0.60s tail=0.72s -> stripped
+[trim]   g3: 3.16-3.18s dur=0.02s peak/ref=0.20 gap=0.12s tail=0.60s -> kept:attached
+[trim] n_real=55 n_bucket=96 audio=4.72s groups=5 stripped=1 cut=3.21s ref=0.1245 thresh=0.0187
+[speech] voice=af_bella tokens=53 audio=3.21s infer=18.68s rtf=5.82
+INFO:     127.0.0.1:49894 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g2: 3.28-3.60s dur=0.32s peak/ref=0.66 gap=0.64s tail=1.16s -> stripped
+[trim]   g1: 1.52-2.64s dur=1.12s peak/ref=1.51 gap=0.42s tail=0.64s -> kept:too-long
+[trim] n_real=35 n_bucket=96 audio=4.78s groups=3 stripped=1 cut=2.67s ref=0.1434 thresh=0.0215
+[speech] voice=af_bella tokens=33 audio=2.67s infer=18.80s rtf=7.04
+INFO:     127.0.0.1:60862 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+[ov-gpu] compiled bucket=288 in 0.6s
+[trim]   g12: 16.68-17.06s dur=0.38s peak/ref=0.53 gap=0.62s tail=0.56s -> stripped
+[trim]   g11: 12.42-16.06s dur=3.64s peak/ref=1.92 gap=0.74s tail=0.62s -> kept:in-head
+[trim] n_real=249 n_bucket=288 audio=17.62s groups=13 stripped=1 cut=16.09s ref=0.1623 thresh=0.0243
+[speech] voice=af_bella tokens=247 audio=16.09s infer=69.67s rtf=4.33
+INFO:     127.0.0.1:57384 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g2: 4.88-5.00s dur=0.12s peak/ref=0.23 gap=0.78s tail=0.64s -> stripped
+[trim]   g1: 1.98-4.10s dur=2.12s peak/ref=1.33 gap=0.20s tail=0.78s -> kept:in-head
+[trim] n_real=61 n_bucket=96 audio=5.65s groups=3 stripped=1 cut=4.13s ref=0.1290 thresh=0.0193
+[speech] voice=af_bella tokens=59 audio=4.13s infer=3.67s rtf=0.89
+INFO:     172.22.0.3:51416 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g6: 3.84-5.16s dur=1.32s peak/ref=1.83 gap=0.66s tail=0.78s -> kept:in-head
+[trim] n_real=86 n_bucket=96 audio=5.95s groups=7 stripped=0 cut=5.19s ref=0.1380 thresh=0.0207
+[speech] voice=af_bella tokens=84 audio=5.19s infer=27.41s rtf=5.28
+INFO:     172.22.0.3:51416 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+INFO:     172.22.0.3:49644 - "GET /v1/audio/voices HTTP/1.1" 200 OK
+INFO:     172.22.0.3:49644 - "GET /v1/audio/models HTTP/1.1" 404 Not Found
+INFO:     172.22.0.3:49650 - "GET /v1/models HTTP/1.1" 200 OK
+[trim]   g1: 1.62-1.72s dur=0.10s peak/ref=0.22 gap=0.46s tail=2.54s -> stripped
+[trim] n_real=14 n_bucket=96 audio=4.28s groups=2 stripped=1 cut=1.19s ref=0.2710 thresh=0.0407
+[speech] voice=af_bella tokens=12 audio=1.19s infer=21.40s rtf=17.98
+INFO:     172.22.0.3:51416 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+[ov-gpu] compiled bucket=384 in 7.9s
+[trim]   g13: 20.28-20.62s dur=0.34s peak/ref=0.45 gap=0.62s tail=1.84s -> stripped
+[trim]   g12: 19.00-19.66s dur=0.66s peak/ref=1.66 gap=0.62s tail=0.62s -> kept:too-long
+[trim] n_real=295 n_bucket=384 audio=22.48s groups=14 stripped=1 cut=19.69s ref=0.1687 thresh=0.0253
+[speech] voice=af_bella tokens=293 audio=19.69s infer=100.18s rtf=5.09
+INFO:     172.22.0.3:42058 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+INFO:     172.22.0.3:49008 - "GET /v1/audio/voices HTTP/1.1" 200 OK
+INFO:     172.22.0.3:49008 - "GET /v1/audio/models HTTP/1.1" 404 Not Found
+INFO:     172.22.0.3:49022 - "GET /v1/models HTTP/1.1" 200 OK
+[trim]   g15: 21.30-21.72s dur=0.42s peak/ref=0.64 gap=0.62s tail=1.44s -> stripped
+[trim]   g14: 20.06-20.68s dur=0.62s peak/ref=1.67 gap=0.78s tail=0.62s -> kept:too-long
+[trim] n_real=308 n_bucket=384 audio=23.18s groups=16 stripped=1 cut=20.71s ref=0.1615 thresh=0.0242
+[speech] voice=af_bella tokens=306 audio=20.71s infer=94.88s rtf=4.58
+INFO:     172.22.0.3:38032 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35906 - "GET /health HTTP/1.1" 200 OK

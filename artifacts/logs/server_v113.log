@@ -1,0 +1,67 @@
+# Sanitized evidence log for kokoro-igpu
+# Source: server_v113.log
+# Purpose: trim/speech decisions backing artifacts/v11x WAVs
+# Secrets scanned: none found; home paths redacted
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [2673749]
+INFO:     Waiting for application startup.
+[server] model=models/patched/kokoro-v0_19.gpu4d.stft.onnx
+[server] voices=models/voices-v1.0.bin
+[server] backend=ov-gpu precision=f32
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+[ov-gpu] compiled bucket=96 in 0.9s
+[trim]   g1: 3.44-3.50s dur=0.06s peak/ref=434.39 -> kept:too-loud
+[trim] n_real=13 n_bucket=96 audio=3.50s groups=2 stripped=0 cut=3.50s ref=0.0000 thresh=0.0000
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8880 (Press CTRL+C to quit)
+[server] warmup OK
+[trim]   g4: 5.72-5.84s dur=0.12s peak/ref=0.36 -> stripped
+[trim]   g3: 3.44-5.08s dur=1.64s peak/ref=1.11 -> kept:in-head
+[trim] n_real=73 n_bucket=96 audio=6.25s groups=5 stripped=1 cut=5.11s ref=0.1350 thresh=0.0202
+[speech] voice=af_bella tokens=71 audio=5.11s infer=24.67s rtf=4.83
+INFO:     127.0.0.1:47874 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g5: 4.82-5.08s dur=0.26s peak/ref=0.70 -> stripped
+[trim]   g4: 4.10-4.36s dur=0.26s peak/ref=0.36 -> stripped
+[trim]   g3: 3.46-4.00s dur=0.54s peak/ref=1.17 -> kept:too-loud
+[trim] n_real=65 n_bucket=96 audio=5.58s groups=6 stripped=2 cut=4.03s ref=0.1536 thresh=0.0230
+[speech] voice=af_bella tokens=63 audio=4.03s infer=21.65s rtf=5.37
+INFO:     127.0.0.1:46212 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g4: 3.78-3.98s dur=0.20s peak/ref=0.65 -> stripped
+[trim]   g3: 3.06-3.16s dur=0.10s peak/ref=1.59 -> kept:too-loud
+[trim] n_real=53 n_bucket=96 audio=4.80s groups=5 stripped=1 cut=3.19s ref=0.1340 thresh=0.0201
+[speech] voice=af_bella tokens=51 audio=3.19s infer=18.98s rtf=5.95
+INFO:     127.0.0.1:53146 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g2: 4.88-5.00s dur=0.12s peak/ref=0.24 -> stripped
+[trim]   g1: 1.98-4.10s dur=2.12s peak/ref=1.38 -> kept:in-head
+[trim] n_real=61 n_bucket=96 audio=5.65s groups=3 stripped=1 cut=4.13s ref=0.1240 thresh=0.0186
+[speech] voice=af_bella tokens=59 audio=4.13s infer=21.96s rtf=5.32
+INFO:     127.0.0.1:52090 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g4: 3.78-4.00s dur=0.22s peak/ref=0.57 -> stripped
+[trim]   g3: 3.16-3.18s dur=0.02s peak/ref=0.22 -> stripped
+[trim]   g2: 1.56-3.04s dur=1.48s peak/ref=1.32 -> kept:in-head
+[trim] n_real=55 n_bucket=96 audio=4.72s groups=5 stripped=2 cut=3.07s ref=0.1152 thresh=0.0173
+[speech] voice=af_bella tokens=53 audio=3.07s infer=18.41s rtf=6.00
+INFO:     127.0.0.1:38948 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+[trim]   g1: 4.72-4.76s dur=0.04s peak/ref=4.12 -> kept:too-loud
+[trim] n_real=35 n_bucket=96 audio=4.78s groups=2 stripped=0 cut=4.78s ref=0.0002 thresh=0.0000
+[speech] voice=af_bella tokens=33 audio=4.78s infer=22.46s rtf=4.70
+INFO:     127.0.0.1:42486 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+Non default env value for CACHE_DIR = cache/openvino
+[ov-gpu] compiled bucket=288 in 0.6s
+[trim]   g12: 16.68-17.08s dur=0.40s peak/ref=0.63 -> stripped
+[trim]   g11: 12.42-16.08s dur=3.66s peak/ref=2.27 -> kept:in-head
+[trim] n_real=249 n_bucket=288 audio=17.62s groups=13 stripped=1 cut=16.11s ref=0.1367 thresh=0.0205
+[speech] voice=af_bella tokens=247 audio=16.11s infer=70.43s rtf=4.37
+INFO:     127.0.0.1:54660 - "POST /v1/audio/speech HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2673749]
