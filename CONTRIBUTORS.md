@@ -18,6 +18,8 @@ GitHub’s automatic **Contributors** graph only lists GitHub user accounts that
   - identified the 3D linear Resize and dynamic-rank STFT blockers
   - authored `scripts/patch_kokoro_resize.py` and `scripts/patch_kokoro_v2.py`
   - authored `scripts/test_kokoro_ov_direct.py`, `scripts/tts_harness.py`, and the base `scripts/kokoro_server.py`
+  - designed and iterated pad-tail trim through v1.1.5 (falsifiable predictions; terminal-gate removal)
+  - Open WebUI Response Splitting diagnosis path and server wiring docstring guidance
 
 ### Grok (xAI)
 
@@ -29,6 +31,9 @@ GitHub’s automatic **Contributors** graph only lists GitHub user accounts that
   - reconciled GPU quality metrics against human listening
   - wired Open WebUI and patched blend-voice / client compatibility in the server
   - validated the experimental OV-GPU demo path end to end
+  - measured trim saga end-to-end (`notes/10`–`15`, probes, ear-attached verdicts); closed v1.1.5
+  - confirmed WebUI skip root cause (Punctuation × RTF≫1) via server logs + user A/B
+  - authored repo status summary `notes/17-repo-status-summary.md` and Grok `notes/16-project-status.md`
 
 ## How credit is represented in this repo
 
@@ -41,3 +46,9 @@ GitHub’s automatic **Contributors** graph only lists GitHub user accounts that
 | GitHub Contributors graph | only GitHub accounts with commits/PRs; not a complete research credit list |
 
 If you fork or extend this work, please keep the Fable/Grok write-ups and this file so the provenance stays honest.
+
+## Status rollups
+
+- Short repo summary: [notes/17-repo-status-summary.md](notes/17-repo-status-summary.md)
+- Full status (Grok): [notes/16-project-status.md](notes/16-project-status.md)
+- Full status (Fable): [notes/16-project-status-fable.md](notes/16-project-status-fable.md)

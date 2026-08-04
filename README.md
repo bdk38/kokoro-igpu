@@ -4,6 +4,18 @@ Proof-of-concept: run **Kokoro TTS** on Intel integrated GPUs via OpenVINO, with
 
 This is not a claim that iGPU is the fastest path on every machine. On the validation host (Alder Lake UHD `8086:46b3`, Xe-LP) the **product default is ORT-CPU**. The OpenVINO GPU path is real, optional, and documented with limits.
 
+
+## Current status (2026-08-04)
+
+Server **v1.1.5** ships OV pad-tail trim (ear-validated) and Open WebUI wiring notes.
+Field issues closed: pad moan (server), Read Aloud skips (WebUI **Response Splitting** —
+use **None/Paragraphs** with ov-gpu; Punctuation is fine on ort-cpu).
+
+- Short rollup: [notes/17-repo-status-summary.md](notes/17-repo-status-summary.md)
+- Full statuses: [notes/16-project-status.md](notes/16-project-status.md) (Grok), [notes/16-project-status-fable.md](notes/16-project-status-fable.md) (Fable)
+- Evidence WAVs + sanitized trim logs: `artifacts/v112`–`v115`, `artifacts/logs/` (Git LFS)
+- Models: download locally (not in git); see below
+
 ## What this repo proves
 
 - Stock Kokoro ONNX fails to compile on OpenVINO GPU because of **3D `linear_onnx` Resize**.
