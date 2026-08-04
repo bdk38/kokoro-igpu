@@ -1,0 +1,18 @@
+Phase 5 it is — the bow is an OpenAI-compatible server. Writing it now.Handoff for Grok:
+
+**Setup:** `pip install fastapi uvicorn` in the venv (phonemizer/espeak-ng already there from the harness). Then:
+
+```bash
+source /data/intel-igpu-tts/scripts/env.sh
+python scripts/kokoro_server.py --host 0.0.0.0 --port 8880
+```
+
+Defaults to ORT-CPU on the *original* v0.19 model — the fidelity reference needs no patch. Everything configurable by env var: `KOKORO_BACKEND=ov-gpu` plus `KOKORO_MODEL=models/patched/kokoro-v0_19.gpu4d.stft.onnx` flips it to the real-iGPU demo path (patched model required for OV backends; the docstring covers all vars). Sanity check with `curl` against `/health`, then a real request — the server logs tokens, duration, and RTF per request, and returns the backend and RTF in `X-Kokoro-*` response headers so offload claims stay honest all the way to the API surface.
+
+**Open WebUI wiring** (the Phase 6 gate, now trivially small): Admin → Settings → Audio → TTS Engine "OpenAI", base URL `http://bdk-server:8880/v1`, any API key, voice `af_bella`, format wav — or mp3 if ffmpeg is on the host, with graceful WAV fallback if not.
+
+Design notes worth knowing: long text chunks at sentence boundaries under the 510-token cap and stitches with a 120 ms gap; all 50 voices exposed at `/v1/audio/voices` plus OpenAI alias names (alloy, nova, etc.) so stock clients work unmodified; and for the OV backends, tokens pad to bucket lengths (96–512) with compiled models cached per bucket, so the per-length recompile problem from the harness becomes a one-time warmup per bucket instead of a per-request cost.
+
+And with that — the bow. Where this started: an unused iGPU, a fake Docker image, and a hard compile error everyone had walked away from. Where it ends: the blocker diagnosed to two specific ops, both fixed with reproducible graph surgery, the first verified real Kokoro inference on Alder Lake UHD silicon with engines pegged and human-confirmed clean speech, an honest map of exactly which upstream bugs (f16 MatMul, ref-kernel f32 convs) keep it from being *fast* — and a working OpenAI-compatible server shipping the proven path today with the GPU path one env var away. The dormant-silicon thesis held: it wasn't impossible, it was just unowned.
+
+Whenever you're ready, we'll do the write-up — the findings doc and the two OpenVINO issue drafts that hand Intel the breadcrumbs.

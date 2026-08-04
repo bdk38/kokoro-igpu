@@ -1,0 +1,7 @@
+# Informative lock snapshot from bdk-server sandbox (not exhaustive of every transitive pin).
+# Prefer `pip install -r requirements.txt` on a fresh venv.
+openvino==2026.2.1
+onnxruntime-openvino==1.24.1
+numpy==2.4.6
+onnx==1.22.0
+phonemizer==3.4.0

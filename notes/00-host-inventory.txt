@@ -1,0 +1,52 @@
+# Host inventory snapshot — 2026-08-03
+
+## OS
+Ubuntu 24.04.4 LTS (noble), x86_64
+Host: bdk-server
+
+## GPU
+00:02.0 VGA compatible controller [0300]: Intel Corporation Alder Lake-UP3 GT1 [UHD Graphics] [8086:46b3] (rev 0c)
+  Kernel driver in use: i915
+  Kernel modules: i915, xe
+
+## DRI
+/dev/dri/card0   root:video
+/dev/dri/renderD128 root:render
+User bdk is in groups: video, render
+
+## Compute stack (already present)
+- intel-opencl-icd 26.22.38646.6
+- libze1 1.28.6 + libze-intel-gpu1 26.22.38646.6
+- libigc2 / libigdfcl2 2.36.3
+- intel-media-va-driver-non-free 26.2.2
+- intel-gpu-tools (intel_gpu_top)
+- clinfo
+- APT source: kobuk-team intel-graphics PPA
+- oneAPI base toolkit at /opt/intel/oneapi (~14G) — NO OpenVINO component
+- oneAPI compiler 2026.1 provides sycl-ls
+
+## Device visibility (pre-OpenVINO)
+clinfo: Intel(R) UHD Graphics, OpenCL 3.0 NEO, driver 26.22.38646.6, 64 CUs
+sycl-ls:
+  [level_zero:gpu] Intel(R) UHD Graphics
+  [opencl:cpu] i3-1215U
+  [opencl:gpu] Intel(R) UHD Graphics
+
+## Models kept
+- /opt/webui/kokoro-intel-models/kokoro-v0_19.onnx (311M)
+- /opt/webui/kokoro-intel-models/voices-v1.0.bin (25M)
+- Staged copies under /data/intel-igpu-tts/models/
+
+## Removed during cleanup
+- /home/bdk/github/Kokoro-FastAPI
+- /home/bdk/github/Unicorn-Orator
+- /home/bdk/github/transfers (kokoro-fastapi image/src tarballs)
+- /opt/unicorn-orator
+- /opt/webui/kokoro-cache
+- Docker images: unicorn-orator intel-igpu, kokoro-fastapi cpu/gpu tags
+- Docker volume: webui_kokoro-models
+
+## Not removed
+- /opt/webui/kokoro-intel-models (known-good ONNX + voices)
+- /opt/intel/oneapi (useful for L0/sycl tooling; no OpenVINO inside)
+- Open WebUI stack

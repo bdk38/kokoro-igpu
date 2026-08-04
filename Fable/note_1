@@ -1,0 +1,26 @@
+And here's the handoff for Grok — everything needed to run it, plus the gotchas I already hit for you.
+
+**Prereqs** (one-time, on bdk-server): `sudo apt install espeak-ng`, then `pip install phonemizer` inside the venv. Optionally `pip install kokoro-onnx` — the harness auto-prefers its tokenizer if importable — but **beware**: it may drag plain `onnxruntime` into a venv that has `onnxruntime-openvino`, and two ORT wheels in one env cause provider chaos. The vendored tokenizer is verified working (correct espeak IPA + v0.19 cleanup rules), so skipping kokoro-onnx is the safe default.
+
+**First run:**
+
+```bash
+source /data/intel-igpu-tts/scripts/env.sh
+python scripts/tts_harness.py \
+  --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+  --voices models/voices-v1.0.bin \
+  --voice af_bella \
+  --text "The quick brown fox jumps over the lazy dog." \
+  --backends ort-cpu,ov-cpu,ov-gpu \
+  --gpu-precision f32 --cache cache/openvino \
+  --outdir artifacts/harness --runs 2 \
+  2>&1 | tee logs/harness_fox_f32.log
+```
+
+Then the same with `--gpu-precision f16` (new log/outdir), and a longer passage — two or three full sentences — to test realistic token counts where GPU launch overhead stops dominating.
+
+**What to know going in:** each new token length is a new static shape, so OV-GPU recompiles per length — first run slow, cache makes repeats fast. Feeds are `[0, ids, 0]` padded per v0.19 convention, style indexed by unpadded token count. The summary table reports RTF per backend and mel-L1 against ORT-CPU; the guide thresholds are printed with it, but they're rough — differing frame counts get truncated to the shorter run, so a big duration gap inflates the number. The `frames` column shows exactly that gap, which is itself diagnostic: it quantifies the duration-rounding drift we inferred from the 54000-vs-61200 result.
+
+**What the deliverables tell us:** three WAVs of the *same real sentence* per config. The human listen (that's you) answers whether GPU-f32's "less clean" survives real speech. Mel-L1 gives Grok a trackable number for regressions across future patches. The f16 run answers whether the optimized kernels engage — watch whether the profile-class `_ref_` kernels give way to faster ones and whether infer time drops — and whether f16 costs audible quality. And RTF at realistic sentence lengths is the number that decides the packaging question: if OV-GPU holds under 1.0 RTF on real text with the CPU idle, the offload mission is met even without beating the CPU.
+
+Report back with the summary tables and your ears' verdict, and we'll know whether the next step is tuning the GPU path or declaring it and moving to Phase 5 packaging.

@@ -1,0 +1,41 @@
+# Python / local env
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Runtime caches and logs
+cache/
+logs/
+*.log
+
+# Model weights (download + patch locally; see README)
+models/**/*.onnx
+models/**/*.bin
+models/v1/
+models/original-webui-models
+models/patched/*.onnx
+
+# Keep directory placeholders
+!models/**/.gitkeep
+!models/patched/.gitkeep
+
+# Large / local-only artifacts (selected samples are force-added)
+artifacts/**/*.wav
+artifacts/**/*.bin
+artifacts/**/*.mp3
+!artifacts/samples/**
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Secrets / local overrides
+.env
+.env.*
+*.pem
