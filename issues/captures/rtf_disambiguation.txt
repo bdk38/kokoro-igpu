@@ -1,0 +1,20 @@
+# Steady-state = mean of timed runs AFTER 1 discarded warmup (test_kokoro_ov_direct.py)
+# Cold = that first warmup infer (lazy GPU kernel setup for the shape)
+# Random-token feeds; audio length is model-determined (samples/24000).
+
+tokens  cold_s  steady_s  audio_s  RTF_cold  RTF_steady  ms/tok_steady
+    32   9.382     1.371     2.25      4.17        0.609         42.8
+    53  16.728     1.917     3.08      5.44        0.624         36.2
+   250  52.969     7.539    12.58      4.21        0.600         30.2
+
+# OV-CPU control, same script, tokens=53, warmup discarded:
+#   steady mean=1.355s  samples=83400 audio=3.48s  RTF_steady=0.390
+# (token content is random so audio length differs from GPU row; RTF is the fair metric)
+
+# Same-day fox harness (real text, 55 tok ids) WITHOUT warmup discard — inflates GPU:
+#   --runs 2: ov-gpu mean_infer=9.108s RTF=2.335  (approx (cold+steady)/2)
+#   --runs 4: ov-gpu mean_infer=5.700s RTF=1.462  (approx (cold+3*steady)/4)
+#   ort-cpu runs4 mean RTF=0.445; ov-cpu runs4 mean RTF=0.407
+# Conclusion: headline RTF>1 in early notes mixed cold-start into the mean.
+# Steady-state GPU is sub-realtime (~0.60) but still ~1.5x slower than ORT-CPU (~0.40).
+

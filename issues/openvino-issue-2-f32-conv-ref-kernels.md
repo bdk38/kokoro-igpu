@@ -1,12 +1,11 @@
-# [Performance][GPU] Kokoro-82M f32 convolutions fall back to `convolution_gpu_ref__f32` on Xe-LP (RTF > 1); plus reproducible f32 GPU fidelity delta vs CPU
+# [Performance][GPU] Kokoro-82M f32 path dominated by `convolution_gpu_ref__f32` on Xe-LP; first-infer cold-start multi-second; small f32 fidelity delta vs CPU
 
 <!--
 DRAFT for github.com/openvinotoolkit/openvino/issues — review before filing.
-Filled from bdk-server captures 2026-08-04. Review before filing.
-File issue 1 (f16) first, then put its URL in the companion-link line.
+Filled from bdk-server captures 2026-08-04; RTF claims corrected after
+warmup/steady-state disambiguation (Fable note_11).
 Suggested labels: performance, category: GPU
-This is the companion to the f16 MatMul bug report — cross-link both after
-filing, since fixing f16 is one valid resolution to this performance issue.
+Companion to the f16 MatMul bug — file that first, paste URL below, then file this.
 -->
 
 ### OpenVINO Version
@@ -27,58 +26,67 @@ ONNX (opset 17 export of Kokoro-82M v0.19)
 
 ### Model used
 
-Kokoro-82M v0.19 ONNX, patched to be GPU-compilable (3D→4D linear Resize
+Kokoro-82M v0.19 ONNX, patched to be GPU-compilable (3D->4D linear Resize
 rewrite + STFT output rank annotation; reproducible patch scripts at
-https://github.com/bdk38/kokoro-igpu, numerically verified against ORT-CPU). To our
-knowledge this is the first verified real Kokoro inference on this iGPU
-class: `EXECUTION_DEVICES=['GPU.0']`, all-GPU kernels in per-op profiling,
-95–99% engine busy in `intel_gpu_top`, human-verified natural speech.
+https://github.com/bdk38/kokoro-igpu, numerically verified against ORT-CPU). Whole-graph GPU execution
+is real: `EXECUTION_DEVICES=['GPU.0']`, GPU kernels in per-op profiling,
+~90–100% RCS busy in `intel_gpu_top`, human-verified natural speech.
 
 ### Issue description
 
-Two related observations on the working f32 GPU path. Both are honest
-"it runs, but" findings — the model is correct on GPU, just not usable
-in production yet.
+Three related observations on the **working f32 GPU path**. The model is
+correct on GPU; these are throughput / cold-start / fidelity findings.
 
-**1. Performance: reference conv kernels dominate.** Per-op profiling
-(`PERF_COUNT`) shows the decoder/vocoder convolutions executing as
-`convolution_gpu_ref__f32` — the generic reference kernels — rather than
-any optimized path. Measured results on real phonemized text (identical
-tokens across backends):
+**1. Performance: reference conv kernels dominate steady-state time.**
+Per-op profiling (`PERF_COUNT`) shows decoder/vocoder convolutions
+executing as `convolution_gpu_ref__f32` rather than an optimized path.
+That matches the f16-first kernel story: f16 is currently unusable on this
+graph due to a MatMul validation bug (companion f16 MatMul issue — paste
+URL after filing).
 
-| Backend | RTF (infer_s / audio_s) |
-|---|---|
-| ORT CPUExecutionProvider (same host CPU) | ~0.40–0.45 |
-| OpenVINO CPU plugin, f32 | ~0.39–0.42 |
-| **OpenVINO GPU plugin, f32** | **~2.4–2.9** |
+**Steady-state vs cold-start (important methodology note).**
+`scripts/test_kokoro_ov_direct.py` discards 1 warmup infer, then averages
+timed runs. `scripts/tts_harness.py` averages **all** runs including the
+first, so a 2-run harness mean is roughly `(cold + steady) / 2` and can
+report RTF > 1 even when steady-state is sub-realtime. Numbers below use
+the direct-test protocol unless noted.
 
-Longer inputs do not close the gap (verified up to several hundred
-tokens), so this is kernel throughput, not launch overhead. The graph is
-dominated by 1D convolutions (as 4D tensors with a singleton spatial dim
-after our resize rewrite, plus the model's own conv stack), dilated convs,
-and weight-norm patterns. It appears no optimized f32 path matches these
-shapes on Xe-LP; the optimized conv kernels seem to be f16-first, and f16
-is currently unusable on this graph due to a MatMul validation bug
-(companion f16 MatMul issue (file issue 1 first; paste URL here after filing)).
+| Backend / case | Protocol | RTF |
+|---|---|---|
+| ORT CPU (fox harness, runs=4 mean) | includes all runs | ~0.45 |
+| OV CPU f32 (direct, n=53, warmup discarded) | steady | ~0.39 |
+| **OV GPU f32 steady** (direct, n=32/53/250) | warmup discarded | **~0.60–0.62** |
+| OV GPU f32 **cold** first infer after compile | warmup only | **~4.2–5.4** |
+| OV GPU fox harness runs=2 mean (no warmup discard) | mixed | 2.34 (inflated) |
+| OV GPU fox harness runs=4 mean (no warmup discard) | mixed | 1.46 (still inflated) |
 
-Request: either an optimized f32 1D-conv/NCHW-with-H=1 path for Xe-LP, or
-(preferably) the f16 fix that would make the intended fast path reachable.
+So: **steady-state GPU is faster than realtime (~0.60 RTF)** but still
+about **1.5x slower than ORT-CPU (~0.40)** on this host. The large
+RTF >> 1 numbers in interactive use are dominated by **first-infer
+cold-start** (and new shape/bucket compiles), not by steady kernel
+throughput alone. Longer shapes do not make steady RTF worse (slightly
+better ms/token at n=250). Request: optimized f32 1D-conv / NCHW-H=1 path
+on Xe-LP, and/or the f16 fix that unlocks the intended fast kernels;
+also any reduction of first-infer setup cost would help TTS servers.
 
 **2. Fidelity: small but reproducible f32 GPU output delta vs CPU.** On
-identical feeds, GPU-f32 output vs CPU reference shows:
+identical feeds, GPU-f32 vs CPU shows:
 
-- ~2 dB lower output level with mild spectral softening (audibly "quieter
-  and faintly muffled"; confirmed both by listening and by time-stretch-
-  aligned spectral comparison)
+- ~2 dB lower output level with mild spectral softening (audibly quieter
+  and faintly muffled; confirmed by listening)
 - ~3% output duration drift (integer frame-count differences from the
-  duration predictor — f32 rounding boundaries flip on GPU kernels)
+  duration predictor — e.g. harness frames 362 vs 350 on fox)
 - No NaN/Inf; output is fully finite and intelligible
 
-The duration drift is understandable numeric behavior for a
-round-to-integer duration model, but the consistent level/spectral delta
-at f32 (where results are usually expected to track CPU closely) may
-point at accumulation-precision differences in the reference conv kernels
-and could be a useful correctness canary alongside the perf work.
+**mel_L1 caveat:** harness `mel_L1` on fox was **1.61** with
+`frames 362vs350`. That metric is **unaligned** (truncated to shorter
+length only — see harness docstring). It is **not** a claim of large
+spectral error independent of the duration drift. The fidelity claim we
+stand behind is the listen result plus ~2 dB / mild softening after
+accounting for drift — not the raw unaligned mel_L1 number.
+
+**3. Offload is real.** Profiling and `intel_gpu_top` show the work is on
+the iGPU (not a CPU fallback labeled as GPU).
 
 ### Step-by-step reproduction
 
@@ -88,41 +96,51 @@ Prereqs: Python 3.12 venv with `openvino==2026.2.1`, `onnx`, `numpy`
 
 1. Produce the patched, GPU-compilable model:
 
-   ```bash
-   python scripts/patch_kokoro_resize.py \
-       --in models/kokoro-v0_19.onnx \
-       --out models/patched/kokoro-v0_19.gpu4d.onnx
-   python scripts/patch_kokoro_v2.py \
-       --in models/patched/kokoro-v0_19.gpu4d.onnx \
-       --out models/patched/kokoro-v0_19.gpu4d.stft.onnx
-   ```
+```bash
+python scripts/patch_kokoro_resize.py \
+    --in models/kokoro-v0_19.onnx \
+    --out models/patched/kokoro-v0_19.gpu4d.onnx
+python scripts/patch_kokoro_v2.py \
+    --in models/patched/kokoro-v0_19.gpu4d.onnx \
+    --out models/patched/kokoro-v0_19.gpu4d.stft.onnx
+```
 
-2. GPU f32 run with profiling and CPU comparison:
+2. GPU f32 with profiling (ref-conv evidence) + steady timing:
 
-   ```bash
-   python scripts/test_kokoro_ov_direct.py \
-       --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
-       --voices models/voices-v1.0.bin \
-       --device GPU --precision f32 --static --profile \
-       --compare-ort --runs 3
-   ```
+```bash
+python scripts/test_kokoro_ov_direct.py \
+    --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+    --voices models/voices-v1.0.bin \
+    --device GPU --precision f32 --static --profile \
+    --warmup 1 --runs 3
+```
 
-   The `--profile` output lists per-op `exec_type`; the conv entries show
-   `convolution_gpu_ref__f32`.
+3. Steady-state vs length (warmup discarded):
 
-3. Real-text RTF comparison across backends on identical tokens:
+```bash
+for N in 32 53 250; do
+  python scripts/test_kokoro_ov_direct.py \
+    --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+    --voices models/voices-v1.0.bin \
+    --device GPU --precision f32 --static --tokens $N \
+    --warmup 1 --runs 3
+done
+```
 
-   ```bash
-   python scripts/tts_harness.py \
-       --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
-       --voices models/voices-v1.0.bin \
-       --text "The quick brown fox jumps over the lazy dog." \
-       --backends ort-cpu,ov-cpu,ov-gpu --gpu-precision f32
-   ```
+4. Optional: harness on real text (note: means include cold first run
+   unless you discard run 0 externally):
+
+```bash
+python scripts/tts_harness.py \
+    --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+    --voices models/voices-v1.0.bin \
+    --text "The quick brown fox jumps over the lazy dog." \
+    --backends ort-cpu,ov-cpu,ov-gpu --gpu-precision f32 --runs 4
+```
 
 ### Relevant log output
 
-Profiling excerpt (top ops by real time):
+Profiling excerpt (top ops by real time — all `convolution_gpu_ref__f32`):
 
 ```
 [ov] version: 2026.2.1-21919-ede283a88e3-releases/2026/2
@@ -133,6 +151,7 @@ Profiling excerpt (top ops by real time):
 [compile] device=GPU config={'PERFORMANCE_HINT': 'LATENCY', 'INFERENCE_PRECISION_HINT': 'f32', 'PERF_COUNT': 'YES'}
 [compile] OK in 2.22s
 [compile] execution devices: ['GPU.0']
+[warmup 0] 9.264s
 === INFER WINDOW START (watch intel_gpu_top now) ===
 [run 0] 1.464s
 [run 1] 1.448s
@@ -166,30 +185,31 @@ Profiling excerpt (top ops by real time):
        40.985 ms  Convolution          convolution_gpu_ref__f32 /decoder/decoder/generator/resblocks.0/convs2.0/Conv/Without
 ```
 
-Harness summary table (RTF + mel-L1 per backend):
+Steady-state / cold-start RTF table (direct test, 2026-08-04):
 
 ```
-[tokenizer] using phonemizer/espeak-ng (vendored cleanup)
-[tokenizer] phonemes (53 tokens): ðə kwˈɪk bɹˈaʊn fˈɑːks dʒˈʌmps ˌoʊvɚ ðə lˈeɪzi dˈɑːɡ.
-[feeds] tokens=(1, 55) voice=af_bella
------ backend: ort-cpu -----
-[ort-cpu] samples=90600 dur=3.77s mean_infer=1.525s RTF=0.404 -> artifacts/harness/ort_cpu.wav
------ backend: ov-cpu -----
-[ov-cpu] execution devices: ['CPU']
-[ov-cpu] samples=90600 dur=3.77s mean_infer=1.595s RTF=0.422 -> artifacts/harness/ov_cpu.wav
------ backend: ov-gpu -----
-[ov-gpu] execution devices: ['GPU.0']
-[ov-gpu] samples=93600 dur=3.90s mean_infer=9.108s RTF=2.335 -> artifacts/harness/ov_gpu.wav
-===== SUMMARY (reference: ort-cpu) =====
-text: 'The quick brown fox jumps over the lazy dog.'
-backend     infer_s  audio_s    RTF   mel_L1       frames
-ort-cpu       1.525     3.77  0.404      ref            -
-ov-cpu        1.595     3.77  0.422   0.2604     350vs350
-ov-gpu        9.108     3.90  2.335   1.6131     362vs350
-mel_L1 guide: <0.05 near-identical | 0.05-0.15 audible-but-same-speech | >0.3 investigate. Rough metric — ears are the gate.
+# Steady-state = mean of timed runs AFTER 1 discarded warmup (test_kokoro_ov_direct.py)
+# Cold = that first warmup infer (lazy GPU kernel setup for the shape)
+# Random-token feeds; audio length is model-determined (samples/24000).
+
+tokens  cold_s  steady_s  audio_s  RTF_cold  RTF_steady  ms/tok_steady
+    32   9.382     1.371     2.25      4.17        0.609         42.8
+    53  16.728     1.917     3.08      5.44        0.624         36.2
+   250  52.969     7.539    12.58      4.21        0.600         30.2
+
+# OV-CPU control, same script, tokens=53, warmup discarded:
+#   steady mean=1.355s  samples=83400 audio=3.48s  RTF_steady=0.390
+# (token content is random so audio length differs from GPU row; RTF is the fair metric)
+
+# Same-day fox harness (real text, 55 tok ids) WITHOUT warmup discard — inflates GPU:
+#   --runs 2: ov-gpu mean_infer=9.108s RTF=2.335  (approx (cold+steady)/2)
+#   --runs 4: ov-gpu mean_infer=5.700s RTF=1.462  (approx (cold+3*steady)/4)
+#   ort-cpu runs4 mean RTF=0.445; ov-cpu runs4 mean RTF=0.407
+# Conclusion: headline RTF>1 in early notes mixed cold-start into the mean.
+# Steady-state GPU is sub-realtime (~0.60) but still ~1.5x slower than ORT-CPU (~0.40).
 ```
 
-`intel_gpu_top` during the GPU infer window (offload evidence):
+`intel_gpu_top` during a GPU infer window (offload evidence):
 
 ```
  Freq MHz      IRQ RC6     Power W             RCS             BCS             VCS            VECS 
@@ -208,30 +228,31 @@ mel_L1 guide: <0.05 near-identical | 0.05-0.15 audible-but-same-speech | >0.3 in
 1099 1039      504   0  6.12 14.62   90.40   0   0    0.00   0   0    0.00   0   0    0.00   0   0 
 1099  947       53   0  5.90 14.65   79.75   0   0    0.00   0   0    0.00   0   0    0.00   0   0 
 ...
-# During GPU infer window: RCS (Render/3D) ~90-100% busy, freq ~1040-1100 MHz, gpu power ~5.8-6.8 W
+# RCS (Render/3D) ~90-100% busy during infer, freq ~1040-1100 MHz, gpu power ~5.8-6.8 W
 ```
 
 ### Environment details
 
 - CPU: Intel i3-1215U (Alder Lake, 2P+4E, ~15 W package)
 - GPU: Intel UHD Graphics 8086:46b3 rev 0c (Xe-LP GT1, 64 EU), i915;
-  observed ~1060–1100 MHz (max clock) at 6–8 W during inference — the
-  bottleneck is kernel efficiency, not frequency
+  observed ~1040–1100 MHz at ~6–8 W GPU power during inference
 - intel-opencl-icd 26.22.38646.6 (OpenCL 3.0 NEO), libze-intel-gpu1 26.22.38646.6, IGC 2.36.3
 - Kernel: 7.0.0-28-generic
 - Python 3.12, numpy 2.4.6
+- Project / repro: https://github.com/bdk38/kokoro-igpu
+- Raw captures: `https://github.com/bdk38/kokoro-igpu/tree/main/issues/captures`
 
 ### Additional context
 
-- Motivation: Kokoro-class TTS on the idle iGPU of small headless servers
-  (NUC-class Alder Lake N/U machines) is a real CPU-offload use case. The
-  math currently works out to "correct but 6× slower than the same host's
-  CPU," entirely attributable to reference kernels.
+- Motivation: Kokoro-class TTS on the idle iGPU of small headless
+  servers (NUC-class Alder Lake N/U) is a real CPU-offload use case.
+  Steady-state already beats realtime; closing the remaining ~1.5x gap
+  vs host CPU (and especially first-infer latency) would make the path
+  production-interesting.
 - Kokoro was named in the OpenVINO 2025.2 release notes (ISTFT GPU
-  support), so the model family appears to be tracked already; this
-  report covers the remaining gaps after the ISTFT work.
-- We can provide the patched model file, WAV pairs demonstrating the
-  fidelity delta, and any additional profiling dumps on request.
+  support); this report covers remaining gaps after that work.
+- We can provide the patched model file, WAV pairs for the fidelity
+  delta, and additional profiling dumps on request.
 
 ### Issue submission checklist
 

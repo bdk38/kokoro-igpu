@@ -1,0 +1,26 @@
+[tokenizer] using phonemizer/espeak-ng (vendored cleanup)
+[tokenizer] phonemes (53 tokens): ðə kwˈɪk bɹˈaʊn fˈɑːks dʒˈʌmps ˌoʊvɚ ðə lˈeɪzi dˈɑːɡ.
+[feeds] tokens=(1, 55) voice=af_bella
+
+----- backend: ort-cpu -----
+[ort-cpu] session in 0.86s
+[ort-cpu] samples=90600 dur=3.77s mean_infer=1.680s RTF=0.445 -> artifacts/harness/ort_cpu.wav
+
+----- backend: ov-cpu -----
+[ov-cpu] compile in 1.33s (precision=f32, static n=55)
+[ov-cpu] execution devices: ['CPU']
+[ov-cpu] samples=90600 dur=3.77s mean_infer=1.535s RTF=0.407 -> artifacts/harness/ov_cpu.wav
+
+----- backend: ov-gpu -----
+[ov-gpu] compile in 2.55s (precision=f32, static n=55)
+[ov-gpu] execution devices: ['GPU.0']
+[ov-gpu] samples=93600 dur=3.90s mean_infer=5.700s RTF=1.462 -> artifacts/harness/ov_gpu.wav
+
+===== SUMMARY (reference: ort-cpu) =====
+text: 'The quick brown fox jumps over the lazy dog.'
+backend     infer_s  audio_s    RTF   mel_L1       frames
+ort-cpu       1.680     3.77  0.445      ref            -
+ov-cpu        1.535     3.77  0.407   0.2604     350vs350
+ov-gpu        5.700     3.90  1.462   1.6131     362vs350
+
+mel_L1 guide: <0.05 near-identical | 0.05-0.15 audible-but-same-speech | >0.3 investigate. Rough metric — ears are the gate.

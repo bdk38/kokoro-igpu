@@ -1,0 +1,19 @@
+[ov] version: 2026.2.1-21919-ede283a88e3-releases/2026/2
+[ov] devices: ['CPU', 'GPU']
+[feeds] tokens=(1, 250) style=(1, 256) speed=[1.]
+[model] read in 0.32s; inputs:
+        tokens: [1,?] <Type: 'int64_t'>
+        style: [1,256] <Type: 'float32'>
+        speed: [1] <Type: 'float32'>
+[model] reshaping to static: {'tokens': '[1,250]', 'style': '[1,256]', 'speed': '[1]'}
+[compile] device=GPU config={'PERFORMANCE_HINT': 'LATENCY', 'INFERENCE_PRECISION_HINT': 'f32'}
+[compile] OK in 7.43s
+[compile] execution devices: ['GPU.0']
+[warmup 0] 52.969s
+=== INFER WINDOW START (watch intel_gpu_top now) ===
+[run 0] 7.584s
+[run 1] 7.561s
+[run 2] 7.471s
+=== INFER WINDOW END ===
+[timing] mean=7.539s over 3 runs
+[OV GPU f32] shape=(301800,) nan=0 inf=0 min=-3.0771 max=3.3956 std=0.0794

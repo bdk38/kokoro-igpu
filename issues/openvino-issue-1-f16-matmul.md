@@ -2,7 +2,7 @@
 
 <!--
 DRAFT for github.com/openvinotoolkit/openvino/issues — review before filing.
-Filled from bdk-server captures 2026-08-04. Review before filing.
+Filled from bdk-server captures 2026-08-04 (RTF story corrected same day).
 Suggested labels: bug, category: GPU
 -->
 
@@ -46,38 +46,44 @@ MatMul_66245: Incompatible MatMul matrix dimension
 The same graph, same feeds, same device, with only the precision hint
 changed to `f32`, compiles and infers correctly: finite output, valid
 speech confirmed by listening, `EXECUTION_DEVICES=['GPU.0']`, all-GPU
-kernels in per-op profiling, ~95–99% Render/3D engine busy in
-`intel_gpu_top` for the full inference window.
+kernels in per-op profiling, ~90–100% Render/3D engine busy in
+`intel_gpu_top` for the inference window.
 
 Because the graph is precision-agnostic at the ONNX level and executes
 correctly at f32, this looks like a bug in the GPU plugin's f16 conversion /
 shape handling for this MatMul pattern rather than a model problem.
 
-**Why it matters:** on Xe-LP the optimized convolution kernels are
-f16-first. With f16 broken, the graph falls back to
-`convolution_gpu_ref__f32` reference kernels and runs at RTF ≈ 2.4–2.9
-(slower than realtime) — see companion performance issue [link after
-filing]. Fixing f16 is the gate to usable Kokoro TTS performance on
-integrated GPUs. Note that Kokoro was explicitly named in the OpenVINO
-2025.2 release notes (ISTFT GPU support expansion), so this model appears
-to be on the supported-models radar already.
+**Why it matters:** on Xe-LP the optimized convolution kernels appear to be
+f16-first. With f16 broken, the working path is f32 and the decoder/vocoder
+convolutions execute as `convolution_gpu_ref__f32` (see companion
+performance issue — file this bug first, then cross-link). Steady-state f32
+GPU throughput is usable but still ~1.5x slower than ORT-CPU on the same
+host; first-infer cold-start after compile is multi-second. Fixing f16 is
+the gate to the intended fast path. Note that Kokoro was named in the
+OpenVINO 2025.2 release notes (ISTFT GPU support expansion), so this model
+appears to be on the supported-models radar already.
+
+**Node id note:** the failing friendly name is capture-dependent after graph
+patching. This run shows `MatMul_66245`; earlier sandbox captures showed
+`MatMul_93790`. The error is the same class: COL dim 9 vs ROW dim 1 at
+`matmul_shape_inference.hpp`.
 
 ### Step-by-step reproduction
 
 Prereqs: Python 3.12 venv with `openvino==2026.2.1`, `onnx`, `numpy`;
 public `kokoro-v0_19.onnx` and `voices-v1.0.bin` (NPZ).
 
-1. Patch the stock model (two rewrites; scripts attached / in repo
+1. Patch the stock model (two rewrites; scripts in
    https://github.com/bdk38/kokoro-igpu):
 
-   ```bash
-   python scripts/patch_kokoro_resize.py \
-       --in models/kokoro-v0_19.onnx \
-       --out models/patched/kokoro-v0_19.gpu4d.onnx
-   python scripts/patch_kokoro_v2.py \
-       --in models/patched/kokoro-v0_19.gpu4d.onnx \
-       --out models/patched/kokoro-v0_19.gpu4d.stft.onnx
-   ```
+```bash
+python scripts/patch_kokoro_resize.py \
+    --in models/kokoro-v0_19.onnx \
+    --out models/patched/kokoro-v0_19.gpu4d.onnx
+python scripts/patch_kokoro_v2.py \
+    --in models/patched/kokoro-v0_19.gpu4d.onnx \
+    --out models/patched/kokoro-v0_19.gpu4d.stft.onnx
+```
 
    Patch 1 rewrites two 3D `linear` Resize nodes in the sine-source
    generator to the equivalent 4D form (Unsqueeze/Resize/Squeeze), because
@@ -88,32 +94,34 @@ public `kokoro-v0_19.onnx` and `voices-v1.0.bin` (NPZ).
 
 2. Working control — f32 (PASSES):
 
-   ```bash
-   python scripts/test_kokoro_ov_direct.py \
-       --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
-       --voices models/voices-v1.0.bin \
-       --device GPU --precision f32 --static --runs 2
-   ```
+```bash
+python scripts/test_kokoro_ov_direct.py \
+    --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+    --voices models/voices-v1.0.bin \
+    --device GPU --precision f32 --static --runs 2
+```
 
 3. Failure — f16 (identical except the precision hint):
 
-   ```bash
-   python scripts/test_kokoro_ov_direct.py \
-       --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
-       --voices models/voices-v1.0.bin \
-       --device GPU --precision f16 --static --runs 2
-   ```
+```bash
+python scripts/test_kokoro_ov_direct.py \
+    --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+    --voices models/voices-v1.0.bin \
+    --device GPU --precision f16 --static --runs 2
+```
 
    Compile succeeds; the first `infer_request.infer()` raises the MatMul
    error.
 
    The test script is a thin wrapper around
-   `core.read_model` → `model.reshape` (static `tokens=[1,N]`,
-   `style=[1,256]`, `speed=[1]`) → `core.compile_model(model, "GPU",
-   {"PERFORMANCE_HINT": "LATENCY", "INFERENCE_PRECISION_HINT": <p>})` →
+   `core.read_model` -> `model.reshape` (static `tokens=[1,N]`,
+   `style=[1,256]`, `speed=[1]`) -> `core.compile_model(model, "GPU",
+   {"PERFORMANCE_HINT": "LATENCY", "INFERENCE_PRECISION_HINT": <p>})` ->
    `create_infer_request().infer(feeds)`.
 
 ### Relevant log output
+
+f16 failure (compile OK, infer raises):
 
 ```
 [ov] version: 2026.2.1-21919-ede283a88e3-releases/2026/2
@@ -145,7 +153,7 @@ While validating node 'opset1::MatMul MatMul_66245 () -> ()' with friendly_name 
 Incompatible MatMul matrix dimension. First input dimension=9 at COL_INDEX_DIM=2 doesn't match the second input dimension=1 at ROW_INDEX_DIM=0
 ```
 
-f32 control output for comparison:
+f32 control (compile OK, EXECUTION_DEVICES GPU.0, finite audio):
 
 ```
 [ov] version: 2026.2.1-21919-ede283a88e3-releases/2026/2
@@ -166,6 +174,7 @@ f32 control output for comparison:
 === INFER WINDOW END ===
 [timing] mean=1.381s over 2 runs
 [OV GPU f32] shape=(54000,) nan=0 inf=0 min=-0.4211 max=0.4886 std=0.0518
+# shape=(54000,) => audio=2.25s; steady mean=1.381s => RTF_steady~0.61 (warmup 9.246s excluded from mean)
 ```
 
 ### Environment details
@@ -175,6 +184,7 @@ f32 control output for comparison:
 - intel-opencl-icd 26.22.38646.6 (OpenCL 3.0 NEO), libze-intel-gpu1 26.22.38646.6, IGC 2.36.3
 - Kernel: 7.0.0-28-generic
 - Python 3.12, numpy 2.4.6
+- Project / repro scripts: https://github.com/bdk38/kokoro-igpu
 
 ### Additional context
 
@@ -187,6 +197,7 @@ f32 control output for comparison:
   intermediate IR if that helps localize it.
 - We can share the patched model file directly if that is easier than
   re-running the patch scripts.
+- Raw captures also under `https://github.com/bdk38/kokoro-igpu/tree/main/issues/captures`.
 
 ### Issue submission checklist
 
