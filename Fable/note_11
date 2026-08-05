@@ -1,0 +1,24 @@
+I went through both filled drafts line by line, checked every number against its own pasted evidence, and verified the repo link resolves (it does, HTTP 200). The fill quality is high — sanitized paths, the full traceback with the `matmul_shape_inference.hpp:65` source location (gold for triage), the profile excerpt showing ref-conv dominance exactly as claimed, a clean `intel_gpu_top` window matching the "95–99% RCS at ~1.1 GHz, 6–8 W" prose, and the node-id update from the stale `93790` to the freshly captured `66245` applied consistently. But **I found one blocker, and I'd hold the filing until it's resolved**, because it's the kind of thing an OpenVINO engineer will spot in thirty seconds.
+
+**Blocker: the issues' own logs contradict the headline RTF claim.** Do the division on the pasted evidence. The harness SUMMARY says ov-gpu `9.108 s infer / 3.90 s audio → RTF 2.335`. But the profiling run pasted in the *same issue* shows `mean=1.456 s over 2 runs` for `shape=(54000,)` — that's 2.25 s of audio, i.e. **RTF ≈ 0.65, faster than realtime**. Issue 1's f32 control has the same problem: `mean=1.381 s` for the same 2.25 s output → RTF 0.61. So both filings claim "RTF > 1, slower than realtime" while embedding steady-state logs that show sub-realtime. And there's a telling coincidence: the harness's 9.108 s is almost exactly the direct test's *warmup* time (`[warmup 0] 9.246 s / 9.264 s`) — which strongly suggests the harness is reporting **first-inference time** (lazy kernel setup included) as `infer_s`, while the direct test's `[run]` lines are steady-state. If that's what's happening, the honest steady-state picture may be very different from the filed claim, and "correct but 6× slower than CPU" may not survive contact with the harness's own methodology.
+
+This needs a short disambiguation pass on the box before filing:
+
+```bash
+# 1) Steady-state RTF vs length: does per-token cost hold? ("longer inputs
+#    don't close the gap" is currently asserted on stale measurements)
+for N in 32 53 250; do
+  python scripts/test_kokoro_ov_direct.py --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
+    --voices models/voices-v1.0.bin --device GPU --precision f32 --static --runs 3 \
+    --tokens $N   # or equivalent text of that length
+done
+# 2) Check whether tts_harness times the first infer; if so, add a warmup
+#    (or discard run 0) and regenerate the SUMMARY block.
+# 3) One server curl on fox for comparison (bucket 96): note infer_s.
+```
+
+Whatever comes out, the table, the "~2.4–2.9" prose in both issues, and the "6× slower" line must all match the pasted logs. Worth knowing: there's also an unexplained 4× between the direct test (~1.4 s steady for 32 tokens) and the same-day server (~18.5 s for bucket 96 ≈ 3× the tokens) — I checked the server source and it *does* set `PERFORMANCE_HINT: LATENCY` like the direct test, so that easy explanation is dead. The server numbers aren't cited in the issues, so this doesn't block filing, but experiment 3 above may hand us either a server-side 4× win or a sharper upstream report; either outcome is valuable.
+
+Two smaller fixes while you're in there. First, the harness table includes `mel_L1 1.6131` with the guide line ">0.3 investigate" — but the `frames` column right next to it says `362vs350`, i.e. this is the **unaligned** metric on drifted durations, the exact trap the repo warns about. Either annotate it ("unaligned; the 362-vs-350 frame counts are the ~3% duration drift described below — aligned comparison shows ~2 dB + mild softening") or trim the column; as pasted it reads like evidence of much worse quality than the fidelity section claims. Second, a cosmetic pair: the companion-link line in issue 2 has nested parens ("(companion f16 MatMul issue (file issue 1 first…))") — make sure the whole inner note becomes just the URL at filing time — and issue 1 could use one insurance sentence noting the node id varies between patch runs (earlier captures showed `MatMul_93790`, same 9-vs-1 mismatch), since the linked repo's older notes still use the old id.
+
+Everything else is filing-ready: repro steps match the committed scripts, environment blocks are complete (kernel filled), the f16/f32 A/B is airtight, and the profile + gputop evidence in issue 2 fully backs the offload claims in both. Fix the RTF story and the mel_L1 annotation, and these are strong reports.
