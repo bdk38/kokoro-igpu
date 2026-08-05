@@ -7,7 +7,7 @@ This is not a claim that iGPU is the fastest path on every machine. On the valid
 
 ## Current status (2026-08-04)
 
-Server **v1.1.5** ships OV pad-tail trim (ear-validated) and Open WebUI wiring notes.
+Server **v1.1.6** ships OV pad-tail trim (ear-validated), Open WebUI wiring notes, and optional `KOKORO_WARM_BUCKETS` pre-warm (real-text; zeros do not warm). Warm ov-gpu fox ≈ **0.9 RTF** at bucket 96; cold first shape multi-second.
 Field issues closed: pad moan (server), Read Aloud skips (WebUI **Response Splitting** —
 use **None/Paragraphs** with ov-gpu; Punctuation is fine on ort-cpu).
 

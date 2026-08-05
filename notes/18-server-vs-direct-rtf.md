@@ -41,11 +41,19 @@ C: `test_kokoro_ov_direct.py --tokens 96 --warmup 1 --runs 3`.
 
 ## Interpretation
 
-1. **Historical 18–25 s/request was cold first-infer** (and/or first-request-only timing), not steady-state server throughput.
-2. **Steady server fox ≈ 0.90 RTF** (~2.9 s wall for ~3.2 s audio) with clocks pegged — production-interesting on this UHD class once the shape is warm.
-3. **CACHE_DIR helps compile time** (0.9 s vs 11 s), not steady infer.
-4. Gap vs direct n=53 RTF ~0.62: server **pads to bucket 96** so it pays ~96-token compute for ~55 real tokens; RTF uses trimmed audio length → looks worse than tight-N direct. Still sub-realtime after warmup.
-5. OpenVINO issue drafts stay valid (direct-test cold/steady numbers). Optional follow-ups: bucket warmup at startup, tighter buckets, README “demo-only” softens to “warm steady ~0.9 RTF / cold first shape multi-second”.
+1. **Tonight (2026-08-04 evening) cold-first-infer fully explains multi-second first requests:** only req1 is ~19 s; req2/3 are ~2.9 s. CACHE_DIR and clocks are not the steady-state culprit.
+2. **But do not hard-close history as "always only cold":** the v114 probe log (same process lifetime) shows startup warmup on bucket 96, then *five sequential bucket-96 requests* each at 18.5–24.8 s. If cold-start were the whole story, s1 onward should have been ~3 s. That all-requests-slow behavior is **unexplained and unreproducible tonight** — anomaly on record. Candidates: mid-day venv/driver change (OV version was not logged then — v1.1.6 now prints `openvino=` at startup), competing GPU consumer, or power/scheduling state without gputop. If it recurs in the field, the record should say "we saw this once," not "this cannot happen."
+3. **Steady server fox ≈ 0.90 RTF** (~2.9 s wall) with clocks pegged — production-interesting once warm.
+4. **CACHE_DIR helps compile time** (0.9 s vs 11 s), not steady infer.
+5. Gap vs direct n=53 RTF ~0.62: server **pads to bucket 96** so it pays ~96-token compute for ~55 real tokens; RTF uses trimmed audio length → looks worse than tight-N direct.
+6. OpenVINO issue drafts stay valid (direct-test numbers).
+
+## Follow-up: v1.1.6 `KOKORO_WARM_BUCKETS` (validated)
+
+- Fable shipped startup pre-warm + OV version log.
+- **All-zero pad pre-warm is insufficient:** zeros ~31 s still left first fox at ~18 s RTF.
+- **Real-text `synthesize` pre-warm works:** `pre-warmed bucket~96 via synthesize in 18.6s` then req1/2/3 **2.94 / 2.85 / 2.88 s, RTF 0.91 / 0.89 / 0.89**.
+- Ops: set `KOKORO_WARM_BUCKETS=96,192` (etc.) for serving.
 
 ## Ops takeaway
 

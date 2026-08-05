@@ -24,6 +24,15 @@ Configuration (env vars):
   KOKORO_GPU_PRECISION  f32 | f16                 (default: f32; f16 is
                         broken upstream — MatMul compile bug)
   KOKORO_CACHE      OpenVINO cache dir (default: /data/intel-igpu-tts/cache/openvino)
+  KOKORO_WARM_BUCKETS   comma list of token buckets to pre-warm at startup
+                    on OV backends, e.g. "96,192". First infer per
+                    compiled bucket costs multi-second lazy GPU setup
+                    (measured cold ~4-5x realtime vs warm steady ~0.9 at
+                    bucket 96; notes/18); pre-warming moves that cost to
+                    startup so the first user request per bucket is fast.
+                    Uses real-text synthesize (not all-zero pads — zeros
+                    do not warm the production path). Cache dir shortens
+                    compile, NOT first-infer setup.
   KOKORO_DEFAULT_VOICE  (default: af_bella)
 
 Run:
@@ -114,6 +123,9 @@ GPU_PRECISION = os.environ.get("KOKORO_GPU_PRECISION", "f32")
 CACHE_DIR = os.environ.get(
     "KOKORO_CACHE", "/data/intel-igpu-tts/cache/openvino")
 DEFAULT_VOICE = os.environ.get("KOKORO_DEFAULT_VOICE", "af_bella")
+WARM_BUCKETS = [int(x) for x in
+                os.environ.get("KOKORO_WARM_BUCKETS", "").split(",")
+                if x.strip().isdigit()]
 
 # OpenAI voice aliases -> kokoro voices
 OPENAI_VOICE_MAP = {
@@ -363,6 +375,8 @@ class OvBackend:
         import openvino as ov
         self.ov = ov
         self.core = ov.Core()
+        print(f"[{{}}] openvino={{}}".format(
+            f"ov-{device.lower()}", ov.get_version()), flush=True)
         self.model_path = model_path
         self.device = device
         self.precision = precision
@@ -592,7 +606,7 @@ def build_app():
     from fastapi.responses import Response
     from pydantic import BaseModel
 
-    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.1.5")
+    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.1.6")
     state = {"backend": None}
 
     class SpeechRequest(BaseModel):
@@ -616,6 +630,44 @@ def build_app():
         try:
             synthesize(state["backend"], "Warm up.", DEFAULT_VOICE, 1.0)
             print("[server] warmup OK")
+            # optional bucket pre-warm (OV only): eat the multi-second
+            # first-infer lazy setup per bucket at startup, not on the
+            # first user request of that length (notes/18)
+            be = state["backend"]
+            if WARM_BUCKETS and hasattr(be, "_bucket"):
+                # IMPORTANT: all-zero (pad) tokens do NOT retire the same
+                # lazy GPU setup as real phoneme content. Measured on
+                # Alder Lake UHD: zeros pre-warm ~31s still left the first
+                # fox request at ~18s RTF; real-text synthesize warm makes
+                # first user request ~steady (~0.9 RTF at bucket 96).
+                warm_text = {
+                    96: "The quick brown fox jumps over the lazy dog.",
+                    192: ("The quick brown fox jumps over the lazy dog. "
+                          "Pack my box with five dozen liquor jugs. "),
+                    288: ("The quick brown fox jumps over the lazy dog. "
+                          "Pack my box with five dozen liquor jugs. "
+                          "How vexingly quick daft zebras jump. "),
+                    384: ("The quick brown fox jumps over the lazy dog. "
+                          "Pack my box with five dozen liquor jugs. "
+                          "How vexingly quick daft zebras jump. "
+                          "Sphinx of black quartz, judge my vow. "),
+                    512: ("The quick brown fox jumps over the lazy dog. "
+                          "Pack my box with five dozen liquor jugs. "
+                          "How vexingly quick daft zebras jump. "
+                          "Sphinx of black quartz, judge my vow. "
+                          "The five boxing wizards jump quickly. "),
+                }
+                for b in WARM_BUCKETS:
+                    target = be._bucket(int(b))
+                    text = warm_text.get(
+                        target,
+                        "The quick brown fox jumps over the lazy dog. " * max(
+                            1, target // 40))
+                    t0 = time.time()
+                    synthesize(be, text, DEFAULT_VOICE, 1.0)
+                    print(f"[server] pre-warmed bucket~{target} "
+                          f"via synthesize in {time.time() - t0:.1f}s",
+                          flush=True)
         except Exception as e:
             print(f"[server] warmup failed: {e}")
 
