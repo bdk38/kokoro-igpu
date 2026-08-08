@@ -23,7 +23,17 @@ Configuration (env vars):
   KOKORO_BACKEND    ort-cpu | ov-cpu | ov-gpu     (default: ort-cpu)
   KOKORO_GPU_PRECISION  f32 | f16                 (default: f32; f16 is
                         broken upstream — MatMul compile bug)
-  KOKORO_CACHE      OpenVINO cache dir (default: /data/intel-igpu-tts/cache/openvino)
+  KOKORO_CACHE      OpenVINO compile-cache dir (unchanged semantics)
+                    default: /data/intel-igpu-tts/cache/openvino
+  KOKORO_TTS_CACHE  0|1 — opt-in TTS disk cache (default: 0)
+  KOKORO_TTS_CACHE_DIR  TTS response/chunk store root
+                    default: /data/intel-igpu-tts/cache/tts
+  KOKORO_TTS_CACHE_MAX_MB  lazy LRU-by-mtime size cap (default: 500)
+  KOKORO_TTS_CACHE_TIER  response | chunk | both (default: both)
+                    When KOKORO_TTS_CACHE=1: "response" = C1 full-request
+                    only; "chunk" = C2 per-chunk_text-ids only; "both" =
+                    C1 then C2 on miss. Schema v2 (per-chunk pcm roundtrip).
+                    X-Kokoro-Cache may be hit | partial | miss.
   KOKORO_WARM_BUCKETS   comma list of token buckets to pre-warm at startup
                     on OV backends, e.g. "96,192". Warm state is SHAPE-keyed
                     (output sample count / internal duration lattice), NOT
@@ -33,7 +43,7 @@ Configuration (env vars):
                     warm (notes/18). This only retires cold cost for that
                     pre-warm shape — varied Read Aloud still pays cold on
                     novel shapes. Steady ~0.9 RTF is for REPEATS of a warmed
-                    shape. Cache dir shortens compile, NOT shape warm.
+                    shape. KOKORO_CACHE shortens OV compile, NOT shape warm.
   KOKORO_WARM_TEXT  optional; '|' -separated exact phrases to synthesize at
                     startup (after bucket pre-warm). Use to pin demo/canned
                     sentences so the first user hit of that exact text is warm
@@ -79,7 +89,9 @@ Notes:
 """
 
 import argparse
+import hashlib
 import io
+import json
 import os
 import re
 import shutil
@@ -128,6 +140,18 @@ BACKEND = os.environ.get("KOKORO_BACKEND", "ort-cpu")
 GPU_PRECISION = os.environ.get("KOKORO_GPU_PRECISION", "f32")
 CACHE_DIR = os.environ.get(
     "KOKORO_CACHE", "/data/intel-igpu-tts/cache/openvino")
+# TTS response/chunk cache (C1/C2). Distinct from KOKORO_CACHE (OV compile).
+TTS_CACHE_ON = os.environ.get("KOKORO_TTS_CACHE", "0") == "1"
+TTS_CACHE_DIR = os.environ.get(
+    "KOKORO_TTS_CACHE_DIR", "/data/intel-igpu-tts/cache/tts")
+TTS_CACHE_MAX_MB = float(os.environ.get("KOKORO_TTS_CACHE_MAX_MB", "500"))
+TTS_CACHE_TIER = os.environ.get("KOKORO_TTS_CACHE_TIER", "both").strip().lower()
+# C1 full-request; C2 per chunk_text token-id list (shared store when either on).
+TTS_RESPONSE_CACHE = TTS_CACHE_ON and TTS_CACHE_TIER in ("response", "both")
+TTS_CHUNK_CACHE = TTS_CACHE_ON and TTS_CACHE_TIER in ("chunk", "both")
+# schema_ver 2: always per-chunk int16 pcm roundtrip before concat (C2 assembly).
+TTS_CACHE_SCHEMA_VER = 2
+TTS_SAMPLE_FMT = "24000:s16le:mono"
 DEFAULT_VOICE = os.environ.get("KOKORO_DEFAULT_VOICE", "af_bella")
 WARM_BUCKETS = [int(x) for x in
                 os.environ.get("KOKORO_WARM_BUCKETS", "").split(",")
@@ -572,43 +596,101 @@ def _prewarm_text_for(bucket, lang="en-us"):
     return text or "Warm up"
 
 
-def synthesize(backend, text, voice_spec, speed):
+def synthesize(backend, text, voice_spec, speed, chunk_cache=None):
+    """Synthesize text to float audio.
+
+    Always quantizes each chunk to int16 PCM and dequants back to float before
+    concat (and gap zeros stay float). That path is identical with cache off or
+    on so C2 partial assembly matches cache-off byte-for-byte.
+
+    Returns (audio, total_tokens, label, c2_hits, c2_misses). On unknown voice:
+    (None, 0, None, 0, 0).
+    """
     parsed = parse_voice_spec(voice_spec)
     if not parsed:
-        return None, 0, None
+        return None, 0, None, 0, 0
     parts, label = parsed
     primary = parts[0][0]
     lang = "en-gb" if primary.startswith(("bf_", "bm_")) else "en-us"
     chunks = chunk_text(text, lang)
     if not chunks:
-        return np.zeros(0, dtype=np.float32), 0, label
+        return np.zeros(0, dtype=np.float32), 0, label, 0, 0
     gap = np.zeros(int(SR * CHUNK_GAP_S), dtype=np.float32)
     pieces = []
     total_tokens = 0
+    c2_hits = 0
+    c2_misses = 0
     for ids in chunks:
         total_tokens += len(ids)
-        style = style_for_parts(parts, len(ids))
-        tokens = np.array([[0, *ids, 0]], dtype=np.int64)
-        audio = np.asarray(backend.infer(
-            tokens, style, np.array([speed], dtype=np.float32))).reshape(-1)
-        pieces.append(np.nan_to_num(audio.astype(np.float32)))
+        key = None
+        pcm = None
+        if chunk_cache is not None:
+            text_unit = "c2ids:" + ",".join(str(i) for i in ids)
+            key = chunk_cache.build_key(label, speed, text_unit)
+            pcm = chunk_cache.read_entry(key)
+        if pcm is not None:
+            c2_hits += 1
+        else:
+            style = style_for_parts(parts, len(ids))
+            tokens = np.array([[0, *ids, 0]], dtype=np.int64)
+            audio = np.asarray(backend.infer(
+                tokens, style, np.array([speed], dtype=np.float32))).reshape(-1)
+            audio = np.nan_to_num(audio.astype(np.float32)).reshape(-1)
+            pcm = audio_float_to_pcm_int16_bytes(audio)
+            c2_misses += 1
+            if chunk_cache is not None and key is not None:
+                meta = {
+                    "schema_ver": TTS_CACHE_SCHEMA_VER,
+                    "backend_id": chunk_cache.backend_id,
+                    "model_fp": chunk_cache.model_fp,
+                    "voice": label,
+                    "speed": f"{speed:.6g}",
+                    "sample_fmt": TTS_SAMPLE_FMT,
+                    "tier": "chunk",
+                    "text_unit_prefix": text_unit[:64],
+                    "created_unix": time.time(),
+                    "n_samples": len(pcm) // 2,
+                    "key_hex": key,
+                }
+                try:
+                    chunk_cache.write_entry(key, pcm, meta)
+                except Exception as e:
+                    print(f"[cache] c2 write failed: {e}", flush=True)
+        piece = pcm_int16_bytes_to_float(pcm)
+        pieces.append(piece)
         pieces.append(gap)
     if pieces:
         pieces = pieces[:-1]
     audio = np.concatenate(pieces) if pieces else np.zeros(0, np.float32)
-    return audio, total_tokens, label
+    return audio, total_tokens, label, c2_hits, c2_misses
 
 
-def to_wav_bytes(audio):
+def audio_float_to_pcm_int16_bytes(audio):
+    """Clip/scale float audio to int16 LE PCM (same as to_wav_bytes body)."""
     a = np.clip(audio, -1.0, 1.0)
     pcm = (a * 32767.0).astype(np.int16)
+    return pcm.tobytes()
+
+
+def pcm_int16_bytes_to_float(pcm_bytes):
+    """int16 LE PCM bytes -> float32 in ~[-1, 1] (inverse of encode path)."""
+    return np.frombuffer(pcm_bytes, dtype=np.int16).astype(np.float32) / 32767.0
+
+
+def pcm_int16_bytes_to_wav(pcm_bytes):
+    """Wrap raw int16 LE mono @ SR into a WAV container (shared hit/miss path)."""
     buf = io.BytesIO()
     with wave.open(buf, "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
         w.setframerate(SR)
-        w.writeframes(pcm.tobytes())
+        w.writeframes(pcm_bytes)
     return buf.getvalue()
+
+
+def to_wav_bytes(audio):
+    """Float audio -> WAV. Byte-identical to cache-hit path for same samples."""
+    return pcm_int16_bytes_to_wav(audio_float_to_pcm_int16_bytes(audio))
 
 
 def transcode(wav_bytes, fmt):
@@ -627,6 +709,164 @@ def transcode(wav_bytes, fmt):
 
 
 # ----------------------------------------------------------------------
+# C1 response-level TTS disk cache
+# ----------------------------------------------------------------------
+
+def sha256_file(path):
+    """Full-file sha256 hex (strong model fingerprint; once at startup)."""
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def build_tts_cache_key(schema_ver, backend_id, model_fp, voice, speed,
+                        sample_fmt, text_unit):
+    """sha256 hex of pipe-joined key fields.
+
+    Stable delimiter is ASCII '|'. Field order (do not reorder without
+    bumping schema_ver):
+      schema_ver | backend_id | model_fp | voice | speed | sample_fmt | text_unit
+    speed is already clipped; formatted with '{speed:.6g}'.
+    text_unit is the exact request string passed to synthesize.
+    """
+    speed_s = speed if isinstance(speed, str) else f"{speed:.6g}"
+    material = "|".join((
+        str(schema_ver),
+        backend_id,
+        model_fp,
+        voice,
+        speed_s,
+        sample_fmt,
+        text_unit,
+    ))
+    return hashlib.sha256(material.encode("utf-8")).hexdigest()
+
+
+class TtsResponseCache:
+    """Shared C1/C2 PCM cache on disk under $KOKORO_TTS_CACHE_DIR/v1/.
+
+    Layout: v1/<ab>/<fullhex>.pcm + .json
+    C1 text_unit = full request string; C2 = 'c2ids:' + comma-joined token ids.
+    Meta may include tier: "response" | "chunk". Atomic writes via *.tmp +
+    os.replace. Process-local lock on miss-fill write and eviction.
+    """
+
+    def __init__(self, root_dir, max_mb, backend_id, model_fp):
+        self.root = os.path.join(root_dir, "v1")
+        self.max_bytes = int(float(max_mb) * 1024 * 1024)
+        self.backend_id = backend_id
+        self.model_fp = model_fp
+        self._lock = threading.Lock()
+        os.makedirs(self.root, exist_ok=True)
+
+    def build_key(self, voice, speed, text_unit):
+        return build_tts_cache_key(
+            TTS_CACHE_SCHEMA_VER, self.backend_id, self.model_fp,
+            voice, speed, TTS_SAMPLE_FMT, text_unit)
+
+    def pcm_path(self, key_hex):
+        return os.path.join(self.root, key_hex[:2], f"{key_hex}.pcm")
+
+    def json_path(self, key_hex):
+        return os.path.join(self.root, key_hex[:2], f"{key_hex}.json")
+
+    def read_entry(self, key_hex):
+        """Return raw int16 PCM bytes on hit, else None. Touches mtime (LRU)."""
+        pcm_p = self.pcm_path(key_hex)
+        json_p = self.json_path(key_hex)
+        try:
+            if not (os.path.isfile(pcm_p) and os.path.isfile(json_p)):
+                return None
+            with open(pcm_p, "rb") as f:
+                pcm = f.read()
+            if not pcm or (len(pcm) % 2) != 0:
+                return None
+            now = time.time()
+            try:
+                os.utime(pcm_p, (now, now))
+                os.utime(json_p, (now, now))
+            except OSError:
+                pass
+            return pcm
+        except OSError:
+            return None
+
+    def write_entry(self, key_hex, pcm_bytes, meta):
+        """Atomic write of pcm+json; then lazy eviction if over cap."""
+        pcm_p = self.pcm_path(key_hex)
+        json_p = self.json_path(key_hex)
+        d = os.path.dirname(pcm_p)
+        os.makedirs(d, exist_ok=True)
+        meta_bytes = json.dumps(meta, ensure_ascii=False, separators=(",", ":"))
+        meta_bytes = meta_bytes.encode("utf-8")
+        with self._lock:
+            self._atomic_write(pcm_p, pcm_bytes)
+            self._atomic_write(json_p, meta_bytes)
+            # Never delete the entry we just wrote; allow single-entry overshoot
+            # when one utterance alone exceeds MAX_MB (tiny-cap / long audio).
+            self._evict_if_needed(protect_key=key_hex)
+
+    @staticmethod
+    def _atomic_write(path, data):
+        tmp = path + ".tmp"
+        try:
+            with open(tmp, "wb") as f:
+                f.write(data)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp, path)
+        except Exception:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+            raise
+
+    def _evict_if_needed(self, protect_key=None):
+        """If v1 tree > max_bytes, delete oldest-mtime .pcm+.json pairs.
+
+        protect_key: if set, never unlink that entry (just-written path).
+        If a single protected entry is larger than the cap, the tree may
+        remain over budget until older entries exist to reclaim — better
+        than immediately discarding the write we just served.
+        """
+        total = 0
+        # (mtime, base_without_ext, key_hex) for each .pcm
+        pairs = []
+        for dirpath, _dirnames, filenames in os.walk(self.root):
+            for name in filenames:
+                if name.endswith(".tmp"):
+                    continue
+                path = os.path.join(dirpath, name)
+                try:
+                    st = os.stat(path)
+                except OSError:
+                    continue
+                total += st.st_size
+                if name.endswith(".pcm"):
+                    base = path[:-4]
+                    key_hex = name[:-4]
+                    pairs.append((st.st_mtime, base, key_hex))
+        if total <= self.max_bytes:
+            return
+        pairs.sort(key=lambda x: x[0])  # oldest first
+        for _mtime, base, key_hex in pairs:
+            if total <= self.max_bytes:
+                break
+            if protect_key is not None and key_hex == protect_key:
+                continue
+            for path in (base + ".pcm", base + ".json"):
+                try:
+                    sz = os.path.getsize(path)
+                    os.unlink(path)
+                    total -= sz
+                except OSError:
+                    pass
+
+
+# ----------------------------------------------------------------------
 # app
 # ----------------------------------------------------------------------
 
@@ -635,8 +875,8 @@ def build_app():
     from fastapi.responses import Response
     from pydantic import BaseModel
 
-    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.1.8")
-    state = {"backend": None}
+    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.2.0")
+    state = {"backend": None, "tts_cache": None}
 
     class SpeechRequest(BaseModel):
         # Open WebUI / Kokoro-FastAPI may send extra keys; ignore unknowns.
@@ -655,9 +895,38 @@ def build_app():
         print(f"[server] backend={BACKEND}"
               + (f" precision={GPU_PRECISION}" if BACKEND == "ov-gpu" else ""))
         state["backend"] = make_backend(BACKEND)
+        # Shared C1/C2 store when either tier is active.
+        if TTS_RESPONSE_CACHE or TTS_CHUNK_CACHE:
+            t_fp = time.time()
+            print(f"[server] TTS cache: hashing model for model_fp...",
+                  flush=True)
+            model_fp = sha256_file(MODEL_PATH)
+            state["tts_cache"] = TtsResponseCache(
+                TTS_CACHE_DIR, TTS_CACHE_MAX_MB, BACKEND, model_fp)
+            tiers = []
+            if TTS_RESPONSE_CACHE:
+                tiers.append("response(C1)")
+            if TTS_CHUNK_CACHE:
+                tiers.append("chunk(C2)")
+            print(f"[server] TTS cache ON tiers={'+'.join(tiers)} "
+                  f"dir={TTS_CACHE_DIR} max_mb={TTS_CACHE_MAX_MB:g} "
+                  f"tier_env={TTS_CACHE_TIER} schema_ver={TTS_CACHE_SCHEMA_VER} "
+                  f"model_fp={model_fp[:16]}... "
+                  f"({time.time() - t_fp:.2f}s)",
+                  flush=True)
+        else:
+            state["tts_cache"] = None
+            if TTS_CACHE_ON:
+                print(f"[server] TTS cache flag on but tier={TTS_CACHE_TIER!r}; "
+                      f"no C1/C2 (need response|chunk|both)",
+                      flush=True)
+            else:
+                print("[server] TTS cache OFF", flush=True)
         # warm the default path so first request isn't cold
         try:
-            synthesize(state["backend"], "Warm up.", DEFAULT_VOICE, 1.0)
+            warm_cc = (state["tts_cache"] if TTS_CHUNK_CACHE else None)
+            synthesize(state["backend"], "Warm up.", DEFAULT_VOICE, 1.0,
+                       chunk_cache=warm_cc)
             print("[server] warmup OK")
             # optional OV pre-warm. Warm is SHAPE-keyed (notes/19–20), not
             # bucket-wide: near-capacity bucket text only warms that shape;
@@ -668,14 +937,14 @@ def build_app():
                     b = be._bucket(int(b))
                     t0 = time.time()
                     synthesize(be, _prewarm_text_for(b),
-                               DEFAULT_VOICE, 1.0)
+                               DEFAULT_VOICE, 1.0, chunk_cache=warm_cc)
                     print(f"[server] pre-warmed bucket={b} via "
                           f"synthesize in {time.time() - t0:.1f}s "
                           f"(shape-keyed; not all traffic)",
                           flush=True)
             for wt in WARM_TEXTS:
                 t0 = time.time()
-                synthesize(be, wt, DEFAULT_VOICE, 1.0)
+                synthesize(be, wt, DEFAULT_VOICE, 1.0, chunk_cache=warm_cc)
                 preview = wt if len(wt) <= 48 else wt[:45] + "..."
                 print(f"[server] pre-warmed text={preview!r} in "
                       f"{time.time() - t0:.1f}s",
@@ -701,43 +970,122 @@ def build_app():
                 "openai_aliases": OPENAI_VOICE_MAP,
                 "default": DEFAULT_VOICE}
 
+    def _speech_response(wav_bytes, fmt, headers):
+        """Shared container encode path for cache hit and miss."""
+        if fmt in ("wav", "pcm", ""):
+            return Response(wav_bytes, media_type="audio/wav", headers=headers)
+        enc = transcode(wav_bytes, fmt)
+        if enc is None:
+            return Response(wav_bytes, media_type="audio/wav", headers=headers)
+        headers = dict(headers)
+        headers["X-Kokoro-Format"] = fmt
+        media = {"mp3": "audio/mpeg", "opus": "audio/ogg",
+                 "flac": "audio/flac", "aac": "audio/aac"}[fmt]
+        return Response(enc, media_type=media, headers=headers)
+
     @app.post("/v1/audio/speech")
     def speech(req: SpeechRequest):
         if not req.input or not req.input.strip():
             raise HTTPException(400, "empty input")
-        if parse_voice_spec(req.voice) is None:
+        parsed = parse_voice_spec(req.voice)
+        if parsed is None:
             raise HTTPException(400, f"unknown voice {req.voice!r}; "
                                      f"see /v1/audio/voices "
                                      f"(blends like a(1)+b(2) supported)")
+        _parts, voice_label = parsed
         speed = float(np.clip(req.speed, 0.5, 2.0))
+        # Exact text unit passed to synthesize (and used as C1 cache key field).
+        text_unit = req.input
+        fmt = req.response_format.lower()
+        cache = state.get("tts_cache")
         t0 = time.time()
-        audio, n_tokens, voice_label = synthesize(
-            state["backend"], req.input, req.voice, speed)
+
+        # --- C1 response cache lookup (skip synthesize on hit) ---
+        key_hex = None
+        if cache is not None and TTS_RESPONSE_CACHE:
+            key_hex = cache.build_key(voice_label, speed, text_unit)
+            pcm = cache.read_entry(key_hex)
+            if pcm is not None:
+                wall_s = time.time() - t0
+                n_samples = len(pcm) // 2
+                dur = n_samples / float(SR)
+                rtf = wall_s / max(dur, 1e-6)
+                print(f"[speech] voice={voice_label} tokens=- "
+                      f"audio={dur:.2f}s infer={wall_s:.2f}s "
+                      f"rtf={rtf:.2f} cache=hit", flush=True)
+                wav_bytes = pcm_int16_bytes_to_wav(pcm)
+                headers = {
+                    "X-Kokoro-Backend": BACKEND,
+                    "X-Kokoro-RTF": f"{rtf:.2f}",
+                    "X-Kokoro-Format": "wav",
+                    "X-Kokoro-Cache": "hit",
+                }
+                return _speech_response(wav_bytes, fmt, headers)
+
+        chunk_cache = cache if (cache is not None and TTS_CHUNK_CACHE) else None
+        audio, n_tokens, voice_label, c2_hits, c2_misses = synthesize(
+            state["backend"], text_unit, req.voice, speed,
+            chunk_cache=chunk_cache)
         infer_s = time.time() - t0
         if audio is None:
             raise HTTPException(400, f"unknown voice {req.voice!r}")
         if audio.size == 0:
             raise HTTPException(400, "no synthesizable content")
         dur = audio.size / SR
+        rtf = infer_s / max(dur, 1e-6)
+
+        # Cache status for header/log: C2 all-hit counts as hit; mixed=partial.
+        cache_status = None
+        if c2_misses == 0 and c2_hits > 0:
+            cache_status = "hit"
+        elif c2_hits > 0 and c2_misses > 0:
+            cache_status = "partial"
+        elif TTS_RESPONSE_CACHE or TTS_CHUNK_CACHE:
+            cache_status = "miss"
+
+        log_extra = ""
+        if cache_status is not None:
+            log_extra = f" cache={cache_status}"
+            if TTS_CHUNK_CACHE:
+                log_extra += f" c2_hits={c2_hits} c2_misses={c2_misses}"
         print(f"[speech] voice={voice_label} tokens={n_tokens} "
               f"audio={dur:.2f}s infer={infer_s:.2f}s "
-              f"rtf={infer_s/max(dur,1e-6):.2f}", flush=True)
+              f"rtf={rtf:.2f}{log_extra}", flush=True)
 
-        wav_bytes = to_wav_bytes(audio)
-        fmt = req.response_format.lower()
+        # Encode once via shared int16 path so cache store matches served WAV.
+        pcm_bytes = audio_float_to_pcm_int16_bytes(audio)
+        wav_bytes = pcm_int16_bytes_to_wav(pcm_bytes)
         headers = {"X-Kokoro-Backend": BACKEND,
-                   "X-Kokoro-RTF": f"{infer_s/max(dur,1e-6):.2f}",
+                   "X-Kokoro-RTF": f"{rtf:.2f}",
                    "X-Kokoro-Format": "wav"}
-        if fmt in ("wav", "pcm", ""):
-            return Response(wav_bytes, media_type="audio/wav", headers=headers)
-        enc = transcode(wav_bytes, fmt)
-        if enc is None:
-            # graceful fallback: wav with header note
-            return Response(wav_bytes, media_type="audio/wav", headers=headers)
-        headers["X-Kokoro-Format"] = fmt
-        media = {"mp3": "audio/mpeg", "opus": "audio/ogg",
-                 "flac": "audio/flac", "aac": "audio/aac"}[fmt]
-        return Response(enc, media_type=media, headers=headers)
+        if cache_status is not None:
+            headers["X-Kokoro-Cache"] = cache_status
+
+        # Always write C1 full-response entry when response tier is on.
+        if cache is not None and TTS_RESPONSE_CACHE:
+            if key_hex is None:
+                key_hex = cache.build_key(voice_label, speed, text_unit)
+            meta = {
+                "schema_ver": TTS_CACHE_SCHEMA_VER,
+                "backend_id": BACKEND,
+                "model_fp": cache.model_fp,
+                "voice": voice_label,
+                "speed": f"{speed:.6g}",
+                "sample_fmt": TTS_SAMPLE_FMT,
+                "tier": "response",
+                "text_sha256": hashlib.sha256(
+                    text_unit.encode("utf-8")).hexdigest(),
+                "created_unix": time.time(),
+                "n_samples": int(audio.size),
+                "duration_s": float(dur),
+                "key_hex": key_hex,
+            }
+            try:
+                cache.write_entry(key_hex, pcm_bytes, meta)
+            except Exception as e:
+                print(f"[cache] c1 write failed: {e}", flush=True)
+
+        return _speech_response(wav_bytes, fmt, headers)
 
     return app
 

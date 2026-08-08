@@ -135,6 +135,19 @@ curl -s -X POST http://127.0.0.1:8880/v1/audio/speech \
   --output out.wav
 ```
 
+#### Optional TTS response/chunk cache (env)
+
+Opt-in disk cache for TTS audio (`KOKORO_TTS_*`). Off by default. Distinct from `KOKORO_CACHE`, which remains the OpenVINO compile-cache directory. Schema version 2 (invalidates v1 entries): each synthesis chunk is quantized to int16 PCM and dequantized before concat so cached and uncached assembly share one path.
+
+| Variable | Default | Meaning |
+|----------|---------|---------|
+| `KOKORO_TTS_CACHE` | `0` | `0` off, `1` on |
+| `KOKORO_TTS_CACHE_DIR` | `/data/intel-igpu-tts/cache/tts` | response/chunk store root |
+| `KOKORO_TTS_CACHE_MAX_MB` | `500` | lazy size cap (oldest mtime first) |
+| `KOKORO_TTS_CACHE_TIER` | `both` | `response` (C1 full request) \| `chunk` (C2 per chunk_text token-id list) \| `both` |
+
+When enabled, responses may include `X-Kokoro-Cache: hit`, `partial` (some chunks reused), or `miss`.
+
 ### 7. Experimental iGPU server
 
 ```bash
