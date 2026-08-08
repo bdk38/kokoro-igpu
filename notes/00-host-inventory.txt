@@ -1,52 +1,102 @@
-# Host inventory snapshot — 2026-08-03
+# Host inventory snapshot — 2026-08-07 (dual-track refresh)
+# Prior: 2026-08-03 initial; 2026-08-07 morning full refresh; evening dual-track rollback (notes/38)
 
-## OS
+## OS / host
 Ubuntu 24.04.4 LTS (noble), x86_64
 Host: bdk-server
+Kernel: 7.0.0-28-generic (#28~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC)
 
-## GPU
-00:02.0 VGA compatible controller [0300]: Intel Corporation Alder Lake-UP3 GT1 [UHD Graphics] [8086:46b3] (rev 0c)
+## CPU / memory
+CPU: 12th Gen Intel(R) Core(TM) i3-1215U
+  6 cores / 8 threads, 1 socket, max 4400 MHz
+RAM: 62 GiB
+Swap: 8.0 GiB
+
+## GPU (PCI)
+00:02.0 VGA compatible controller: Intel Corporation Alder Lake-UP3 GT1 [UHD Graphics] [8086:46b3] (rev 0c)
   Kernel driver in use: i915
   Kernel modules: i915, xe
 
 ## DRI
-/dev/dri/card0   root:video
+/dev/dri/card0      root:video
 /dev/dri/renderD128 root:render
 User bdk is in groups: video, render
 
-## Compute stack (already present)
-- intel-opencl-icd 26.22.38646.6
-- libze1 1.28.6 + libze-intel-gpu1 26.22.38646.6
-- libigc2 / libigdfcl2 2.36.3
-- intel-media-va-driver-non-free 26.2.2
-- intel-gpu-tools (intel_gpu_top)
-- clinfo
-- APT source: kobuk-team intel-graphics PPA
-- oneAPI base toolkit at /opt/intel/oneapi (~14G) — NO OpenVINO component
-- oneAPI compiler 2026.1 provides sycl-ls
+## Compute runtime (apt — kobuk-team intel-graphics PPA) — NOT rolled back
+# Upgraded 2026-08-07; dual-track policy keeps drivers even when ship wheel is 2026.2.1
+- intel-opencl-icd  26.22.38646.7-1~24.04~ppa1
+- intel-ocloc       26.22.38646.7-1~24.04~ppa1
+- libze-intel-gpu1  26.22.38646.7-1~24.04~ppa1
+- libze1            1.28.6-1~24.04~ppa1
+- libigc2           2.36.5-1~24.04
+- libigdfcl2        2.36.5-1~24.04
+- libigdgmm12       22.10.0-1~24.04~ppa1
+- intel-media-va-driver-non-free 26.2.2-1~24.04~ppa1
+- intel-gpu-tools (intel_gpu_top), clinfo
+- APT: kobuk-team-ubuntu-intel-graphics-noble.sources
+- APT: oneAPI.list → https://apt.repos.intel.com/oneapi
 
-## Device visibility (pre-OpenVINO)
-clinfo: Intel(R) UHD Graphics, OpenCL 3.0 NEO, driver 26.22.38646.6, 64 CUs
-sycl-ls:
-  [level_zero:gpu] Intel(R) UHD Graphics
-  [opencl:cpu] i3-1215U
-  [opencl:gpu] Intel(R) UHD Graphics
+## Device visibility
+clinfo: Intel(R) UHD Graphics, OpenCL 3.0 NEO, Driver Version 26.22.38646.7
+Level Zero: libze_loader.so.1.28.6, libze_intel_gpu.so.1.15.38646
 
-## Models kept
-- /opt/webui/kokoro-intel-models/kokoro-v0_19.onnx (311M)
-- /opt/webui/kokoro-intel-models/voices-v1.0.bin (25M)
-- Staged copies under /data/intel-igpu-tts/models/
+## oneAPI
+/opt/intel/oneapi present (base toolkit + components)
+Compiler trees: 2026.0, 2026.1, latest
+VTune: intel-oneapi-vtune 2026.4.0-20
+NOTE: oneAPI is L0/SYCL/tooling — OpenVINO product runtime is via project pip venvs
 
-## Removed during cleanup
-- /home/bdk/github/Kokoro-FastAPI
-- /home/bdk/github/Unicorn-Orator
-- /home/bdk/github/transfers (kokoro-fastapi image/src tarballs)
-- /opt/unicorn-orator
-- /opt/webui/kokoro-cache
-- Docker images: unicorn-orator intel-igpu, kokoro-fastapi cpu/gpu tags
-- Docker volume: webui_kokoro-models
+## DUAL-TRACK Python runtimes (Nexus policy — Fable note_27 / notes/38)
+
+### Ship track — /data/intel-igpu-tts/venv
+Python 3.12.3
+openvino              2026.2.1-21919-ede283a88e3-releases/2026/2
+onnxruntime-openvino  1.24.1
+onnx                  1.22.0
+numpy                 2.4.6
+openvino-genai        NOT installed (ship must not depend on it)
+openvino-tokenizers   NOT installed
+OpenVINO devices: CPU (i3-1215U), GPU (Intel UHD Graphics iGPU)
+ORT providers: OpenVINOExecutionProvider, CPUExecutionProvider
+Pins: requirements.txt / requirements.lock.txt (ship 2026.2.1 only)
+Compile cache (post-driver-bump): cache/openvino-2026.2.1-drv2622/
+Post-rollback smoke: notes/38 — ort-cpu fox RTF~0.43; ov-gpu warm RTF~0.66
+
+### S0 probe track — side venv (not created until S0.1)
+Target: openvino==2026.3.0 + openvino-genai==2026.3.0.0 + openvino-tokenizers
+Suggested path: /data/intel-igpu-tts/venv-s0-ov263/  (or spike/ov263-genai/.venv)
+Must NOT mutate ship venv above.
+Gate: notes/36 + notes/36b (Fable A1–A3); awaiting Nexus ack to run.
+
+### Stack-identity caveat
+Original measurements (notes/25–32 era): wheel 2026.2.1 + older driver (.6 / IGC 2.36.3).
+Ship after dual-track rollback: wheel 2026.2.1 + driver 26.22.38646.7 / IGC 2.36.5.
+Not bit-identical to historical env; new numbers must record full stack.
+
+### Other
+/data/kokoro-openvino/venv-peek — may still hold 2026.3 from earlier upgrade; treat as research, not ship.
+
+## Upstream source arsenal — /data/github
+- openvino            master @ 0f453eb8dc (unshallowed; sparse GPU/docs/onnx); tags 2026.2.1, 2026.3.0
+- openvino.genai      master @ 0d534a4b; tag 2026.3.0.0; kokoro_tts_model.*
+- openvino_notebooks  latest @ 3ff46d5d (Release 2026.3); sparse TTS set incl. notebooks/kokoro/
+
+## Models
+- /data/intel-igpu-tts/models/ staged project models
+- models/patched/kokoro-v0_19.gpu4d.stft.onnx — ship ov-gpu demo graph
+- /opt/webui/kokoro-intel-models/ known-good ONNX + voices
+- Large weights: download locally — not in git
+
+## Product posture
+- Default backend: ort-cpu (scripts/kokoro_server.py)
+- Demo backend: ov-gpu + patched ONNX
+- git main last pushed: v1.1.6; working tree v1.1.8 candidate (notes/35)
+- Componentized decoder spike: PARKED (notes/33–34)
+- S0 official GenAI Kokoro: gated notes/36+36b; dual-track env ready
+- Walk-back ladder: Fable note_27 §4 (after both tracks done)
 
 ## Not removed
-- /opt/webui/kokoro-intel-models (known-good ONNX + voices)
-- /opt/intel/oneapi (useful for L0/sycl tooling; no OpenVINO inside)
+- /opt/intel/oneapi
+- /opt/webui/kokoro-intel-models
 - Open WebUI stack
+- /data/kokoro-openvino research stash

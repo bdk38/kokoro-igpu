@@ -44,3 +44,8 @@ models/patched/*.onnx
 !issues/captures/
 !issues/captures/**
 
+
+# Spike decoder ONNX weights — rebuild via spike/g2_export.py (too large for git).
+# Tiny OV-GPU repro graphs for filing are force-added under diagnosis/minimal_conv1d/ if needed.
+spike/out/**/*.onnx
+spike/**/__pycache__/

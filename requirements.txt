@@ -1,4 +1,6 @@
 # Core inference stack (validated on Ubuntu 24.04 / Python 3.12)
+# Ship track pin: OpenVINO 2026.2.1 (dual-track policy — Fable note_27 / notes/38)
+# S0 / GenAI 2026.3 lives in a side venv only — do not add openvino-genai here.
 openvino==2026.2.1
 onnxruntime-openvino==1.24.1
 numpy==2.4.6

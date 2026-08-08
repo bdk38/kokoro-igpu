@@ -47,6 +47,10 @@ GitHub’s automatic **Contributors** graph only lists GitHub user accounts that
 
 If you fork or extend this work, please keep the Fable/Grok write-ups and this file so the provenance stays honest.
 
+## Operating model
+
+- Team org chart, handoffs, and specialist pool: [WORKFLOW.md](WORKFLOW.md)
+
 ## Status rollups
 
 - Short repo summary: [notes/17-repo-status-summary.md](notes/17-repo-status-summary.md)
