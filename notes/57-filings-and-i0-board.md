@@ -41,4 +41,4 @@
 
 ## One-line
 
-**I0 CLOSED; default ovgenai-gpu; filings VERIFY-ready but RESEARCH HOLD (notes/69) — Nexus duplicate check before submit; commit still open.**
+**I0 CLOSED; dual-product shipped; filings VERIFY-ready but PARKED pending research (notes/69, 76) — do not submit until unparked.**

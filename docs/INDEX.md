@@ -22,7 +22,7 @@
 | S0 official GenAI probe | 36, 45–53 | **`S0-GO-product`** |
 | I0 integration | 54–67 | **`I0-GO-default-candidate`** |
 | Default cutover then dual-product face | 68, 70–71 | Monorepo default **ort-cpu**; appliance default **ovgenai-gpu** |
-| Filings | 57, 69, `issues/submit/` | VERIFY done · **RESEARCH HOLD** |
+| Filings | 57, 69, 76, `issues/submit/` | VERIFY done · **PARKED** (research pending) |
 | PoC ship + R0 | 71–72, Fable note_33 | `poc-complete`; portable paths |
 | Prototype segregate + R1 | 73–75, Fable note_34–35 | `prototype-complete`; note_35 docs polish |
 

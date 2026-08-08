@@ -1,10 +1,10 @@
-# Upstream filings — VERIFY done · **RESEARCH HOLD** (Nexus)
+# Upstream filings — VERIFY done · **PARKED**
 
 **Date:** 2026-08-08  
 **VERIFY:** Grok complete (notes/69) — bodies/attachments still valid  
-**Status:** **need research** before submit — Nexus checking openvinotoolkit/openvino for existing issues / upstream acknowledgments to avoid duplicates  
-**Do not file until research clears each draft (or marks it as duplicate/superset).**  
-**Submit target (when clear):** https://github.com/openvinotoolkit/openvino/issues  
+**Status:** **PARKED** (notes/76) — Nexus will complete duplicate/prior-art research before any submit  
+**Do not file while parked.** Unpark only when research clears each draft (file / comment on existing / drop).  
+**Submit target (when unparked):** https://github.com/openvinotoolkit/openvino/issues  
 
 ---
 

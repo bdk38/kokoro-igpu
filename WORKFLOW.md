@@ -1,6 +1,6 @@
 # Team Workflow — Kokoro iGPU TTS
 
-**Status:** both products **SHIPPED** — PoC `poc-complete` + Prototype `prototype-complete`; filings **RESEARCH HOLD**
+**Status:** both products **SHIPPED** — PoC `poc-complete` + Prototype `prototype-complete`; filings **PARKED** (research pending)
 **Audience:** Nexus (bdk), Chief Architect (Fable), Orchestrator (Grok 4.5)  
 **Sandbox (lab monorepo):** `/data/intel-igpu-tts` → https://github.com/bdk38/kokoro-igpu  
 **Appliance (Product B):** `/data/kokoro-igpu-genai` → https://github.com/bdk38/kokoro-igpu-genai  
@@ -15,7 +15,7 @@ This document freezes the collaboration structure so it can be referenced in-cha
 | **A — PoC** | `bdk38/kokoro-igpu` (this sandbox) | **`poc-complete`** @ `f2ff370` (v1.5.1) | **`ort-cpu`** | ONNX v0.19 + patches; ov-gpu legacy proof leg |
 | **B — Prototype** | `bdk38/kokoro-igpu-genai` | **`prototype-complete`** @ `8987f74` (v2.0.0) | **`ovgenai-gpu`** | Official Kokoro-82M int8 GenAI appliance |
 
-R0 (PoC stranger clone) and R1 (genai stranger clone) both **PASS** with Nexus ears. Filings VERIFY pack under **RESEARCH HOLD** (notes/69) until Nexus clears duplicates. Product B note_35 docs polish **done** on genai `722d075` (no re-tag; notes/75). Decoder spike remains **PARKED**. B backlog (blends, chunk matrix, RAPL) needs new gates before work.
+R0 (PoC stranger clone) and R1 (genai stranger clone) both **PASS** with Nexus ears. Filings VERIFY pack **PARKED** until duplicate/prior-art research can finish (notes/69, 76; `issues/submit/`). Product B note_35 docs polish **done** on genai `722d075` (no re-tag; notes/75). Decoder spike remains **PARKED**. B backlog (blends, chunk matrix, RAPL) needs new gates before work.
 
 ---
 
@@ -235,7 +235,7 @@ Keep these explicit so the org chart does not become silent parallel projects:
 | **Spike path (componentized decoder)** | Seam B → static-T decoder → OV-GPU realtime | **PARKED** (not GO) — notes/33–34; RCA notes/29–32. Revival = **new Fable gate + Nexus ack only** | — |
 | **Probe path (S0)** | Official OV 2026.3 GenAI Kokoro on this Xe-LP | **CLOSED — `S0-GO-product`** (notes/45–53). Probe scripts remain under `spike/ov263-genai/`; side venv deleted after convergence | — |
 | **Integration path (I0)** | Official GenAI as selectable backend + default decision | **CLOSED — `I0-GO-default-candidate`** (notes/54–67). Defaults **resolved by product face**: monorepo = ort-cpu; appliance = ovgenai-gpu | — |
-| **Filings** | Upstream OpenVINO issues (shape-JIT, f16 MatMul, conv-ref) | **VERIFY done · RESEARCH HOLD** (notes/69, `issues/submit/`) — Nexus duplicate check before submit | Nexus + Orchestrator |
+| **Filings** | Upstream OpenVINO issues (shape-JIT, f16 MatMul, conv-ref) | **VERIFY done · PARKED** (notes/69, 76; `issues/submit/`) — resume after research | Nexus (research) → Orch assist |
 
 Nexus chooses which path is active for a given session. Probe/spike does not overwrite ship without an explicit call. Ship freeze enforcement is under **Mechanic discipline** above. **Do not silently change product defaults** across remotes.
 
@@ -243,8 +243,8 @@ Nexus chooses which path is active for a given session. Probe/spike does not ove
 
 | Item | State |
 |------|--------|
-| Filings research hold | **Open** — lift only when Nexus clears file/comment/drop per draft |
 | ~~note_35 genai docs polish~~ | **DONE** genai `722d075` (notes/75); tag unchanged |
+| Filings | **PARKED** — VERIFY pack frozen; unpark after research (notes/76) |
 | Product B backlog | blends-on-genai, chunk-overhead matrix, RAPL/E-core — **each needs own gate** |
 | Decoder O1–O4 | **PARKED** |
 
@@ -256,8 +256,8 @@ Nexus chooses which path is active for a given session. Probe/spike does not ove
 4. ~~**Default decision**~~ — **RESOLVED** dual-face (notes/68, 70–71, Fable note_33–34)  
 5. ~~**PoC productize + R0**~~ — **DONE** `poc-complete` (notes/71–72)  
 6. ~~**Prototype segregate + seed + R1**~~ — **DONE** `prototype-complete` (notes/73–74)  
-7. **Upstream filing session** — VERIFY pack ready; **RESEARCH HOLD** until Nexus  
-8. **Parked:** componentized fork O1–O4 until new gate  
+7. ~~**Upstream filing VERIFY pack**~~ — **DONE** bodies; session **PARKED** pending research (notes/76)  
+8. **Parked:** componentized fork O1–O4 until new gate; filings until research complete  
 
 ### Ship-path loop (Warm Bucket Fix pattern)
 
@@ -314,7 +314,7 @@ Gate (Fable note_29) → Grok lock (notes/54 G1–G6) → Fable accept (note_30)
 | Official GenAI pack | HF `OpenVINO/kokoro-82M-int8-ov` → `models/kokoro-82M-int8-ov/` (both repos; download, not git) |
 | Prototype evidence | `artifacts/prototype/` (S0/I0/R1 WAVs); map in `artifacts/prototype/README.md` |
 | OV compile cache | Versioned dirs under `cache/` (e.g. `openvino-2026.2.1-drv2622/`, 2026.3 dirs) |
-| Filings drafts | `issues/submit/` (VERIFY bodies + attachments); research hold notes/69 |
+| Filings drafts | `issues/submit/` (VERIFY bodies + attachments); **PARKED** notes/69 + 76 |
 
 ### Host / repo hygiene (learned the hard way)
 
@@ -418,7 +418,7 @@ Closeout: **PARKED** — notes/33–34. Do not extend G3 without Nexus reset + n
 | `notes/00-host-inventory.txt` | Live host/stack versions |
 | `notes/70`–`74` | Finished-product boundary, PoC/R0, Prototype/R1 |
 | `notes/52`–`53`, `67` | S0 + I0 verdict closeouts |
-| `notes/69` + `issues/submit/` | Filings VERIFY · research hold |
+| `notes/69` + `76` + `issues/submit/` | Filings VERIFY · **PARKED** |
 | `Fable/Fable-note_33`–`35` | PoC ship, genai seed/R1, polish spec |
 | `notes/34-spike-closeout-summary.md` | Decoder spike park rollup |
 | Sibling README | https://github.com/bdk38/kokoro-igpu-genai |
@@ -436,6 +436,7 @@ Closeout: **PARKED** — notes/33–34. Do not extend G3 without Nexus reset + n
 | 2026-08-07 | **Dual-track env policy** (Fable note_27 / notes/38): ship completes on OV **2026.2.1** wheel + current drivers; S0 uses 2026.3 side venv; pre-registered walk-back ladder; notes/37 superseded-in-part. |
 | 2026-08-07 | **Post-park operating update:** ship queue explicit; spike path marked PARKED with revival rule; **S0 probe path** added (notes/36+36b, Fable note_26 sign-off, awaiting Nexus); RACI template C for S0; OpenVINO **2026.3** env + `/data/github` arsenal + host inventory refresh pointers; measurement honesty items 7–8 (stack identity, gates-before-numbers). |
 | 2026-08-08 | **Post–S0 / I0 refresh:** v1.2.0 cache shipped; S0 closed `S0-GO-product`; I0 path + RACI D; ship queue rewritten; tooling (GenAI pack, filings, convergence); dual-track ending under notes/58–59 waiver+convergence; default still ort-cpu. |
-| 2026-08-08 | **Dual-product ship closeout:** PoC monorepo tagged `poc-complete` (R0); GenAI sibling `kokoro-igpu-genai` tagged `prototype-complete` (R1); defaults resolved by product face (ort-cpu vs ovgenai-gpu); I0 closed; filings remain RESEARCH HOLD; tooling map dual-remote; open board = filings + gated B backlog + optional note_35 docs polish. |
+| 2026-08-08 | **Dual-product ship closeout:** PoC monorepo tagged `poc-complete` (R0); GenAI sibling `kokoro-igpu-genai` tagged `prototype-complete` (R1); defaults resolved by product face (ort-cpu vs ovgenai-gpu); I0 closed; tooling map dual-remote; note_35 polish done. |
+| 2026-08-08 | **Filings PARKED:** VERIFY pack frozen in `issues/submit/`; Nexus parks until duplicate/prior-art research can complete (notes/76). Active board empty except gated B backlog / decoder park. |
 
 *Maintainer: Orchestrator (Grok 4.5) under Nexus direction. Fable should treat this as the shared org reference unless Nexus supersedes it.*

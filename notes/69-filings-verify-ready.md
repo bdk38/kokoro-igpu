@@ -2,8 +2,8 @@
 
 **Date:** 2026-08-08  
 **Author:** Grok (Orchestrator)  
-**Status:** **VERIFY done · RESEARCH HOLD** — bodies in `issues/submit/`  
-**Nexus:** checking for existing upstream issues / acknowledgments before submit (avoid duplicates). Pack remains placeholder-free when research clears.
+**Status:** **VERIFY done · PARKED** — bodies in `issues/submit/`  
+**Nexus (2026-08-08):** park until duplicate/prior-art research can be completed. Pack stays frozen and placeholder-free; **do not submit** while parked (notes/76).
 
 ---
 
@@ -58,24 +58,27 @@ Draft sources (pre-VERIFY): `issues/filing-1..3.md` — superseded for paste by 
 
 ## 4. One-line
 
-**Three issues VERIFY-clean in issues/submit/; on RESEARCH HOLD for Nexus duplicate/prior-art search before GitHub submit.**
+**Three issues VERIFY-clean in issues/submit/; PARKED until Nexus finishes duplicate/prior-art research (notes/76).**
 
 ---
 
-## 5. Research hold (2026-08-08 Nexus)
+## 5. Research hold → PARKED (2026-08-08 Nexus)
 
-Nexus will search `openvinotoolkit/openvino` (and related) for:
+Originally: RESEARCH HOLD while Nexus searches upstream.  
+**Now:** explicitly **PARKED** — not on the active board; resume only when Nexus opens research completion + per-draft file/comment/drop.
+
+Search targets when unparked (`openvinotoolkit/openvino` and related):
 
 - existing shape-JIT / first-infer / CACHE_DIR kernel-cache issues on GPU  
 - f16 MatMul dimension / precision issues on TTS or similar graphs  
 - convolution_gpu_ref / missing optimized f32 conv on Xe-LP  
 
-**Per draft outcomes (fill when done):**
+**Per draft outcomes (fill when research done):**
 
 | Draft | Research result | Action |
 |-------|-----------------|--------|
-| #1 shape-JIT | _pending_ | file / comment on existing / drop |
-| #2 f16 MatMul | _pending_ | file / comment on existing / drop |
-| #3 conv-ref | _pending_ | file / comment on existing / drop |
+| #1 shape-JIT | _parked / pending research_ | file / comment on existing / drop |
+| #2 f16 MatMul | _parked / pending research_ | file / comment on existing / drop |
+| #3 conv-ref | _parked / pending research_ | file / comment on existing / drop |
 
 Grok does not submit while this table is pending.
