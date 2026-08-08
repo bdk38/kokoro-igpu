@@ -47,18 +47,36 @@ UFW: `8880/tcp` from `172.16.0.0/12` already allowed.
 
 ---
 
-## 3. Live checks (filled at wire-up)
+## 3. Live checks (2026-08-07 wire-up)
 
 | Check | Result |
 |-------|--------|
-| `/health` on :8880 | _pending_ |
-| version header / OpenAPI | _pending_ |
-| container → host health | _pending_ |
-| direct fox miss then hit | _pending_ |
-| WebUI `/api/v1/audio/speech` (if key) | _pending_ |
+| Product version | OpenAPI **`1.2.0`** |
+| Process | host PID in `/tmp/kokoro-server.pid`; log `logs/kokoro_v120_webui.log` |
+| Cache | `KOKORO_TTS_CACHE=1` tier=`both` dir=`cache/tts` schema_ver=2 |
+| `/health` :8880 | **ok** ort-cpu |
+| container → `host.docker.internal:8880/health` | **ok** |
+| direct fox miss → hit | miss wall **1.58 s** RTF 0.41; hit **20–35 ms** RTF 0.00; `X-Kokoro-Cache` correct |
+| container POST speech | **200**, `x-kokoro-cache: hit` (shared C1 after host warm) |
+| WebUI DB TTS | already set: engine=openai, base=`http://host.docker.internal:8880/v1`, model=kokoro, voice=af_bella, **split_on=paragraphs** |
+| WebUI authenticated proxy | skipped (no usable API key in automated path); UI Read Aloud uses same upstream URL — ready for Nexus ears in chat |
+
+Artifacts: `artifacts/webui_soak/fox_{miss,hit,hit2}.wav`, `from_container.wav`.
+
+Git: local commit **`8893249`** `feat(server): v1.2.0 opt-in response+chunk TTS cache (C1+C2)` — ahead of origin by 1 (push on call).
 
 ---
 
-## 4. One-line
+## 4. How to use in Open WebUI now
 
-**Single product v1.2.0 ships C1+C2 cache; WebUI soak next; S0 still staged after live confidence.**
+1. Server is listening **0.0.0.0:8880** with cache on (restart command in §2 if it dies).  
+2. Admin → Settings → Audio already points at host Kokoro (notes/09).  
+3. Chat → Read Aloud / speaker on a message.  
+4. First utterance of a passage pays synth; **repeat same text** should feel instant (C1). Shared multi-chunk prefixes get C2 partial.  
+5. Watch `logs/kokoro_v120_webui.log` for `cache=hit|partial|miss`.
+
+---
+
+## 5. One-line
+
+**v1.2.0 live on :8880 with C1+C2 cache; WebUI container reaches host; fox hit ~20 ms; Read Aloud ready for your ears before S0.**
