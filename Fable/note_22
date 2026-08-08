@@ -1,0 +1,47 @@
+# Fable/note_22 — G3 FAIL Record, Confound Analysis, and the Park Decision
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/29 (Grok, G3 matrix)
+**Path:** Spike. Ship freeze unchanged. **No gate moves; GO language not used; this note does not relitigate the verdict.**
+
+---
+
+## 1. Record
+
+- **G3 outcome as gated: FAIL.** G3.2 fails the written PASS line (11/11 multi-second infers); G3.4 fails realtime materially (RTF ≈ 5.07 vs ≤ 1.0 — a note_17 kill-class miss); G3.5 quality is fail-adjacent (corr 0.75). G3.1 offload and G3.3 restart persistence PASS. Spike **GO is not earned.** Grok's refusal to use GO language and the recommendation to park are gate-correct.
+- **Nexus ear record (2026-08-07):** `ear_g3_1.wav` PASS clean; `ear_g3_2.wav` PASS-with-note — slight intonation rise on the final word "berries"; `ear_g3_3.wav` PASS clean. No additional utterances anywhere. Reconciliation with corr 0.75: waveform correlation is phase/pitch-sensitive, so a pitch-contour shift craters the metric while sounding minor. Ears and metrics agree the rewrite changed the voice; ears bound the perceptual size as small. Under house rules the ear verdict stands as the quality record — and "subtly altered prosody" still fails any fidelity claim we'd want to make.
+- **Findings that survive regardless of the park decision:**
+  1. **Shape-JIT variance is absent** at fixed T — 11 novel texts, spread 10.96–11.13 s, zero 17–25 s events. The monolith's shape-keyed pathology did not reappear.
+  2. **CACHE_DIR restart persistence works for static compiles on this silicon** — 0.28 s cached vs 2.49 s cold, first infer in the warm envelope. The internals-brief claim is now measured fact here.
+  3. Dynamo ONNX is not raw-consumable by OV-GPU (Conv rank), and legacy hits the known 3D Interpolate wall (Contingency A class confirmed).
+
+## 2. Confound analysis (why this FAIL does not yet cleanly falsify the fork premise)
+
+Two independent confounds sit between the measurements and the conclusion "static-T decoding is not viable on Xe-LP":
+
+**Confound 1 — the graph under test is not the validated graph.** G2's parity PASS belongs to `…_dynamo.onnx`. The G3 numbers belong to `…_dynamo_nchw.onnx`, an improvised rewrite (Contingency B specified stop-and-report; the rewrite went a step beyond). G3.5 proves the rewrite is numerically damaged (corr 0.75 vs the monolith's known small-delta class). A broken graph measured slow is evidence about the rewrite, not the architecture.
+
+**Confound 2 — the 8× self-anomaly.** This same decoder computation runs inside the monolith at warm ~0.9 RTF whole-graph on the same GPU and OV version; the decoder is ~65% of that compute, so decoder-only should land near ~0.6 RTF-equivalent. Instead: ~5. The profile is telling: **2.49 s compile + uniform 11 s infers** is the signature of a compile that selected cheap-to-build reference kernels — the monolith's 17–25 s per-shape JIT was expensive precisely because it built optimized ones. Named suspect: `convolution_gpu_ref__f32`-class fallback (already our documented upstream issue on this model), plausibly triggered by the rewrite's unsqueezed NC1L conv shapes not matching optimized kernel patterns.
+
+Neither confound is resolved by the existing evidence. Both are resolvable cheaply.
+
+## 3. Decision for Nexus (two defensible paths; Architect recommends B)
+
+**A. Full park now.** Gate-honest as written. Spike parks with notes/25–29 + this note as the record; black-box response cache becomes the priority candidate per the standing queue. Cost: the park carries an unexplained 8× anomaly and a broken-graph confound in its conclusion.
+
+**B. One bounded diagnosis-only turn, then park (or fresh gate).** Explicitly *not* a spike extension — no GO path exists without a brand-new gate note. Timebox: one Grok session. Contents:
+
+1. **Per-kernel OV profile** of the NCHW graph (exec-graph / profiling info): name the kernels consuming the 11 s. Predicted branch: ref-class convolutions dominate → Confound 2 root-caused, and the finding folds directly into the existing upstream f32 conv issue draft (same pathology, second graph, stronger filing).
+2. **Opset-17 dynamo re-export** — the Contingency B option listed in note_21 §2.1 but never attempted. Predicted branch: convs export in a form OV consumes without the damaging rewrite. If it compiles on GPU.0: re-run parity (bar unchanged) and one timing row. Three outcomes: (i) compiles + parity-clean + fast-class infer → the fork premise revives and earns a **new** gate note; (ii) compiles but still 11 s-class → the slowness is OV's kernel selection for this decoder on Xe-LP regardless of graph form → park hardens to near-conclusive; (iii) fails compile → Contingency B territory again, park stands.
+3. No other work. Ears only if a new parity pair is produced.
+
+Recommendation: **B**, because a park with root cause is a stronger park, the diagnosis feeds the upstream filings either way, and the marginal cost is one session against a fork we've already spent the weekend-plus de-risking. If Nexus prefers A, this note is already written to serve as the closing record.
+
+## 4. Standing queue impact (either path)
+
+- **Response cache** (black-box, ort-cpu ship path) moves to top of the candidate list — unchanged from notes/29's recommendation.
+- **Upstream issues:** the G3 evidence adds to two of three drafts regardless of A/B — shape-JIT (static-T absence-of-variance is a clean contrast datum) and f32 conv perf (pending §3.B.1 confirmation). Filing remains queued behind Nexus.
+- v1.1.8 approval and repo commits (now including `spike/` + notes/25–29) remain on the main-thread queue.
+
+**One-line handoff:** Nexus picks A or B; if B, Grok runs §3.B as a diagnosis session with the park as default outcome — revival requires a fresh gate note, never a retroactive one.

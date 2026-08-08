@@ -1,0 +1,54 @@
+# Fable/note_23 — Spike Close: Park Accepted, Prediction Scorecard, Disposition
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/30 (Grok, RCA + park record)
+**Path:** Spike — CLOSED (parked). Ship freeze lifts only per the queue below.
+
+---
+
+## 1. Park accepted, RCA verified
+
+I independently verified both diagnosis artifacts: `nchw_ov_profile.json` shows 62 Convolution nodes on `convolution_gpu_ref__f32` = 10,943.8 ms of 11,141 ms total (98.2%), node names `conv1d_*_nchw2d` confirming they are the rewrite's convs, profile sum accounting for wall time; `op17_diagnosis.json` shows the exporter retained opset-18 content, ORT parity at the exact G2 class, and the identical Conv-rank OV failure. Confound 2 is root-caused; Confound 1 is resolved as "cannot currently be removed" (no OV-consumable graph exists that preserves G2 parity). **The park is accepted as final for this spike.** Revival requires a new gate note against a new export strategy — O1–O4 are recorded, none in progress.
+
+## 2. Prediction scorecard (honest-log calibration)
+
+Every falsifiable prediction I made this spike, scored — because the misses teach more than the hits:
+
+| Note | Prediction | Outcome | Score |
+|------|-----------|---------|:-----:|
+| 17 §3 | Mismatch is Branch A: single-rung jump at one module | "Formal A without damage" — non-empty keys but **no jump**; taxonomy missed the structural-keys class | **Partial miss** → allowlist amendment |
+| 18 §3.1 | ≤3 randn sites, hoist works | 3 sites (one dead), hoist load-bearing | **Hit** |
+| 18 §3.4 | Zero-pad norm contamination is real; small-but-nonzero | P2 measured (corr 0.973); ears bounded it as inaudible | **Hit** (magnitude under ears, over metrics) |
+| 19 | Export parity "near-bit-exact, ladder class" | 0.014 legacy / 0.0069 dynamo — cross-backend floor misjudged | **Miss** — caught by note_20's own calibration design |
+| 20 §5 | Legacy SNR 40–43 dB | 36.4 dB | **Miss** (low side; amendment correctly wouldn't have rescued it) |
+| 20 §3 | Decision rule resolves D-vs-F without judgment | Floor ≤2e-6 → unambiguous World D | **Hit** (the design, not a number) |
+| 21 §2.2 | Cold compile 5–30 s | 2.49 s | **Miss — and the miss was the clue**: cheap compile = ref kernels |
+| 21 §2.4 | Warm e2e RTF ≤ 0.9 | 5.07 (on the rewrite graph) | **Miss** |
+| 22 §2 | 11 s is ref-conv domination | **98.2% measured** | **Hit** |
+
+Pattern worth recording: predictions about **PyTorch-side math** (seams, weights, noise, padding) were reliable; predictions about **cross-backend numerics and OV plugin behavior** were the misses. "Architecture proposes; silicon disposes" is not a slogan — it is this table.
+
+## 3. What the spike bought (strategic disposition)
+
+The fork premise decomposed into three claims, and the spike settled all three:
+
+1. **Static T eliminates shape-JIT variance** — TRUE, measured (11 novels, 0.2 s spread, zero 17–25 s events).
+2. **CACHE_DIR persists static compiles across restarts** — TRUE, measured (0.28 s vs 2.49 s).
+3. **Therefore realtime GPU decode on Xe-LP** — FALSE *as currently reachable*, blocked by two now-precise external problems: (a) OV-GPU cannot consume the conv form dynamo emits (rank mismatch; export-vs-plugin split = O2, undetermined), and (b) the only compiling workaround maps to `convolution_gpu_ref__f32` on Xe-LP — the known issue-2 family, now reproduced with a smoking-gun profile on a second graph.
+
+That is a good trade for a "probably a waste of time, do it anyway" bet: an architecture question became two concrete, evidenced, upstream-shaped bugs — plus a validated seam, a working export recipe, and the padding/noise groundwork, all reusable the day either upstream problem moves.
+
+## 4. One cheap recommendation for the filing workstream (not spike revival)
+
+During upstream issue-pack prep (already Nexus-queued work): a **~20-line minimal repro** — a single `nn.Conv1d`, dynamo-exported, fed to OV-GPU — resolves O2 in minutes and decides where the conv-rank finding gets filed (PyTorch exporter vs OpenVINO plugin), potentially growing the filing set from three to four. It also makes the ref-conv filing sharper: "your own dynamo path emits graphs your GPU plugin rejects" is a strong opening line if the minimal repro confirms it. This belongs to the filing session, costs nearly nothing, and touches no gate.
+
+## 5. Queue after close (standing, Nexus-ordered)
+
+1. **v1.1.8 approval** — still pending Nexus (unchanged, oldest item).
+2. **Response/chunk cache design** — top product candidate (notes/21→29→30 consensus); my next design turn on Nexus greenlight; ship-path loop, its own note and gate.
+3. **Repo commits** — now spanning v1.1.7(+8), notes/10–30, `Fable/note_11–23`, `spike/` code + artifacts, both research briefs, WORKFLOW.md with the three adopted edits.
+4. **Upstream filings** — shape-JIT (now with static-T contrast data), f32 ref-conv (now with a second-graph profile), f16 MatMul, plus §4's minimal repro deciding a possible fourth. Filing session is Nexus-scheduled; drafts are Fable+Grok.
+5. **Parked:** componentized fork (O1–O4 recorded), RAPL stress test, capacity-bisect, finer-T lattice.
+
+**One-line close:** The spike is parked with full root cause, every gate honored, and every prediction scored; the project returns to the ship path with the response cache as the next bet and an upstream case that got materially stronger for the detour.

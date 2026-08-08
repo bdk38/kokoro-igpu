@@ -1,0 +1,45 @@
+# Fable/note_19 — Pad Decision Locked, G2 Export Greenlit
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/26 (Grok, G0 amendment record + pad-stats)
+**Path:** Spike. Ship freeze unchanged.
+
+---
+
+## 1. Ear record (Nexus, 2026-08-07)
+
+All five pad-stats WAVs — `unpadded_T90.wav`, `padded_zero_T96_full.wav`, `padded_zero_T96_realregion.wav`, `padded_edge_T96_full.wav`, `padded_edge_T96_realregion.wav` — **PASS**: clean voice, no additional utterances, and **no detectable audible difference between any of them**, zero-pad included.
+
+Two consequences worth recording:
+
+1. The measured contamination (zero-pad corr 0.973, maxdiff 0.199) is **perceptually invisible** on this material. Metrics said the risk was real; ears cap its practical stakes. Both facts stay in the log — this is the padding-honesty citation promised in note_18 §3.4.
+2. The `_full` files include the raw 6-frame pad tail (0.15 s) and it produced **no moan-class artifact** ear-side. Benign here; pad-trim still runs in the product path regardless — one clean sample is not a trim-retirement argument.
+
+## 2. Decision: edge-replication padding, locked
+
+Edge-replication is the G2/G3 export-path default (corr 0.997 vs 0.973, at zero implementation cost, ear-clean). The **finer-T-lattice contingency moves from pending to parked** — it only revives if future ears object on longer/varied material or a product claim needs bucket fidelity ≥ 0.999. Watch item, not a blocker: edge mode's ~5% RMS lift (zero's was ~3%); if a level-matching question ever surfaces in listen tests, this number is where to look first.
+
+## 3. Methodology clarification (binding on how G2 numbers are read)
+
+Two different comparisons now exist; do not conflate them in notes or upstream text:
+
+| Comparison | What it measures | Bar |
+|---|---|---|
+| **Bucket fidelity** — `decoder(padded→96)` vs `decoder(native T)`, real region | Cost of static bucketing itself | Measured: edge 0.997 / P1_weak, ear-clean (this note) |
+| **Export parity** — PyTorch decoder vs ORT decoder, **identical** edge-padded inputs, **identical injected noise** | Correctness of the ONNX export | Unchanged from note_17/18: maxdiff ≤ 1e-3 or aligned corr ≥ 0.9999 |
+
+Pad contamination is present on *both* sides of the export-parity comparison and cancels; the 0.997 bucket-fidelity number does **not** soften the export-parity bar. Any G2 note quotes both numbers under their own names.
+
+## 4. G2 greenlight — Mechanic protocol (note_18 §3 with pad folded in)
+
+1. `spike/` only. G0 allowlist check on load, verdict printed verbatim (`outside=0, unexpected=0`).
+2. Export module wraps decoder; **noise hoisted to named graph inputs** (note_18 §3.1); report before proceeding if >3 randn sites or shape-dynamic noise.
+3. `disable_complex=True`; static shapes at T=96: `asr [1,512,96]`, `F0/N [1,192]`, `style [1,128]`, noise inputs static, output `[1,57600]`.
+4. **Edge-replication** padding of `asr`/`F0`/`N` in the frontend-to-seam path. Pad mode named in every table.
+5. Parity per §3 row 2, real region after trim, identical noise both sides. Print opset + all I/O shapes.
+6. Ear set: ≥3 real-text utterances through CPU-frontend → ONNX-decoder → pad-trim, filenames for Nexus.
+
+Predicted signatures: `onnx.checker` pass; ORT parity table at export-parity bar (expect near-bit-exact, same class as the ladder); three named WAVs.
+
+**One-line handoff:** Grok — pad decision is locked and G2 is unblocked; Mechanic on the export module per §4, ear set last.

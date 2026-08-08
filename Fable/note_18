@@ -1,0 +1,74 @@
+# Fable/note_18 — G0 Amendment (binding) + G2 Export Design Addendum
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/25 (Grok, G0/G1 spike run)
+**Path:** Spike. Ship freeze unchanged (note_17 §4).
+
+---
+
+## 1. Acknowledgments and record
+
+- **G1 PASS confirmed** — and independently re-verified by me from the shipped artifacts: `g0_strict_load.json` partitions to exactly 116 AdaIN affine keys + 5 `CustomSTFT` buffers, zero other missing, zero unexpected; `ladder_table.csv` is 426/426 rungs at maxdiff 0 with no shape mismatches. Bit-exact beats the ≤1e-4 bar with room to spare.
+- **Nexus ear verdict logged:** `ref.wav`, `standalone_captured.wav`, `standalone_constructed.wav` — all three PASS, clean voice, no additional utterances (Nexus, 2026-08-07).
+- **Weekend maxdiff ~0.075 is superseded** (honest-log: mark, don't delete). A bit-exact ladder on the same seam proves the old number was an artifact of the hand-mirror/load path, not the model. Closed.
+- Grok's "formal A without A-damage" framing is correct and correctly refused to silent-rewrite the gate. This note is the rewrite, done in the open.
+
+## 2. G0 amendment (binding on Nexus ack)
+
+note_17 §2 G0 is amended from "zero missing, zero unexpected" to:
+
+> **G0 PASS** = `unexpected_keys == []` **and** every missing key matches the structural allowlist:
+> 1. `*.norm.weight` / `*.norm.bias` where the module is an AdaIN `InstanceNorm1d` with `affine=True` (absent from the v1.0 checkpoint; identity defaults; same behavior as the official `KModel` strict=False load), or
+> 2. `generator.stft.*` buffers (`window`, `weight_forward_real/imag`, `weight_backward_real/imag`) — deterministic derived buffers built by `CustomSTFT` under `disable_complex=True`, not trained weights.
+>
+> **Any missing key outside the allowlist, or any unexpected key, is a hard stop.** The allowlist check must be automated in every downstream script that loads the decoder (G2 export script included) — printed verbatim, not eyeballed.
+
+Rationale for keeping it strict-plus-allowlist rather than reverting to `strict=False`: the whole point of G0 is that a silent key drop was our prime suspect for a real defect. The allowlist encodes *why* these specific 121 keys are safe; anything new showing up must stop the line again.
+
+## 3. G2 design addendum — decisions locked before export code
+
+### 3.1 Noise handling (decision: hoist to graph input)
+
+The decoder's NSF source uses `randn` at inference (why the ladder needed seed 0). For ONNX export this cannot stay implicit. Order of preference:
+
+1. **Hoist noise to an explicit graph input.** Mechanic greps the decoder forward path for every `randn`/`randn_like` call site, and wraps the decoder in an export module whose `forward(asr, F0, N, style, noise…)` takes each noise tensor as an input. CPU frontend owns RNG. This keeps G2 parity checks deterministic (feed the same noise to PyTorch and ORT), avoids betting on `RandomNormal` op support/perf in the OV GPU plugin, and preserves the option of seeded reproducibility in the server.
+2. **Fallback only if hoisting is invasive** (e.g., randn buried in a loop with shape dependencies): freeze one noise realization as a constant buffer. Risk: identical aperiodic texture every utterance — probably inaudible for a vocoder noise branch, but that is exactly an ear-gate question, so if we take this fallback, the G2 ear set must include two perceptually similar sentences so Nexus can listen for repeated-texture artifacts.
+
+Prediction: hoisting works; expected call sites are in the harmonic-plus-noise source module and number 1–2. If the Mechanic finds >3 sites or shape-dynamic noise, report before proceeding.
+
+### 3.2 STFT mode (decision: `disable_complex=True` for export)
+
+The ladder already ran this configuration and it exists in source precisely for export. The 5 derived buffers bake in as constants. Keep it; no complex ops reach the graph.
+
+### 3.3 Fixed T for G2 (decision: T_BUCKET = 96 frames)
+
+Ladder text lands at T=90 → pads to 96. Audio out is exactly 600×T samples (57,600 @ 24 kHz), consistent with the lattice finding. Export with fully static shapes: `asr [1,512,96]`, `F0/N [1,192]`, `style [1,128]`, noise inputs at their derived static shapes, output `[1, 57600]`. The production bucket ladder (multiple T compiles) is a G3 concern; G2 proves one bucket end to end.
+
+### 3.4 Padding-statistics sub-experiment (new, falsifiable — run *before* the ear set)
+
+Real risk flagged now rather than discovered in G3: the decoder's instance norms normalize over the **time** axis, so zero-padded seam frames (6 of 96 here) contaminate the normalization statistics of the *real* frames. Unlike token-level padding in the monolith, feature-level padding changes the math of the un-padded region.
+
+Sub-experiment (pure PyTorch, CPU, minutes): compare `decoder(unpadded T=90)` vs `decoder(padded T=96)` truncated to the real 54,000 samples, same weights, same noise.
+
+- **Branch P1 (expected):** real-region maxdiff small but nonzero (order 1e-3–1e-2 waveform units), aligned correlation ≥ 0.999 → proceed to export; ears remain the final gate per house rule.
+- **Branch P2:** audible-scale divergence (correlation < 0.99 or gross level shift) → try edge-replication padding of `asr`/`F0`/`N` instead of zeros; re-run. If still P2-class, the static-bucket premise needs a redesign (e.g., per-bucket export sized to exact T ladder with finer steps) **before** any OV work — this is cheaper to learn now than inside the G3 matrix.
+- Record the measured numbers in the note either way; this becomes the padding-honesty citation when we later document RTF denominators (WORKFLOW.md measurement rule 4).
+
+### 3.5 G2 parity methodology (restating note_17 with the above folded in)
+
+- PyTorch reference and ORT-CPU export compared **with identical injected noise**.
+- Parity measured on the real region after trim, padded region excluded, and the note says so explicitly.
+- Bars unchanged: maxdiff ≤ 1e-3 or aligned corr ≥ 0.9999, plus Nexus ear PASS by filename on ≥3 real-text utterances through CPU-frontend → ONNX-decoder → pad-trim.
+- Export script lives in `spike/`, runs the G0 allowlist check on load, and prints opset + input/output shapes verbatim for the note.
+
+## 4. Predicted log signatures
+
+- G0 allowlist check: `missing outside allowlist = 0, unexpected = 0` printed by the export script.
+- Noise hoist: export module forward signature printed with named noise inputs and static shapes.
+- P1: sub-experiment table with real-region maxdiff and corr; one-line branch verdict.
+- G2: `onnx` checker pass, ORT parity table, three WAV filenames for Nexus.
+
+---
+
+**One-line handoff:** Grok — on Nexus ack: fold §2 into the gate record, then Mechanic on the G2 export module per §3, with §3.4 run and reported before the ear set is synthesized.

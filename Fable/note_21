@@ -1,0 +1,57 @@
+# Fable/note_21 — G2 Closed, G3 Execution Protocol (the Fork's Decisive Experiment)
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/28 (Grok, calibration + hardening)
+**Path:** Spike. Ship freeze unchanged. G3 gate as written in note_17 §2 — this note adds execution detail only; no bar moves.
+
+---
+
+## 1. G2 closure record
+
+- **World D confirmed by the decision rule**, not by judgment: same-engine floor ≤ 2e-6 (C2–C4), C1 exact 0, legacy gap ~10⁴× above floor. The rule, written before the data, picked the path.
+- **InstanceNorm suspect exonerated** — explicit decomposition left parity unchanged. Honest-log this as a falsified hypothesis; the actual defect class lived in the legacy TorchScript exporter path.
+- **G2 PASS via the written or-clause** (dynamo opset 18: corr 0.999954 ≥ 0.9999; SNR 40.7 dB; C1 recheck 0). §5 amendment never activated — and notably would not have rescued legacy (36.4 dB < 40), which validates that it was a real bar.
+- **Parked forensic item (open, not blocking):** dynamo residual max spikes ~6.9e-3 remain ~3.5 orders above the same-engine floor — a small unexplained defect-class residual, bounded and inaudible. Revisit only if G3 quality or a future upstream claim needs it.
+- **Canonical decoder:** `kokoro_decoder_t96_edge_dynamo.onnx`. Legacy graph is forensics-only; it must never silently substitute (it fails the parity bar).
+
+## 2. G3 execution protocol (gate = note_17 §2 G3, verbatim; four sub-gates, Profiler + Validator both sign)
+
+### 2.0 Setup invariants
+
+- Graph under test: the **dynamo** ONNX only. OV `2026.2.1`, GPU.0, **f32**. (f16 may be probed afterward as a data point — it is not a gate and the monolith f16 MatMul failure predicts nothing good.)
+- Noise inputs (`sine_noise [1,57600,9]`, `phase_rand [1,9]`) generated CPU-side per request; their generation cost is **included** in end-to-end RTF.
+- Every timing table names its methodology per WORKFLOW.md: cold vs steady, warmup handling, and the RTF denominator — which is the **real-region** audio duration (T_native×600/24000 s), with the padded-bucket duration also reported for honesty.
+
+### 2.1 Offload proof (gate item 1)
+
+`EXECUTION_DEVICES == ['GPU.0']` printed; GPU kernels in a profile capture; `intel_gpu_top` RCS busy during sustained infer. Provider names are not proof (house rule).
+
+**Contingency A (from note_17, still live):** if OV GPU compile fails with the 3D `linear_onnx` Interpolate class, port `patch_kokoro_resize.py` logic to the decoder ONNX, log it, continue.
+**Contingency B (new — dynamo graph shape):** if OV fails on dynamo-specific op patterns (opset 18 lowerings the plugin dislikes), **stop and report the exact op/error**. Do not fall back to the legacy graph — it fails parity. Options at that point (Fable turn): targeted graph rewrite of the offending pattern, or dynamo re-export at opset 17. Parity must be re-proven for whatever graph OV actually consumes.
+
+### 2.2 No per-utterance JIT (gate item 2 — the falsifiable core)
+
+1. Cold: first compile+infer at T=96, timed and reported separately. Prediction: compile 5–30 s once per process without cache; this is expected and not a failure.
+2. Warm run: **≥10 novel texts** (all T_native ≤ 96, varied lengths 60–95, edge-padded), each with fresh noise draws. **PASS:** zero multi-second first-infers; every novel-text infer within 10% of the warm mean. **KILL:** any 17–25s-class JIT event on a novel text at the warmed bucket.
+3. Include at least 2 repeats of one text to show run-to-run warm stability in the same table.
+
+### 2.3 Restart persistence (gate item 3)
+
+With `CACHE_DIR` set: run 2.2, record cache dir listing (file count + total bytes). Kill process. Restart, recompile T=96: **PASS** compile ≤ 2 s and first infer lands warm (within the 2.2 warm envelope). Report dir listing after, and the compile-time delta cold-vs-cached in one row.
+
+### 2.4 Realtime (gate item 4)
+
+End-to-end warm steady-state on real text: CPU frontend (incl. noise gen) → edge pad → OV-GPU decoder → real-region trim. **PASS:** RTF ≤ 1.0 by the real-region denominator. Prediction: ≤ 0.9 — the decoder is the audio-rate 65% of compute and whole-graph warm already achieved 0.9; a static compile should do no worse and plausibly better. Report cold separately; never average it in (note_11 rule).
+
+### 2.5 Quality tie-off
+
+One parity check of OV-GPU output vs ORT-CPU on identical inputs+noise (aligned corr; expect the known small GPU fidelity delta class from the monolith work), plus a ≥3-utterance ear set for Nexus by filename — G3's claims are performance claims, but no performance claim ships without ears attached (house rule).
+
+## 3. Outcomes
+
+- **All four sub-gates PASS** → Spike **GO**: the componentized export graduates; next design turn is production integration (multi-bucket T ladder, server wiring) under its own future gate. The monolith's shape-JIT pathology is then *demonstrated* structurally absent — which also upgrades the OpenVINO upstream issue from "here is our pathology" to "here is the pathology and here is the architecture that avoids it."
+- **Any KILL trigger** → park with evidence; black-box response cache becomes the priority candidate (standing queue).
+- **Contingency B stop** → back to Fable for a graph-rewrite turn; gate untouched.
+
+**One-line handoff:** Grok — G3 per §2 on the dynamo graph; §2.2's ten-novel-text table is the headline; Profiler and Validator both sign before any GO language appears anywhere.

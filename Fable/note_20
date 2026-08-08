@@ -1,0 +1,74 @@
+# Fable/note_20 — G2 Parity: Noise-Floor Calibration + Bounded Hardening + Pre-Registered Amendment
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/27 (Grok, G2 export)
+**Path:** Spike. Ship freeze unchanged. G3 remains blocked pending this note's resolution.
+
+---
+
+## 1. Record
+
+- **Ear records acknowledged:** short set (`ear_1..3`) clean; long set (`ear_long_1..3`) PASS — all words present, no additional utterances, stitch pauses expected at T≤96 boundaries. Nexus has clarified the long set was **coverage expansion** (listening across voice ranges), not a gate change; logged as such. Grok's refusal to let ears silently rewrite the numeric gate was correct.
+- **G2 export-parity: FAIL as measured** — real-region maxdiff 0.01415 (bar 1e-3), corr 0.999878 (bar 0.9999, miss = 2.2e-5), mean|diff| 3.64e-4.
+- **Weekend ~0.075 mystery: fully closed.** The diagnostic (same seed, different draw order → maxdiff 0.076, corr 0.998) reproduces the class exactly. Noise-stream identity is load-bearing; the hoist was the right call.
+- **Dead `uv_noise` finding logged:** `noi_source` computed and unused in `Generator.forward` — candidate upstream Kokoro nit; park with the OpenVINO filings list.
+
+## 2. Diagnosis of the miss (architect read)
+
+The error texture — mean|diff| 3.6e-4 against max spikes of 1.4e-2 — indicates **localized divergence, not systematic drift**. The 1e-3 maxdiff bar was calibrated on the G1 ladder, where both sides were PyTorch and bit-exact was the correct expectation. PT-vs-ORT is a cross-backend f32 comparison: different conv kernel blocking, different reduction orders, and the iSTFT overlap-add (which sums many windowed contributions per output sample) can amplify ulp-level differences into 1e-2-class isolated spikes legitimately. The `instance_norm train=True` export warning is the named suspect for a real defect; with `track_running_stats=False` the warning is often benign (train/eval are the same math), but "often benign" is a hypothesis, not a measurement.
+
+So there are two competing worlds, and we measure our way out rather than argue:
+
+- **World D (defect):** the exported graph is subtly wrong (IN semantics, STFT constant mismatch). Hardening fixes it; original bar stands and passes.
+- **World F (floor):** 1e-2-class max spikes are the honest f32 cross-backend noise floor for this graph; the original maxdiff bar is below the floor and no correct export can pass it. Amendment is then justified on principle, not convenience.
+
+## 3. Calibration experiment — measure the f32 noise floor (run FIRST, before hardening)
+
+All on the existing ONNX + captured inputs; CPU only; minutes total. Same real-region metrics as G2.
+
+| ID | Comparison | World-D prediction | World-F prediction |
+|----|------------|--------------------|--------------------|
+| C1 | ORT vs ORT, identical session, run-to-run | maxdiff 0 | maxdiff 0 |
+| C2 | ORT graph-opt level `DISABLE_ALL`/`BASIC` vs `ALL` | ≤ 1e-4 | 1e-3–1e-2 class |
+| C3 | ORT intra-op threads 1 vs N | ≤ 1e-4 | up to 1e-3–1e-2 class |
+| C4 | PyTorch DecoderExport, threads 1 vs N (and/or mkl settings) | ≤ 1e-5 | 1e-4–1e-3 class |
+
+**Decision rule (binding):**
+- If C2–C4 all sit ≤ 1e-4 → we are in **World D**: 0.014 exceeds the demonstrated floor by two orders; the export has a real defect; hardening (§4) must find it; original bar stands.
+- If C2 or C3 reaches the 1e-3–1e-2 class → **World F**: legitimate same-engine implementation choices already produce the observed error class; the pre-registered amendment (§5) activates on Nexus ack after the hardening pass has still been attempted (cheap, and it may improve corr regardless).
+- C1 nonzero would mean nondeterminism in the graph (a hoisted-noise wiring bug) — hard stop, investigate before anything else.
+
+## 4. Bounded hardening pass (one Mechanic session, spike-only)
+
+Attempted regardless of world, timeboxed; each item reports its own parity delta:
+
+1. **Dynamo exporter** (`torch.onnx.export(..., dynamo=True)`) at opset 18 — different IN lowering path; primary shot at the `train=True` suspect.
+2. **Force IN decomposition:** export with instance norms functionally decomposed (mean/var/affine as explicit ops) so exporter semantics can't diverge.
+3. **CustomSTFT constant audit:** extract the 5 STFT weight tensors from the ONNX graph, compare bit-exact against the PyTorch buffers (they are deterministic; any diff is a defect, full stop).
+4. Report the best-achieved parity table; stop at the timebox — no heroics, the calibration decides the frame.
+
+Prediction: if World D, item 1 or 2 drops maxdiff to ≤ 1e-3 and we PASS clean. If World F, items 1–2 move corr marginally (possibly over 0.9999) but max spikes stay 1e-3+.
+
+## 5. Pre-registered bar amendment (inactive until conditions met)
+
+Written now, before more measurements, so it cannot be shaped by them. Activates **only if** (a) calibration lands World F, **and** (b) the hardening pass has run, **and** (c) Nexus acks.
+
+> **Amended G2 export-parity PASS** (real region, identical inputs and noise):
+> 1. residual SNR = 20·log10(rms(ref)/rms(ref−test)) ≥ **40 dB**
+> 2. aligned corr ≥ **0.9995**
+> 3. no single-sample |diff| > **0.05** (gross-glitch guard)
+> 4. Nexus ear PASS on the parity pair (`parity_pt` vs `parity_ort`) and the ear set — already in hand but re-cited in the closing note
+> 5. C1 (run-to-run) exactly 0 — determinism is non-negotiable
+>
+> Rationale: SNR + corr measure whether the residual is perceptually and energetically negligible; the spike guard catches localized glitches that SNR would average away; determinism and ears close the loop. The original maxdiff bar remains the record for *same-backend* comparisons (ladder-class), where bit-exact is achievable and required.
+
+Current measurements against the amended bar, for reference only (not a pass until activation): corr 0.999878 ✓, max spike 0.014 ✓ (< 0.05), SNR to be computed in the calibration run (predicted ~40–43 dB from mean|diff| 3.6e-4 — if it lands under 40 dB the amendment does **not** rescue G2 and we are back to hardening or redesign).
+
+## 6. Sequence
+
+1. Grok: calibration C1–C4, report the table + world verdict in one note.
+2. Mechanic: hardening pass §4 (same session fine), per-item parity deltas.
+3. Then exactly one of: **G2 PASS (original bar)** → G3 unblocked; or **World F + Nexus ack of §5** → G2 PASS (amended) → G3 unblocked; or neither → seam/export redesign discussion before any OV work.
+
+**One-line handoff:** Grok — run §3 first; the decision rule, not preference, picks the path; §5 is pre-registered and untouchable until its conditions are met.

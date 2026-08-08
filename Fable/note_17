@@ -1,0 +1,115 @@
+# Fable/note_17 — Componentized-Export Spike: Written Gate + Hook-Ladder Design
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**Path:** Spike (per WORKFLOW.md lens B). Ship path frozen — see "Do not touch."
+**Purpose:** This note satisfies the new workflow rule that the spike's go/kill gate is written and Nexus-acknowledged *before* implementation begins. It also locks the design for the forward-hooks validation ladder that isolates the seam B maxdiff ~0.075 mismatch.
+
+---
+
+## 1. What's changing and why
+
+The weekend peek left one open defect: the hand-mirrored seam B recomposition (`asr`, `F0`, `N`, `style` → decoder → audio) is not parity-clean against the full-model reference (maxdiff ~0.075 on the waveform). Prime suspect is the `strict=False` state-dict load silently dropping or mismatching decoder weight keys. Until that is isolated and fixed, no ONNX export happens — exporting a wrong decoder would poison every downstream measurement.
+
+Sequence (unchanged from note_16, now gated):
+
+```text
+G0 strict-load  →  G1 recomposition parity (hook ladder)
+      →  G2 decoder-only ONNX @ fixed T (ORT parity + ears)
+      →  G3 OV-GPU static matrix (cold/warm/restart/CACHE_DIR)  →  GO / KILL
+```
+
+Each gate is a hard precondition for the next. No gate may be relaxed after its measurement exists; changes to a gate require a Nexus call recorded in the notes.
+
+---
+
+## 2. The go/kill gate (binding)
+
+### G0 — Strict load
+
+The decoder submodule's state dict, filtered by key prefix from the v1.0 checkpoint, loads with `strict=True` and **zero** missing keys and **zero** unexpected keys. The `load_state_dict` return value is printed and captured in the note — not just "it didn't throw."
+
+*Kill trigger:* none at this gate — a failure here is the bug we're hunting, and it routes into the ladder (§3).
+
+### G1 — Recomposition parity
+
+Hand-mirrored seam B forward vs. hooked full-model reference, identical inputs, f32, CPU, `model.eval()`, `torch.no_grad()`:
+
+- **PASS:** waveform maxdiff ≤ 1e-4 (expected ≤ 1e-5 — same modules, same weights, same op order should be near bit-exact; 1e-4 allows op-reordering float noise).
+- **KILL:** after G0 passes and the ladder has isolated the divergence rung, if parity still cannot reach maxdiff ≤ 1e-3, the seam as designed is wrong (hidden cross-module state or an un-mirrorable code path). Redesign the cut point or kill — do not ship a "close enough" seam into export.
+
+### G2 — Decoder-only ONNX at fixed T
+
+Export at one bucket size first (suggest the T equivalent of token bucket 96, our best-characterized shape).
+
+- **PASS:** ORT-CPU decoder output vs. PyTorch decoder: maxdiff ≤ 1e-3 *or* aligned correlation ≥ 0.9999, **and** Nexus ear PASS by filename on ≥ 3 real-text utterances synthesized through the full CPU-frontend → ONNX-decoder path.
+- **KILL:** export requires dynamic axes to function at all (defeats the entire premise), or parity/ears fail with no isolatable cause.
+
+### G3 — OV-GPU static matrix (the fork's decisive experiment)
+
+All four must pass; Profiler and Validator both sign per WORKFLOW.md.
+
+1. **Real offload:** `EXECUTION_DEVICES == ['GPU.0']`, GPU kernels in the profile, `intel_gpu_top` RCS busy. Provider names are not proof (house rule).
+2. **No per-utterance JIT — the falsifiable core.** After one cold compile+infer at a bucket, run ≥ 10 *novel* texts padded to that bucket. **PASS:** zero multi-second first-infers; every novel-text infer within 10% of the warm mean. **KILL:** any novel text at a warmed bucket triggers a 17–25s-class JIT event — that would mean the pathology is not shape-dynamism-only and the fork's premise is dead.
+3. **Restart persistence.** With `CACHE_DIR` set: kill process, restart, recompile the same bucket. **PASS:** compile ≤ 2s (precedent: our 0.9s static bucket compiles) and first infer lands warm. **KILL:** restart re-pays the JIT cost — CACHE_DIR not persisting static decoder compiles removes the headless-box value proposition.
+4. **Realtime.** Warm steady-state end-to-end (CPU frontend + GPU decoder + pad-trim) RTF ≤ 1.0 on real text, methodology per WORKFLOW.md (cold reported separately, warmup discarded, bucket-pad denominators called out). Prediction: ≤ 0.9, since the decoder is the audio-rate 65% of compute and whole-graph warm already hit 0.9.
+
+*Spike GO* = G0–G3 all PASS → the componentized export graduates from spike to a planned ship-path integration (its own future gate). *Spike KILL* = any KILL trigger above → park with the evidence in `notes/`, and the black-box tier (response cache) becomes the priority candidate.
+
+### Contingency (not a gate failure)
+
+The decoder contains the sine generator / iSTFT region where the original 3D `linear_onnx` Resize and dynamic-rank STFT blockers lived. A from-source static-shape export *should* avoid the dynamic-rank issue entirely, but may still emit 3D Resize. If OV-GPU compile fails with the same Interpolate error class: apply the existing `patch_kokoro_resize.py` logic to the decoder ONNX and continue. That's a known, ported fix — log it, don't treat it as a branch outcome.
+
+---
+
+## 3. Forward-hooks validation ladder (G0→G1 instrument)
+
+### Method
+
+Register forward hooks on every named module along the seam B path in the *reference* full model; run one reference synthesis and capture each module's output tensor. Then run the hand-mirrored recomposition on the **same captured seam inputs** and compare tensors rung by rung, top of the decoder downward. Compare in f64 summaries (maxdiff, mean |diff|, cosine) but keep computation f32 to match production.
+
+Rung 0 is the seam inputs themselves: `asr`, `F0`, `N`, `style` as captured from the reference forward vs. as constructed by our recomposition. Subsequent rungs are the decoder's submodules in `named_modules()` order (expected StyleTTS2-family names — `F0_conv`, `N_conv`, `asr_res`, encode/decode blocks, `generator.*` — but the script must discover names dynamically from the live checkpoint, not hardcode mine).
+
+### Predicted branches (falsifiable)
+
+- **Branch A — dropped/mismatched weights (prime suspect).** G0's strict filtered load reports non-empty missing/unexpected keys for `decoder.*`. Ladder signature: parity is clean (≤ 1e-6) through every rung up to the first module whose weights were dropped (left at init), then maxdiff **jumps discontinuously** to O(0.01–0.1) at that one rung and stays large. One named module, one jump. Fix is mechanical: correct the key filtering/remapping, re-run ladder, expect G1 PASS same session.
+- **Branch B — seam input construction bug.** G0 is clean (zero missing/unexpected) but **rung 0 already diverges**: our constructed `asr`/`F0`/`N`/`style` don't match the hooked reference. Candidate causes, in order: style vector convention (the `(510,1,256)` voice tensor's 128/128 split or token indexing), F0/N 2×T alignment off-by-one, padding applied before vs. after feature computation. Fix location is the frontend recomposition, not the decoder.
+- **Branch C — mode/state mismatch.** G0 clean, rung 0 clean, and divergence **grows gradually and monotonically** across rungs (order 1e-4 → 1e-2) with no single jump. Signature of `eval()` not applied, a norm layer in training mode, or a dtype boundary. Fix: audit mode/dtype; a single flag.
+
+A result matching none of these (e.g., clean rungs everywhere but final waveform diverges) means the reference hook coverage missed a code path outside `named_modules()` — for instance a functional call in `forward` — and the ladder gets one extension pass before any redesign talk.
+
+### Predictions on cost
+
+Ladder runs on CPU: seconds per utterance, full ladder < 5 minutes wall clock including both forwards. Zero GPU involvement until G2 passes. If the ladder takes materially longer than that, something is wrong with the harness, not the model.
+
+### Implementation protocol (for the Mechanic)
+
+Per WORKFLOW.md this is Mechanic-implemented against this locked design; Orchestrator QCs. Requirements:
+
+1. New file `spike/hook_ladder.py` (spike directory per the freeze rule — nothing under `scripts/` is touched).
+2. Dynamic module discovery via `named_modules()`; no hardcoded module names beyond the `decoder.` prefix filter.
+3. G0 check first, in the same script: filtered `strict=True` load, print the full missing/unexpected lists verbatim.
+4. Fixed seed, fixed input text, fixed voice (`af_bella`), speed 1.0. Same text every run — this is a parity instrument, not a coverage test.
+5. Output: one decisive table — rung name, shape, maxdiff, mean |diff|, cosine — printed and written to `notes/` material by the Orchestrator, with the branch verdict (A/B/C/none) stated in one line.
+6. Heredoc rule applies: it's a `.py` file, run as a file (WORKFLOW.md host hygiene).
+
+---
+
+## 4. Do not touch (ship-path freeze)
+
+- `scripts/kokoro_server.py` (v1.1.7 running, v1.1.8 pending Nexus approval — separate thread)
+- `models/patched/kokoro-v0_19.gpu4d.stft.onnx` and everything the ort-cpu default depends on
+- All spike code and artifacts live under `spike/`; server changes, if the spike graduates, come back through the ship-path loop with their own gate.
+
+---
+
+## 5. Expected log signatures
+
+- G0 PASS: `missing_keys=[] unexpected_keys=[]` printed verbatim.
+- Branch A: ladder table shows a single rung where maxdiff jumps ≥ 3 orders of magnitude vs. the rung above it.
+- G3.2 PASS: per-infer timing log with 10+ novel texts, no entry exceeding warm-mean × 1.1, and explicitly **no** occurrence of the 17–25s JIT signature we've documented on the monolith.
+- G3.3 PASS: restart log showing compile ≤ 2s with `CACHE_DIR` populated (dir listing size before/after in the note).
+
+---
+
+**One-line handoff:** Grok — fold the three WORKFLOW.md edits, then dispatch the Mechanic on `spike/hook_ladder.py` per §3; the gate in §2 is binding once Nexus acks this note.

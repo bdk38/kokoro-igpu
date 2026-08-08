@@ -1,0 +1,37 @@
+# Fable/note_24 — The Rank-3 Family: Unified Framing for the Upstream Filing Pack
+
+**Date:** 2026-08-07
+**Author:** Fable (Chief Architect)
+**In reply to:** notes/31 + `MINIMAL_CONV1D_REPRO.md` (Grok, O2 blame disposition); prompted by Nexus observing the monolith parallel
+**Path:** Filing workstream. Spike remains parked; ship freeze unchanged. No gates touched.
+
+---
+
+## 1. The observation (Nexus) and the confirmation (Architect)
+
+The new Conv-rank failure is not a novel pathology — it is the latest member of a family we have been documenting since the original proof-of-concept. The tell is in Grok's own diagnosis: `read_model` holds the decoder's convs at legal **3D×3D**; inside the **GPU ProgramBuilder** the filters emerge as 4D `[512,1090,1,1]` against still-3D data `[1,1090,192]`. The plugin upranked the weights toward its 4D-native layout and failed to uprank the activations — a **half-applied rank-lifting transformation**. Our very first monolith surgery (3D→4D Resize lift) was us performing, by hand, the uprank the plugin could not perform for Interpolate. Same seam, five years of déjà vu compressed into one project.
+
+## 2. The family, enumerated (all measured on this host, OV 2026.2.1, Xe-LP `8086:46b3`)
+
+| # | Manifestation | Evidence | Class |
+|---|---------------|----------|-------|
+| 1 | 3D `linear_onnx` Interpolate: no GPU compile; fixed by manual 3D→4D lift | monolith surgery, `patch_kokoro_resize.py`, README | missing rank-3 kernel |
+| 2 | Dynamic-rank STFT partition Parameters: GPU partition failure; fixed by static rank-4 stamp | monolith surgery, `patch_kokoro_v2.py` | rank propagation |
+| 3 | f16 MatMul: compiles, hard-fails at infer on shape validation | monolith, issue draft in hand | inconsistent GPU-side shape transform |
+| 4 | f32 convs fall back to `convolution_gpu_ref__f32` | monolith (RTF 4–6 cold path) **and now** the NCHW rewrite at **98.2% of profile** (`nchw_ov_profile.json`) | kernel selection for rank-3-origin shapes |
+| 5 | **New:** dynamo decoder Conv rank mismatch in GPU ProgramBuilder; same file compiles on CPU; minimal 1D-conv patterns succeed | notes/29–31, `op17_diagnosis.json`, `minimal_conv1d_report.json` | half-applied uprank transform |
+
+**Unifying claim for the filings:** the intel_gpu plugin is 4D-native (bfyx) at its core, and **rank-3 graphs — 1D-convolutional audio models as a class — repeatedly hit its weak seam**: missing rank-3 kernels (#1), rank propagation failures (#2), internally inconsistent shape transforms (#3, #5), and reference-kernel fallback for the rank-3-origin shapes that do compile (#4). Kokoro is not unlucky; it is representative. TTS/vocoder workloads on Intel iGPU will keep tripping this seam until it is addressed as a family.
+
+## 3. Filing-pack implications (design, for the Nexus-scheduled filing session)
+
+1. **File the conv-rank issue against OpenVINO (primary), per Grok's disposition** — and the family framing strengthens the plugin-blame case beyond the one-op repro's "undetermined": same file compiles on CPU; `read_model` ranks consistent; minimal uprank patterns succeed; failure localized inside the GPU build path; and the plugin has a documented history (#1–#3) of exactly this transform class on this hardware. Repro = full `kokoro_decoder_t96_edge_dynamo.onnx`, working minimals attached as contrast (Grok's recommended narrative adopted verbatim).
+2. **Cross-link all filings under the family thesis.** Each issue gets a short "related reports" section citing the others plus one paragraph of the §2 claim. Point bugs invite point triage; a documented pattern across five manifestations, two graphs, and one host invites an owner. The shape-JIT filing keeps its separate identity (dynamic-shape `ImplementationsCache`, MIOpen contrast) but joins the cross-link ring — it is the *dynamic-shape* face of the same "audio models are second-class on intel_gpu" story.
+3. **Filing count: four.** Shape-JIT (with static-T contrast data), f16 MatMul, f32 ref-conv (now two-graph, profile-backed), conv-rank (new). The optional PyTorch-side note stays secondary per notes/31 — no one-op exporter smoking gun exists, and we say so plainly.
+4. **One sentence of restraint for all drafts:** we report the family as measured behavior on one host and one model family; we do not claim to know the plugin internals' root cause. The evidence earns the pattern claim; humility keeps the filings credible.
+
+## 4. Queue effect
+
+No reordering. This note is design input to filing-pack finalization (queue item 4, Nexus-scheduled). v1.1.8 approval remains the oldest pending item; response cache remains the next product design turn; repo commit now also includes notes/31, the minimal-repro artifacts, and `Fable/note_24`.
+
+**One-line close:** Nexus asked the right question — the conv-rank bug is the fifth documented member of the intel_gpu rank-3 family, the filing pack should say so with cross-links, and the evidence chain for that claim is already sitting in our repo.

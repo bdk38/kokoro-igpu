@@ -1,0 +1,29 @@
+# Kokoro iGPU TTS — Project Status (2026-08-07)
+
+**Mission:** Run Kokoro TTS on the Intel Xe-LP iGPU (i3-1215U, 15W, bdk-server) via OpenVINO for CPU offload on budget headless hardware. Realtime (RTF < 1) is the bar, not raw speed.
+
+## What's proven and shipped
+
+The original proof-of-concept succeeded: first verified Kokoro inference on Xe-LP, achieved through two surgical graph fixes (3D→4D Resize, static-rank STFT) plus the pad-tail artifact fix hardened over v1.1.1–v1.1.7 with ear-validated trim logic. The server (v1.1.7 running, v1.1.8 authored) offers ort-cpu (product default, RTF ~0.40–0.45), ov-gpu, and ov-cpu backends with token bucketing, per-chunk debug evidence, and Open WebUI integration.
+
+## The central finding (notes/19–20, fully explained)
+
+Warm state on ov-gpu is **shape-keyed**: keyed on exact output sample count, not text or bucket. Confirmed by the phase-2 discriminating experiment — different texts with equal sample counts transfer warmth; same text at speed 1.05 re-colds. Cold cost is ~17–25s of host-side kernel JIT per novel shape; warm is ~0.9 RTF. Grok's OpenVINO internals research then closed the loop with the named mechanism: the GPU plugin's `ImplementationsCache` — LRU, capacity 300 impl entries, process-local, never persisted by CACHE_DIR. Our measurements are textbook intel_gpu dynamic-shape behavior, independently corroborated by AMD MIOpen users hitting the same class of problem (Kokoro-FastAPI #454 — their stack has a persistent disk kernel cache; OpenVINO doesn't). Practical consequence: ov-gpu works but is inefficient for varied traffic; ort-cpu stays the product default.
+
+## The strategic fork (the current focus)
+
+The organizing insight from our idea sessions: **the monolithic ONNX export is the common blocker.** Every idea needing a seam into the pipeline (vocoder warmup, output-length control, intermediate caching) died on it; every surviving idea (response cache, chunk cache) treats the model as a black box. But the monolith is a property of the *export*, not the model — and the fork decision is whether to do our own componentized OpenVINO export from Kokoro's PyTorch source.
+
+Grok's research has substantially de-risked this. The source brief confirmed the seams exist as named modules with per-attribute weight keys, and identified seam B (post-alignment: `asr`, `F0`, `N`, `style` → decoder → audio) as the money cut. The internals brief upgraded the payoff from hope to documented behavior: a static-T decoder has no dynamic shapes, so the entire per-utterance JIT pathology structurally cannot occur, and CACHE_DIR persists static compiles across restarts (our own 0.9s bucket-compile hits prove that path works). The architecture: CPU front-end → features padded to T buckets → static OV-GPU decoder → existing pad-trim.
+
+The weekend peek then grounded it in the actual v1.0 weights: decoder is 53.3M of 81.8M params (65%, and the audio-rate 65%), lattice is 600 samples = one frame, F0/N run at 2×T, voices are `(510,1,256)` token-indexed. One open item: the hand-mirrored seam B wasn't bit-exact (maxdiff ~0.075) — likely a `strict=False` load bug, with the forward-hooks validation ladder planned to isolate it before any ONNX export.
+
+## Pending queue
+
+1. **v1.1.8 approval** — your call on `KOKORO_WARM_TEXT`; docs-only fallback ready. Grok smoke test follows if accepted.
+2. **Weekend spike continuation** — strict-load fix, hook-validated seam B, then decoder-only ONNX at fixed T, then the OV-GPU cold/warm/restart matrix (the fork's go/kill gate).
+3. **Three upstream OpenVINO issues** — shape-JIT (now citing their own internals docs + MIOpen contrast), f16 MatMul bug, f32 convolution_gpu_ref perf. All evidence in hand; drafts to finalize and file.
+4. **Repo commits** — v1.1.7 + notes 10–22 and the two research briefs.
+5. **Parked, unprioritized** — response cache (best black-box ROI), sentence-chunk cache, RAPL stress test with E-core affinity held fixed, capacity-bisect probe (now testing a predicted knee near 300/~4 impls-per-shape).
+
+**Bottom line:** the proof-of-concept holds, the mystery is fully solved with documentation to back it, the ship path is stable on ort-cpu, and the project is pivoted toward a well-mapped foundational bet — the componentized export — with a cheap decisive experiment queued and the current fork cleanly paused, not stopped.
