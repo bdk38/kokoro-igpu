@@ -14,7 +14,7 @@ Refreshed for post-ship board:
 - Status: both products **SHIPPED** (`poc-complete` + `prototype-complete`)
 - Dual remotes: lab monorepo `/data/intel-igpu-tts` + appliance `/data/kokoro-igpu-genai`
 - Paths table: Product A/B shipped; S0/I0 closed; filings RESEARCH HOLD
-- Open board: filings hold, optional note_35 polish, gated B backlog, decoder PARKED
+- Open board: filings hold, gated B backlog, decoder PARKED (note_35 polish **done**)
 - Tooling map: dual-remote paths; side venv deleted; `issues/submit/`
 - Onboarding pointers → notes/70–74, Fable note_33–35
 - Revision row 2026-08-08 dual-product ship closeout
@@ -30,10 +30,7 @@ Base tag: `prototype-complete` @ `8987f74` (unchanged)
 | **README §Open WebUI** | After Smoke, before Configuration (Paragraphs/None; cache+warm deploy tip) |
 | **igt fingerprint** | Comment in GPU start block |
 
-Executed on genai main as .
-
-Suggested commit message (executed):  
-`docs: WebUI wiring + docstring lineage tidy (Fable note_35)`
+Executed on genai main as **`722d075`** (`docs: WebUI wiring + docstring lineage tidy (Fable note_35)`).
 
 **No re-tag** per Architect.
 

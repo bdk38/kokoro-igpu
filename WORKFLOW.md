@@ -15,7 +15,7 @@ This document freezes the collaboration structure so it can be referenced in-cha
 | **A — PoC** | `bdk38/kokoro-igpu` (this sandbox) | **`poc-complete`** @ `f2ff370` (v1.5.1) | **`ort-cpu`** | ONNX v0.19 + patches; ov-gpu legacy proof leg |
 | **B — Prototype** | `bdk38/kokoro-igpu-genai` | **`prototype-complete`** @ `8987f74` (v2.0.0) | **`ovgenai-gpu`** | Official Kokoro-82M int8 GenAI appliance |
 
-R0 (PoC stranger clone) and R1 (genai stranger clone) both **PASS** with Nexus ears. Filings VERIFY pack under **RESEARCH HOLD** (notes/69) until Nexus clears duplicates. Product B optional polish: Fable note_35 docs-only (no re-tag). Decoder spike remains **PARKED**. B backlog (blends, chunk matrix, RAPL) needs new gates before work.
+R0 (PoC stranger clone) and R1 (genai stranger clone) both **PASS** with Nexus ears. Filings VERIFY pack under **RESEARCH HOLD** (notes/69) until Nexus clears duplicates. Product B note_35 docs polish **done** on genai `722d075` (no re-tag; notes/75). Decoder spike remains **PARKED**. B backlog (blends, chunk matrix, RAPL) needs new gates before work.
 
 ---
 
@@ -244,7 +244,7 @@ Nexus chooses which path is active for a given session. Probe/spike does not ove
 | Item | State |
 |------|--------|
 | Filings research hold | **Open** — lift only when Nexus clears file/comment/drop per draft |
-| note_35 genai docs polish | Docs-only on appliance; **no re-tag** |
+| ~~note_35 genai docs polish~~ | **DONE** genai `722d075` (notes/75); tag unchanged |
 | Product B backlog | blends-on-genai, chunk-overhead matrix, RAPL/E-core — **each needs own gate** |
 | Decoder O1–O4 | **PARKED** |
 
