@@ -68,13 +68,22 @@ Evidence: `artifacts/poc_ship/patch_regen_check.json`
 
 ## 6. Next (Nexus)
 
-1. Commit pack (this assembly)  
-2. R0 fresh-clone rehearsal  
-3. Ears on `artifacts/poc_ship/smoke/*.wav`  
-4. Tag `poc-complete`  
+1. ~~Commit pack~~ **done** `93a9489`  
+2. R0 fresh-clone rehearsal (optional remaining)  
+3. ~~Ears on smoke WAVs~~ **PASS 3/3** (2026-08-08 Nexus)  
+4. Tag `poc-complete` after push (optional)  
+
+### Nexus ear table (binding)
+
+| File | Ear |
+|------|-----|
+| `artifacts/poc_ship/smoke/ort_cpu.wav` | **PASS** |
+| `artifacts/poc_ship/smoke/ov_gpu.wav` | **PASS** |
+| `artifacts/poc_ship/smoke/ovgenai_gpu.wav` | **PASS** |
+
 
 ---
 
 ## 7. One-line
 
-**PoC assembly done: ov-gpu speaks on 2026.3; surgery regenerates byte-identical; MODELS/smoke/reproduce/INDEX in place; repo default ort-cpu v1.5.0; commit + R0 ears remain.**
+**PoC assembly done + committed `93a9489`; Nexus ears PASS 3/3 on smoke WAVs; push next; tag `poc-complete` optional after push.**
