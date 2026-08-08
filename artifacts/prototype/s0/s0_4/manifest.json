@@ -1,0 +1,65 @@
+{
+  "gate": "S0.4",
+  "model": "/data/intel-igpu-tts/spike/ov263-genai/out/kokoro-82M-int8-ov",
+  "model_repo": "OpenVINO/kokoro-82M-int8-ov",
+  "device": "GPU",
+  "voice": "af_heart",
+  "openvino": "2026.3.0-22451-8a17657b995-releases/2026/3",
+  "openvino_genai": "2026.3.0.0-3277-bd8d6542e3c",
+  "note": "int8 official pack; cross-checkpoint vs ship v0.19; ears binding",
+  "utterances": [
+    {
+      "filename": "s0_4_short1_fox.wav",
+      "path": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_4/s0_4_short1_fox.wav",
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "voice": "af_heart",
+      "wall_s": 14.626,
+      "audio_s": 3.25,
+      "rtf_wall": 4.5,
+      "peak_abs": 0.305605411529541,
+      "samples": 78000,
+      "sample_rate": 24000,
+      "bytes": 156044
+    },
+    {
+      "filename": "s0_4_short2_hello.wav",
+      "path": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_4/s0_4_short2_hello.wav",
+      "text": "Hello, this is a short speech generation test.",
+      "voice": "af_heart",
+      "wall_s": 4.997,
+      "audio_s": 3.25,
+      "rtf_wall": 1.538,
+      "peak_abs": 0.26011955738067627,
+      "samples": 78000,
+      "sample_rate": 24000,
+      "bytes": 156044
+    },
+    {
+      "filename": "s0_4_short3_keys.wav",
+      "path": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_4/s0_4_short3_keys.wav",
+      "text": "Please remember to bring your keys, wallet, and passport.",
+      "voice": "af_heart",
+      "wall_s": 20.841,
+      "audio_s": 3.725,
+      "rtf_wall": 5.595,
+      "peak_abs": 0.3271465301513672,
+      "samples": 89400,
+      "sample_rate": 24000,
+      "bytes": 178844
+    },
+    {
+      "filename": "s0_4_multi_passage.wav",
+      "path": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_4/s0_4_multi_passage.wav",
+      "text": "Kokoro is an open-weight text to speech model with eighty two million parameters. Despite its lightweight architecture, it delivers comparable quality to larger models while being significantly faster and more cost efficient. This multi-sentence passage is for ear evaluation of the official OpenVINO path.",
+      "voice": "af_heart",
+      "wall_s": 87.874,
+      "audio_s": 19.875,
+      "rtf_wall": 4.421,
+      "peak_abs": 0.4290506839752197,
+      "samples": 477000,
+      "sample_rate": 24000,
+      "bytes": 954044
+    }
+  ],
+  "ear_instructions": "Nexus: PASS/FAIL by filename. Want clear speech, no pad-moan, no missing words, no garbage. \u22653 shorts + multi must PASS for S0.4."
+}

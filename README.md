@@ -90,6 +90,9 @@ Admin → Settings → Audio → OpenAI-compatible:
 
 ## 2. Run the Prototype (Product B)
 
+*Product B development continues at https://github.com/bdk38/kokoro-igpu-genai (seeded from this repo @ `poc-complete`).*
+
+
 Official pack + GenAI (evolutionary path after S0/I0):
 
 ```bash
@@ -186,4 +189,4 @@ Historical 2026.2.1 pins: [reproduce/2026.2.1/](reproduce/2026.2.1/).
 - OpenVINO / GenAI: Intel  
 - This server & measurements: see [LICENSE](LICENSE), [CONTRIBUTORS.md](CONTRIBUTORS.md)
 
-**Server version:** 1.5.0 (PoC face · ort-cpu default).
+**Server version:** 1.5.1 (PoC face · ort-cpu default).

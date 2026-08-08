@@ -29,6 +29,16 @@
 
 Under `Fable/` — especially note_29–33 (I0, reorg, PoC ship).
 
+## Prototype evidence (Product B)
+
+| Path | Contents |
+|------|----------|
+| `artifacts/prototype/` | S0/I0 ear + matrix WAVs (organized 2026-08-08) |
+| `spike/ov263-genai/` | Historical S0 probe scripts |
+| `notes/73` | Segregation inventory — **hold for Architect** |
+| Sibling repo | https://github.com/bdk38/kokoro-igpu-genai (**empty shell** — not populated) |
+| `models/kokoro-82M-int8-ov/` | Official pack (download; see MODELS.md) |
+
 ## Host inventory
 
 `notes/00-host-inventory.txt`

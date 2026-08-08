@@ -2,7 +2,7 @@
 """
 kokoro_server.py — OpenAI-compatible TTS server for Kokoro on bdk-server.
 
-OpenAI-compatible Kokoro TTS server. Product default (v1.5.0 PoC face): **ort-cpu**; Prototype: KOKORO_BACKEND=ovgenai-gpu (official Kokoro-82M int8 GenAI on Intel iGPU) per Nexus cutover after I0-GO-default-candidate. Fallback: KOKORO_BACKEND=ort-cpu (v0.19 ONNX). Legacy: ov-gpu patched ONNX (I0.5). Novel shapes still pay first-infer tax; prefer KOKORO_TTS_CACHE=1 and chunk-shaped KOKORO_WARM_TEXT in deploy.
+OpenAI-compatible Kokoro TTS server. Product default (v1.5.1 PoC face): **ort-cpu**; Prototype: KOKORO_BACKEND=ovgenai-gpu (official Kokoro-82M int8 GenAI on Intel iGPU) per Nexus cutover after I0-GO-default-candidate. Fallback: KOKORO_BACKEND=ort-cpu (v0.19 ONNX). Legacy: ov-gpu patched ONNX (I0.5). Novel shapes still pay first-infer tax; prefer KOKORO_TTS_CACHE=1 and chunk-shaped KOKORO_WARM_TEXT in deploy.
 
 Endpoints:
   POST /v1/audio/speech     OpenAI-compatible TTS (input, voice, speed,

@@ -71,3 +71,10 @@ models/kokoro-82M-int8-ov/**
 !models/kokoro-82M-int8-ov/README.md
 !models/kokoro-82M-int8-ov/config.json
 !models/kokoro-82M-int8-ov/openvino_config.json
+
+# Prototype runtime caches (regenerable)
+spike/ov263-genai/out/ov_cache*/
+spike/ov263-genai/out/**/ov_cache*/
+spike/ov263-genai/logs/
+artifacts/prototype/**/*.cl_cache
+artifacts/prototype/**/tts_cache_*/

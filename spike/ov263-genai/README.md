@@ -1,16 +1,29 @@
-# S0 — Official OpenVINO 2026.3 GenAI Kokoro probe
+# S0 probe tree — Official OpenVINO 2026.3 GenAI Kokoro (historical)
 
-**Gate:** `notes/36` + `notes/36b` (fully acked)  
-**Ship freeze:** do not edit `scripts/kokoro_server.py` or `models/patched/` from this tree.  
-**Runtime:** side venv `/data/intel-igpu-tts/venv-s0-ov263` only (never ship `venv`).
+**Role today:** **Product B (Prototype) lab origin** — scripts + local captures.  
+**Product runtime:** use ship `venv` + `KOKORO_BACKEND=ovgenai-gpu` (root README).  
+**Gate (historical):** `notes/36` + `36b` → closeout **`S0-GO-product`** (`notes/52`–`53`).
 
-## Status
-- S0.1 PASS — `out/versions_s0_1.json`, `notes/45`
-- S0.2 PASS — official `OpenVINO/kokoro-82M-int8-ov` GPU load+generate; `notes/47`, `out/s0_2_*`
+## Status (complete)
+
+| Bar | Note |
+|-----|------|
+| S0.1 install | notes/45 |
+| S0.2 load+generate | notes/47 |
+| S0.3 offload | notes/49 |
+| S0.4 ears | notes/51 |
+| S0.5 RTF/A1/A2 | notes/52 |
 
 ## Layout
-- `scripts/` — probe scripts
-- `out/` — WAVs, versions, captures
-- `logs/` — run logs
 
-- S0.3 PASS — offload proof GPU.0 + igt RCS; `notes/49`, `out/s0_3_result.json`
+- `scripts/` — S0.2–S0.5 probes (committed)
+- `out/` — local WAVs/JSON/cache (**pack + ov_cache gitignored**)
+- `logs/` — local (gitignored)
+- `requirements-s0.lock.txt` — side-venv pin record
+
+## Do not
+
+- Treat this tree as the only way to run GenAI (server path is primary).
+- Commit `out/kokoro-82M-int8-ov/` or `out/ov_cache*` (see MODELS.md for pack fetch).
+
+Evidence ears also mirrored under `artifacts/prototype/` where organized.

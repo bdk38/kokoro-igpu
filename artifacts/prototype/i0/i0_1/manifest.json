@@ -1,0 +1,68 @@
+{
+  "gate": "I0.1",
+  "nexus_ack": "I0 locked Option A; priority I0.1; lean bella; heart HF rank A noted",
+  "ship": "v0.19 ort-cpu af_bella via :8880",
+  "official": "OpenVINO/kokoro-82M-int8-ov GenAI GPU",
+  "rows": [
+    {
+      "file": "i0_1_official_v1_af_bella_fox.wav",
+      "voice": "af_bella",
+      "tag": "fox",
+      "wall_s": 19.366,
+      "audio_s": 3.55,
+      "peak": 0.3345544636249542
+    },
+    {
+      "file": "i0_1_official_v1_af_bella_keys.wav",
+      "voice": "af_bella",
+      "tag": "keys",
+      "wall_s": 21.014,
+      "audio_s": 4.075,
+      "peak": 0.3277975916862488
+    },
+    {
+      "file": "i0_1_official_v1_af_bella_multi.wav",
+      "voice": "af_bella",
+      "tag": "multi",
+      "wall_s": 64.52,
+      "audio_s": 14.825,
+      "peak": 0.43590253591537476
+    },
+    {
+      "file": "i0_1_official_v1_af_heart_fox.wav",
+      "voice": "af_heart",
+      "tag": "fox",
+      "wall_s": 13.686,
+      "audio_s": 3.25,
+      "peak": 0.3048827052116394
+    },
+    {
+      "file": "i0_1_official_v1_af_heart_keys.wav",
+      "voice": "af_heart",
+      "tag": "keys",
+      "wall_s": 15.553,
+      "audio_s": 3.725,
+      "peak": 0.3272158205509186
+    },
+    {
+      "file": "i0_1_official_v1_af_heart_multi.wav",
+      "voice": "af_heart",
+      "tag": "multi",
+      "wall_s": 58.965,
+      "audio_s": 14.3,
+      "peak": 0.3942745625972748
+    }
+  ],
+  "listen_order_recommended": [
+    "i0_1_ship_v019_af_bella_fox.wav",
+    "i0_1_official_v1_af_bella_fox.wav",
+    "i0_1_official_v1_af_heart_fox.wav",
+    "i0_1_ship_v019_af_bella_keys.wav",
+    "i0_1_official_v1_af_bella_keys.wav",
+    "i0_1_official_v1_af_heart_keys.wav",
+    "i0_1_ship_v019_af_bella_multi.wav",
+    "i0_1_official_v1_af_bella_multi.wav",
+    "i0_1_official_v1_af_heart_multi.wav"
+  ],
+  "decision_prompt": "Choose: continuity v1.0-af_bella | default af_heart (HF A) | both selectable | other"
+}
