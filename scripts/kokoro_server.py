@@ -25,14 +25,20 @@ Configuration (env vars):
                         broken upstream — MatMul compile bug)
   KOKORO_CACHE      OpenVINO cache dir (default: /data/intel-igpu-tts/cache/openvino)
   KOKORO_WARM_BUCKETS   comma list of token buckets to pre-warm at startup
-                    on OV backends, e.g. "96,192". First infer per
-                    compiled bucket costs multi-second lazy GPU setup
-                    (measured cold ~4-5x realtime vs warm steady ~0.9 at
-                    bucket 96; notes/18); pre-warming moves that cost to
-                    startup so the first user request per bucket is fast.
-                    Uses real-text synthesize (not all-zero pads — zeros
-                    do not warm the production path). Cache dir shortens
-                    compile, NOT first-infer setup.
+                    on OV backends, e.g. "96,192". Warm state is SHAPE-keyed
+                    (output sample count / internal duration lattice), NOT
+                    bucket-wide and NOT content-transferring (notes/19–20).
+                    Near-capacity REAL text is synthesized per bucket so the
+                    pre-warm path matches production; all-zero pads do NOT
+                    warm (notes/18). This only retires cold cost for that
+                    pre-warm shape — varied Read Aloud still pays cold on
+                    novel shapes. Steady ~0.9 RTF is for REPEATS of a warmed
+                    shape. Cache dir shortens compile, NOT shape warm.
+  KOKORO_WARM_TEXT  optional; '|' -separated exact phrases to synthesize at
+                    startup (after bucket pre-warm). Use to pin demo/canned
+                    sentences so the first user hit of that exact text is warm
+                    (~0.9 RTF on ov-gpu once shape is hot). Example:
+                    KOKORO_WARM_TEXT='The quick brown fox jumps over the lazy dog.'
   KOKORO_DEFAULT_VOICE  (default: af_bella)
 
 Run:
@@ -126,6 +132,10 @@ DEFAULT_VOICE = os.environ.get("KOKORO_DEFAULT_VOICE", "af_bella")
 WARM_BUCKETS = [int(x) for x in
                 os.environ.get("KOKORO_WARM_BUCKETS", "").split(",")
                 if x.strip().isdigit()]
+# Exact phrases to pin (shape-keyed warm). Split on | so commas in text are OK.
+WARM_TEXTS = [t.strip() for t in
+              os.environ.get("KOKORO_WARM_TEXT", "").split("|")
+              if t.strip()]
 
 # OpenAI voice aliases -> kokoro voices
 OPENAI_VOICE_MAP = {
@@ -543,6 +553,25 @@ def style_for_parts(parts, n_tokens):
     return acc.reshape(1, 256)
 
 
+def _prewarm_text_for(bucket, lang="en-us"):
+    """Natural text grown to just under the bucket's token capacity, so
+    synthesize() runs one chunk that fills the target bucket with mostly
+    REAL tokens. Near-capacity matters: a short real text padded into the
+    bucket (the 15-token startup warmup) was measured NOT to warm a later
+    55-token request, while a ~bucket-sized text was (notes/18 follow-up).
+    Word steps are ~3-8 tokens, so the landing is a few tokens under the
+    bucket, never over."""
+    pool = ("the quick brown fox jumps over the lazy dog while seven "
+            "silver swans swim smoothly south past bright blue boxes").split()
+    text = ""
+    for i in range(1200):
+        cand = (text + " " + pool[i % len(pool)]).strip()
+        if len(phonemes_to_ids(cand, lang)) + 2 > bucket:
+            break
+        text = cand
+    return text or "Warm up"
+
+
 def synthesize(backend, text, voice_spec, speed):
     parsed = parse_voice_spec(voice_spec)
     if not parsed:
@@ -606,7 +635,7 @@ def build_app():
     from fastapi.responses import Response
     from pydantic import BaseModel
 
-    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.1.6")
+    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.1.8")
     state = {"backend": None}
 
     class SpeechRequest(BaseModel):
@@ -630,44 +659,27 @@ def build_app():
         try:
             synthesize(state["backend"], "Warm up.", DEFAULT_VOICE, 1.0)
             print("[server] warmup OK")
-            # optional bucket pre-warm (OV only): eat the multi-second
-            # first-infer lazy setup per bucket at startup, not on the
-            # first user request of that length (notes/18)
+            # optional OV pre-warm. Warm is SHAPE-keyed (notes/19–20), not
+            # bucket-wide: near-capacity bucket text only warms that shape;
+            # KOKORO_WARM_TEXT pins exact demo phrases for repeat traffic.
             be = state["backend"]
             if WARM_BUCKETS and hasattr(be, "_bucket"):
-                # IMPORTANT: all-zero (pad) tokens do NOT retire the same
-                # lazy GPU setup as real phoneme content. Measured on
-                # Alder Lake UHD: zeros pre-warm ~31s still left the first
-                # fox request at ~18s RTF; real-text synthesize warm makes
-                # first user request ~steady (~0.9 RTF at bucket 96).
-                warm_text = {
-                    96: "The quick brown fox jumps over the lazy dog.",
-                    192: ("The quick brown fox jumps over the lazy dog. "
-                          "Pack my box with five dozen liquor jugs. "),
-                    288: ("The quick brown fox jumps over the lazy dog. "
-                          "Pack my box with five dozen liquor jugs. "
-                          "How vexingly quick daft zebras jump. "),
-                    384: ("The quick brown fox jumps over the lazy dog. "
-                          "Pack my box with five dozen liquor jugs. "
-                          "How vexingly quick daft zebras jump. "
-                          "Sphinx of black quartz, judge my vow. "),
-                    512: ("The quick brown fox jumps over the lazy dog. "
-                          "Pack my box with five dozen liquor jugs. "
-                          "How vexingly quick daft zebras jump. "
-                          "Sphinx of black quartz, judge my vow. "
-                          "The five boxing wizards jump quickly. "),
-                }
                 for b in WARM_BUCKETS:
-                    target = be._bucket(int(b))
-                    text = warm_text.get(
-                        target,
-                        "The quick brown fox jumps over the lazy dog. " * max(
-                            1, target // 40))
+                    b = be._bucket(int(b))
                     t0 = time.time()
-                    synthesize(be, text, DEFAULT_VOICE, 1.0)
-                    print(f"[server] pre-warmed bucket~{target} "
-                          f"via synthesize in {time.time() - t0:.1f}s",
+                    synthesize(be, _prewarm_text_for(b),
+                               DEFAULT_VOICE, 1.0)
+                    print(f"[server] pre-warmed bucket={b} via "
+                          f"synthesize in {time.time() - t0:.1f}s "
+                          f"(shape-keyed; not all traffic)",
                           flush=True)
+            for wt in WARM_TEXTS:
+                t0 = time.time()
+                synthesize(be, wt, DEFAULT_VOICE, 1.0)
+                preview = wt if len(wt) <= 48 else wt[:45] + "..."
+                print(f"[server] pre-warmed text={preview!r} in "
+                      f"{time.time() - t0:.1f}s",
+                      flush=True)
         except Exception as e:
             print(f"[server] warmup failed: {e}")
 

@@ -5,14 +5,20 @@ Proof-of-concept: run **Kokoro TTS** on Intel integrated GPUs via OpenVINO, with
 This is not a claim that iGPU is the fastest path on every machine. On the validation host (Alder Lake UHD `8086:46b3`, Xe-LP) the **product default is ORT-CPU**. The OpenVINO GPU path is real, optional, and documented with limits.
 
 
-## Current status (2026-08-04)
+## Current status (2026-08-07)
 
-Server **v1.1.6** ships OV pad-tail trim (ear-validated), Open WebUI wiring notes, and optional `KOKORO_WARM_BUCKETS` pre-warm (real-text; zeros do not warm). Warm ov-gpu fox ≈ **0.9 RTF** at bucket 96; cold first shape multi-second.
+Server **v1.1.8** (ship path): OV pad-tail trim (ear-validated through v1.1.5), Open WebUI wiring notes, optional `KOKORO_WARM_BUCKETS` (near-capacity real text) and **`KOKORO_WARM_TEXT`** (exact phrase pins).
+
+**Warm honesty (notes/19–20):** ov-gpu warm is **shape-keyed** (output sample count), not bucket-wide and not content-transferring. Steady ~**0.9 RTF** is for **repeats of a warmed shape**. Varied Read Aloud still pays multi-second cold on novel shapes. `KOKORO_WARM_BUCKETS` does **not** make arbitrary traffic fast; use `KOKORO_WARM_TEXT` to pin demo sentences. **Product default remains ort-cpu** (RTF ~0.4).
+
+Componentized decoder-export spike is **PARKED** (not GO) — see [notes/34-spike-closeout-summary.md](notes/34-spike-closeout-summary.md).
+
 Field issues closed: pad moan (server), Read Aloud skips (WebUI **Response Splitting** —
 use **None/Paragraphs** with ov-gpu; Punctuation is fine on ort-cpu).
 
-- Short rollup: [notes/17-repo-status-summary.md](notes/17-repo-status-summary.md)
-- Full statuses: [notes/16-project-status.md](notes/16-project-status.md) (Grok), [notes/16-project-status-fable.md](notes/16-project-status-fable.md) (Fable)
+- Spike closeout: [notes/34-spike-closeout-summary.md](notes/34-spike-closeout-summary.md)
+- Dual spike statuses: [notes/33-spike-status-grok.md](notes/33-spike-status-grok.md), [notes/33-spike-status-fable.md](notes/33-spike-status-fable.md)
+- Earlier rollup: [notes/17-repo-status-summary.md](notes/17-repo-status-summary.md)
 - Evidence WAVs + sanitized trim logs: `artifacts/v112`–`v115`, `artifacts/logs/` (Git LFS)
 - Models: download locally (not in git); see below
 
