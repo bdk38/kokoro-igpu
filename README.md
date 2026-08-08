@@ -27,6 +27,7 @@ cd kokoro-igpu
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+# system: espeak-ng (phonemizer backend), e.g. sudo apt install espeak-ng
 ./scripts/download_models.sh
 ```
 

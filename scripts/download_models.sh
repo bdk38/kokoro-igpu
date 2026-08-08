@@ -40,7 +40,7 @@ ls -lh "$MODELS/kokoro-v0_19.onnx" "$MODELS/voices-v1.0.bin"
 
 # Expected hashes (MODELS.md) — warn on mismatch, do not delete
 EXPECTED_ONNX_SHA="dece567789190ebe987bd245d95c09d5ac86de28ff0c325c2e3faaf3de04442c"
-EXPECTED_VOICES_SHA="d19762d46cf0e6648cb28a7711df1637aad15818185d13f4ff840d57f2f6dfed"
+EXPECTED_VOICES_SHA="157eab2fa1dd1c91b46599ea6f514bf86f66944c0c760250ed324e6cd99af075"
 if command -v sha256sum >/dev/null 2>&1; then
   got=$(sha256sum "$MODELS/kokoro-v0_19.onnx" | awk '{print $1}')
   if [[ "$got" != "$EXPECTED_ONNX_SHA" ]]; then

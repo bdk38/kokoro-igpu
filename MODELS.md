@@ -8,7 +8,7 @@ build the patched graph if you need the PoC iGPU leg.
 | File | Role | SHA256 |
 |------|------|--------|
 | `models/kokoro-v0_19.onnx` | Stock Kokoro v0.19 ONNX (ort-cpu default path) | `dece567789190ebe987bd245d95c09d5ac86de28ff0c325c2e3faaf3de04442c` |
-| `models/voices-v1.0.bin` | NPZ voice pack (af_bella, …) | `d19762d46cf0e6648cb28a7711df1637aad15818185d13f4ff840d57f2f6dfed` |
+| `models/voices-v1.0.bin` | NPZ voice pack | see download note below |
 | `models/patched/kokoro-v0_19.gpu4d.stft.onnx` | **LEGACY** GPU-enabled graph (resize 3D→4D + STFT rank stamp) | `effa08953b35c413064953850070533afce7c8d6a11f996f87e87fbcad42983f` |
 | `models/patched/kokoro-v0_19.gpu4d.onnx` | Intermediate resize-only patch | `16da5997626ef83780a941b104e5bc2f2311038f9c2e669fca48c6f0e8ae41e6` |
 
@@ -22,7 +22,12 @@ build the patched graph if you need the PoC iGPU leg.
 Default URLs (overridable via env):
 
 - ONNX: `https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/kokoro-v0_19.onnx`
-- Voices: `https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.bin` → saved as `voices-v1.0.bin`
+- Voices (kokoro-onnx **v0.19 companion**, ~11 voices including `af_bella`):
+  `https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.bin`
+  → saved as `voices-v1.0.bin`
+  - SHA256 (current release asset): `157eab2fa1dd1c91b46599ea6f514bf86f66944c0c760250ed324e6cd99af075`
+  - Shape family: `(511, 1, 256)` per voice — works with this server
+  - Lab book historically used a larger ~50-voice NPZ (`d19762d4…`, ~26 MB). That file is **not** the public kokoro-onnx asset; override `VOICES_URL` if you have it. PoC smoke uses the public 11-voice pack.
 
 ### Rebuild patched graph (surgery is executable)
 

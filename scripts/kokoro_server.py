@@ -13,28 +13,28 @@ Endpoints:
 
 Configuration (env vars):
   KOKORO_MODEL      path to ONNX model
-                    default: /data/intel-igpu-tts/models/kokoro-v0_19.onnx
+                    default: <repo>/models/kokoro-v0_19.onnx
                     (use the patched gpu4d.stft model for OV backends)
                     For ovgenai-*: if this points at a directory containing
                     openvino_model.xml, it is also accepted as the GenAI pack.
   KOKORO_GENAI_MODEL  directory of official OpenVINO GenAI Kokoro pack
                     (openvino_model.xml + voices/*.bin). Used by
                     ovgenai-gpu / ovgenai-cpu.
-                    default: /data/intel-igpu-tts/models/kokoro-82M-int8-ov
+                    default: <repo>/models/kokoro-82M-int8-ov
                     Note: official pack is v1.0-family int8 — a different
                     checkpoint from the ship v0.19 ONNX (not a silent swap).
   KOKORO_VOICES     path to voices NPZ (ort/ov token-id backends)
-                    default: /data/intel-igpu-tts/models/voices-v1.0.bin
+                    default: <repo>/models/voices-v1.0.bin
   KOKORO_BACKEND    ort-cpu | ov-cpu | ov-gpu | ovgenai-gpu | ovgenai-cpu
                     (default ort-cpu; ovgenai-gpu Prototype; ov-gpu LEGACY proof)
                     (default: ort-cpu — PoC; set ovgenai-gpu for Prototype)
   KOKORO_GPU_PRECISION  f32 | f16                 (default: f32; f16 is
                         broken upstream — MatMul compile bug; ov-gpu only)
   KOKORO_CACHE      OpenVINO compile-cache dir (unchanged semantics)
-                    default: /data/intel-igpu-tts/cache/openvino
+                    default: <repo>/cache/openvino
   KOKORO_TTS_CACHE  0|1 — opt-in TTS disk cache (default: 0)
   KOKORO_TTS_CACHE_DIR  TTS response/chunk store root
-                    default: /data/intel-igpu-tts/cache/tts
+                    default: <repo>/cache/tts
   KOKORO_TTS_CACHE_MAX_MB  lazy LRU-by-mtime size cap (default: 500)
   KOKORO_TTS_CACHE_TIER  response | chunk | both (default: both)
                     When KOKORO_TTS_CACHE=1: "response" = C1 full-request
@@ -63,7 +63,7 @@ Configuration (env vars):
   KOKORO_DEFAULT_VOICE  (default: af_bella)
 
 Run:
-  source /data/intel-igpu-tts/scripts/env.sh
+  cd <repo> && source venv/bin/activate
   pip install fastapi uvicorn
   python scripts/kokoro_server.py --host 0.0.0.0 --port 8880
 
@@ -100,6 +100,10 @@ Notes:
 """
 
 import argparse
+from pathlib import Path as _Path
+
+# Repo root = parent of scripts/ — portable defaults (R0: no hardcoded host paths)
+REPO_ROOT = str(_Path(__file__).resolve().parent.parent)
 import hashlib
 import io
 import json
@@ -144,18 +148,18 @@ TRIM_DEBUG = os.environ.get("KOKORO_TRIM_DEBUG", "0") == "1"
 
 
 MODEL_PATH = os.environ.get(
-    "KOKORO_MODEL", "/data/intel-igpu-tts/models/kokoro-v0_19.onnx")
-GENAI_MODEL_DEFAULT = "/data/intel-igpu-tts/models/kokoro-82M-int8-ov"
+    "KOKORO_MODEL", os.path.join(REPO_ROOT, "models", "kokoro-v0_19.onnx"))
+GENAI_MODEL_DEFAULT = os.path.join(REPO_ROOT, "models", "kokoro-82M-int8-ov")
 VOICES_PATH = os.environ.get(
-    "KOKORO_VOICES", "/data/intel-igpu-tts/models/voices-v1.0.bin")
+    "KOKORO_VOICES", os.path.join(REPO_ROOT, "models", "voices-v1.0.bin"))
 BACKEND = os.environ.get("KOKORO_BACKEND", "ort-cpu")
 GPU_PRECISION = os.environ.get("KOKORO_GPU_PRECISION", "f32")
 CACHE_DIR = os.environ.get(
-    "KOKORO_CACHE", "/data/intel-igpu-tts/cache/openvino")
+    "KOKORO_CACHE", os.path.join(REPO_ROOT, "cache", "openvino"))
 # TTS response/chunk cache (C1/C2). Distinct from KOKORO_CACHE (OV compile).
 TTS_CACHE_ON = os.environ.get("KOKORO_TTS_CACHE", "0") == "1"
 TTS_CACHE_DIR = os.environ.get(
-    "KOKORO_TTS_CACHE_DIR", "/data/intel-igpu-tts/cache/tts")
+    "KOKORO_TTS_CACHE_DIR", os.path.join(REPO_ROOT, "cache", "tts"))
 TTS_CACHE_MAX_MB = float(os.environ.get("KOKORO_TTS_CACHE_MAX_MB", "500"))
 TTS_CACHE_TIER = os.environ.get("KOKORO_TTS_CACHE_TIER", "both").strip().lower()
 # C1 full-request; C2 per-chunk (shared store when either on).
@@ -1164,7 +1168,7 @@ def build_app():
     from fastapi.responses import Response
     from pydantic import BaseModel
 
-    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.5.0")
+    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.5.1")
     state = {"backend": None, "tts_cache": None}
 
     class SpeechRequest(BaseModel):
