@@ -6,8 +6,8 @@
 
 | Product | What | Entry |
 |---------|------|--------|
-| **A — PoC** | ONNX v0.19 + patches; ort-cpu default; ov-gpu iGPU proof leg | README § Run the PoC |
-| **B — Prototype** | Official GenAI int8 pack; `ovgenai-gpu` | README § Run the Prototype |
+| **A — PoC** | ONNX v0.19 + patches; ort-cpu default; ov-gpu iGPU proof leg | This repo · tag `poc-complete` · README § Run the PoC |
+| **B — Prototype** | Official GenAI int8 pack; `ovgenai-gpu` default | Sibling https://github.com/bdk38/kokoro-igpu-genai · tag `prototype-complete` |
 
 ## Arcs → notes → verdicts
 
@@ -21,22 +21,23 @@
 | Dual-track env | 37–38, 59 | Converged ship to 2026.3+GenAI |
 | S0 official GenAI probe | 36, 45–53 | **`S0-GO-product`** |
 | I0 integration | 54–67 | **`I0-GO-default-candidate`** |
-| Default cutover then PoC face | 68, 70–71 | Deploy may use ovgenai; **repo default ort-cpu** (PoC) |
+| Default cutover then dual-product face | 68, 70–71 | Monorepo default **ort-cpu**; appliance default **ovgenai-gpu** |
 | Filings | 57, 69, `issues/submit/` | VERIFY done · **RESEARCH HOLD** |
-| PoC ship assembly | 71, Fable note_33 | MODELS, smoke, reproduce/ |
+| PoC ship + R0 | 71–72, Fable note_33 | `poc-complete`; portable paths |
+| Prototype segregate + R1 | 73–75, Fable note_34–35 | `prototype-complete`; note_35 docs polish |
 
 ## Architect notes
 
-Under `Fable/` — especially note_29–33 (I0, reorg, PoC ship).
+Under `Fable/` — especially note_29–35 (I0, reorg, PoC ship, genai seed, polish).
 
 ## Prototype evidence (Product B)
 
 | Path | Contents |
 |------|----------|
-| `artifacts/prototype/` | S0/I0 ear + matrix WAVs (organized 2026-08-08) |
+| `artifacts/prototype/` | S0/I0/R1 ear + matrix WAVs |
 | `spike/ov263-genai/` | Historical S0 probe scripts |
-| `notes/73` | Segregation inventory — **hold for Architect** |
-| Sibling repo | https://github.com/bdk38/kokoro-igpu-genai (**empty shell** — not populated) |
+| `notes/73`–`75` | Segregation, R1, note_35 polish record |
+| Sibling repo | https://github.com/bdk38/kokoro-igpu-genai — **SHIPPED** `prototype-complete` |
 | `models/kokoro-82M-int8-ov/` | Official pack (download; see MODELS.md) |
 
 ## Host inventory
