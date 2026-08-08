@@ -1,109 +1,36 @@
 # kokoro-igpu
 
-Proof-of-concept: run **Kokoro TTS** on Intel integrated GPUs via OpenVINO, with an honest measurement bar and a working OpenAI-compatible server for Open WebUI.
+**Kokoro-82M speaking on a budget Intel box** (Alder Lake UHD / Xe-LP class).
 
-This is not a claim that iGPU is the fastest path on every machine. On the validation host (Alder Lake UHD `8086:46b3`, Xe-LP) the **product default is ORT-CPU**. The OpenVINO GPU path is real, optional, and documented with limits.
+Two finished products share this repo:
 
+| | **PoC (Product A)** | **Prototype (Product B)** |
+|--|---------------------|---------------------------|
+| What | Community **v0.19 ONNX** + graph surgery; OpenAI-compatible server | Official **OpenVINO GenAI** int8 pack on iGPU |
+| Proof | You can **hear** it — CPU always; iGPU offload leg optional | Served steady RTF ~**0.73** on validation host |
+| Default | **`ort-cpu`** (repo default) | `KOKORO_BACKEND=ovgenai-gpu` |
 
-## Current status (2026-08-07)
+The PoC claim in one line: **CPU offload onto an Xe-LP iGPU that was said couldn’t do it — and you can run the proof.**  
+Speed was never the PoC’s claim. Notes are the lab book; **audio from a clean install is the deliverable.**
 
-Server **v1.1.8** (ship path): OV pad-tail trim (ear-validated through v1.1.5), Open WebUI wiring notes, optional `KOKORO_WARM_BUCKETS` (near-capacity real text) and **`KOKORO_WARM_TEXT`** (exact phrase pins).
+Validation host: 12th Gen i3-1215U, UHD `8086:46b3`, Ubuntu 24.04, OpenVINO **2026.3** (+ GenAI for Product B).
 
-**Warm honesty (notes/19–20):** ov-gpu warm is **shape-keyed** (output sample count), not bucket-wide and not content-transferring. Steady ~**0.9 RTF** is for **repeats of a warmed shape**. Varied Read Aloud still pays multi-second cold on novel shapes. `KOKORO_WARM_BUCKETS` does **not** make arbitrary traffic fast; use `KOKORO_WARM_TEXT` to pin demo sentences. **Product default remains ort-cpu** (RTF ~0.4).
+---
 
-Componentized decoder-export spike is **PARKED** (not GO) — see [notes/34-spike-closeout-summary.md](notes/34-spike-closeout-summary.md).
+## 1. Run the PoC (Product A)
 
-Field issues closed: pad moan (server), Read Aloud skips (WebUI **Response Splitting** —
-use **None/Paragraphs** with ov-gpu; Punctuation is fine on ort-cpu).
-
-- Spike closeout: [notes/34-spike-closeout-summary.md](notes/34-spike-closeout-summary.md)
-- Dual spike statuses: [notes/33-spike-status-grok.md](notes/33-spike-status-grok.md), [notes/33-spike-status-fable.md](notes/33-spike-status-fable.md)
-- Earlier rollup: [notes/17-repo-status-summary.md](notes/17-repo-status-summary.md)
-- Evidence WAVs + sanitized trim logs: `artifacts/v112`–`v115`, `artifacts/logs/` (Git LFS)
-- Models: download locally (not in git); see below
-
-## What this repo proves
-
-- Stock Kokoro ONNX fails to compile on OpenVINO GPU because of **3D `linear_onnx` Resize**.
-- OpenVINO partitions also fail on **dynamic-rank STFT** boundaries.
-- Two small graph edits fix compile:
-  1. lift the sine-generator linear Resizes from 3D to 4D
-  2. stamp STFT output as static rank-4
-- After patching, whole-graph OpenVINO GPU execution is real:
-  - `EXECUTION_DEVICES=['GPU.0']`
-  - GPU kernels in profiles
-  - `intel_gpu_top` RCS busy
-  - human-verified intelligible speech
-- On Alder Lake UHD, GPU is **correct enough to demo** but **not a latency win** (RTF ~2.4–2.9 vs CPU ~0.40–0.45).
-- GPU f16 compiles then hard-fails at infer on a MatMul shape check.
-- A commercial “Intel iGPU Kokoro” container was previously shown to be CPU work behind a GPU provider label. This repo refuses that class of claim.
-
-## Validation host
-
-- CPU: 12th Gen Intel Core i3-1215U
-- iGPU: UHD Graphics `8086:46b3` (Xe-LP)
-- Stack: OpenVINO `2026.2.1`, `onnxruntime-openvino` `1.24.1`, Python 3.12, Ubuntu 24.04
-
-Contributor write-ups:
-
-- [Fable/CONTRIBUTOR-Claude.md](Fable/CONTRIBUTOR-Claude.md) — diagnosis, graph surgery, tooling
-- [Grok/CONTRIBUTOR-Grok.md](Grok/CONTRIBUTOR-Grok.md) — hardware validation, metrics, Open WebUI path
-
-Phase notes live under [`notes/`](notes/).
-
-## Results snapshot
-
-| Path | Role | RTF on real text | Notes |
-|------|------|------------------|-------|
-| **ORT-CPU** | **default product** | ~0.40–0.45 | clean reference audio |
-| OV-CPU | optional | ~parity with ORT | strong waveform parity after patch |
-| OV-GPU f32 | experimental | ~2.4–2.9 | real iGPU offload; ~2 dB quieter, faintly muffled |
-| OV-GPU f16 | broken | n/a | compile OK, infer MatMul failure |
-
-Sample audio (fox sentence / server path) is in [`artifacts/samples/`](artifacts/samples/).
-
-## Quick start
-
-### 1. Clone and Python env
+### Install
 
 ```bash
 git clone https://github.com/bdk38/kokoro-igpu.git
 cd kokoro-igpu
-
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-
-# system phonemizer backend
-sudo apt-get install -y espeak-ng
-```
-
-### 2. Enter project env
-
-```bash
-source scripts/env.sh
-```
-
-### 3. Download model weights
-
-Weights are **not** in git.
-
-```bash
 ./scripts/download_models.sh
 ```
 
-If the default release URLs move, override:
-
-```bash
-KOKORO_ONNX_URL=... VOICES_URL=... ./scripts/download_models.sh
-```
-
-You need:
-
-- `models/kokoro-v0_19.onnx`
-- `models/voices-v1.0.bin`
-
-### 4. Patch for OpenVINO GPU/CPU
+Build the GPU-friendly patched graph (needed only for the ov-gpu leg):
 
 ```bash
 python scripts/patch_kokoro_v2.py \
@@ -112,43 +39,26 @@ python scripts/patch_kokoro_v2.py \
   --stamp-stft
 ```
 
-### 5. Hardware / OpenVINO sanity
+Hashes and roles: **[MODELS.md](MODELS.md)**.
 
-```bash
-./scripts/check_hw.sh
-python scripts/check_openvino.py
-python scripts/smoke_openvino_gpu.py
-```
-
-### 6. Product server (ORT-CPU default)
+### Start (CPU — always works)
 
 ```bash
 python scripts/kokoro_server.py --host 0.0.0.0 --port 8880
+# default KOKORO_BACKEND=ort-cpu
 ```
+
+### Hear it
 
 ```bash
-curl -s http://127.0.0.1:8880/health
-curl -s http://127.0.0.1:8880/v1/audio/voices | head
-curl -s -X POST http://127.0.0.1:8880/v1/audio/speech \
+curl -sS -X POST http://127.0.0.1:8880/v1/audio/speech \
   -H 'Content-Type: application/json' \
-  -d '{"model":"kokoro","input":"Hello from Kokoro.","voice":"af_bella","response_format":"wav"}' \
-  --output out.wav
+  -d '{"input":"The quick brown fox jumps over the lazy dog.","voice":"af_bella","response_format":"wav"}' \
+  -o fox.wav
+# play fox.wav
 ```
 
-#### Optional TTS response/chunk cache (env)
-
-Opt-in disk cache for TTS audio (`KOKORO_TTS_*`). Off by default. Distinct from `KOKORO_CACHE`, which remains the OpenVINO compile-cache directory. Schema version 2 (invalidates v1 entries): each synthesis chunk is quantized to int16 PCM and dequantized before concat so cached and uncached assembly share one path.
-
-| Variable | Default | Meaning |
-|----------|---------|---------|
-| `KOKORO_TTS_CACHE` | `0` | `0` off, `1` on |
-| `KOKORO_TTS_CACHE_DIR` | `/data/intel-igpu-tts/cache/tts` | response/chunk store root |
-| `KOKORO_TTS_CACHE_MAX_MB` | `500` | lazy size cap (oldest mtime first) |
-| `KOKORO_TTS_CACHE_TIER` | `both` | `response` (C1 full request) \| `chunk` (C2 per chunk_text token-id list) \| `both` |
-
-When enabled, responses may include `X-Kokoro-Cache: hit`, `partial` (some chunks reused), or `miss`.
-
-### 7. Experimental iGPU server
+### iGPU offload leg (optional proof)
 
 ```bash
 KOKORO_BACKEND=ov-gpu \
@@ -157,84 +67,122 @@ KOKORO_GPU_PRECISION=f32 \
 python scripts/kokoro_server.py --host 0.0.0.0 --port 8880
 ```
 
-Watch `intel_gpu_top` while requesting speech. Expect higher RTF than CPU.
+Watch `intel_gpu_top` (Render/3D busy). Expect **correct speech**, **not** a latency win on Xe-LP (fresh long RTF can be ~5).  
+This path is **legacy for steady product work** vs GenAI, but **retained** as the original iGPU proof.
 
-## Real-text A/B harness
+### One-shot smoke
 
 ```bash
-python scripts/tts_harness.py \
-  --model models/patched/kokoro-v0_19.gpu4d.stft.onnx \
-  --voices models/voices-v1.0.bin \
-  --voice af_bella \
-  --text "The quick brown fox jumps over the lazy dog." \
-  --backends ort-cpu,ov-cpu,ov-gpu \
-  --gpu-precision f32 \
-  --cache cache/openvino \
-  --outdir artifacts/harness/fox_f32 \
-  --runs 2
+./scripts/smoke_product.sh
+# WAVs under artifacts/poc_ship/smoke/ — ort_cpu.wav required
 ```
 
-## Open WebUI
+### Open WebUI
 
-1. Run the server on the host (`0.0.0.0:8880`).
-2. In Open WebUI Admin → Settings → Audio:
-   - TTS Engine: **OpenAI**
-   - API Base URL: `http://host.docker.internal:8880/v1` (Docker on same host)
-   - API Key: any non-empty string
-   - Model: `kokoro`
-   - Voice: `af_bella` (or another voice / blend)
-3. If the container cannot reach the host, allow Docker bridge traffic to port 8880.
+Admin → Settings → Audio → OpenAI-compatible:
 
-The server accepts:
+- Base URL: `http://<host>:8880/v1`
+- Model: `kokoro` · Voice: `af_bella`
+- Response splitting: **Punctuation** is fine on ort-cpu; use **Paragraphs/None** on slow GPU legs
 
-- plain Kokoro voices (`af_bella`, `af_nova`, …)
-- OpenAI aliases (`alloy`, `nova`, …)
-- weighted blends: `bf_isabella(1)+bf_emma(1)+af_heart(3)`
+---
 
-Response headers stay honest, e.g. `X-Kokoro-Backend`, `X-Kokoro-RTF`.
+## 2. Run the Prototype (Product B)
 
-## Repository layout
+Official pack + GenAI (evolutionary path after S0/I0):
+
+```bash
+# fetch OpenVINO/kokoro-82M-int8-ov into models/kokoro-82M-int8-ov (see MODELS.md)
+KOKORO_BACKEND=ovgenai-gpu \
+KOKORO_GENAI_MODEL=models/kokoro-82M-int8-ov \
+KOKORO_TTS_CACHE=1 \
+python scripts/kokoro_server.py --host 0.0.0.0 --port 8880
+```
+
+| Metric (validation host, served, warm steady) | Value |
+|-----------------------------------------------|------:|
+| Fox RTF | ~0.73 |
+| Multi RTF | ~0.72 |
+
+**Honesty:** first synthesis of a **novel** length can take **tens of seconds** (shape-keyed JIT). Cache + chunk-shaped `KOKORO_WARM_TEXT` mitigate repeats — do **not** quote steady RTF as first-utterance latency.
+
+Voices: 54 in the official pack; default name `af_bella`; `af_heart` first-class. Timbre differs from v0.19 ship bella (deeper vs brighter).
+
+---
+
+## 3. Configuration (env)
+
+| Variable | Default | Notes |
+|----------|---------|--------|
+| `KOKORO_BACKEND` | `ort-cpu` | `ovgenai-gpu` · `ovgenai-cpu` · `ov-cpu` · `ov-gpu` (legacy proof) |
+| `KOKORO_MODEL` | stock ONNX path | patched path for ov-gpu |
+| `KOKORO_GENAI_MODEL` | `models/kokoro-82M-int8-ov` | Product B pack dir |
+| `KOKORO_VOICES` | `models/voices-v1.0.bin` | NPZ (PoC) |
+| `KOKORO_TTS_CACHE` | `0` | set `1` for deploy repeats |
+| `KOKORO_TTS_CACHE_DIR` | `cache/tts` | |
+| `KOKORO_TTS_CACHE_TIER` | `both` | `response` · `chunk` · `both` |
+| `KOKORO_WARM_TEXT` | empty | `\|`-separated phrases; **chunk-shaped** for GenAI |
+| `KOKORO_WARM_BUCKETS` | empty | ov ONNX shape warm only |
+| `KOKORO_DEFAULT_VOICE` | `af_bella` | |
+| `KOKORO_GPU_PRECISION` | `f32` | ov-gpu; f16 hard-fails on this graph |
+
+---
+
+## 4. Performance honesty
+
+| Path | What to expect |
+|------|----------------|
+| **ort-cpu** | RTF ~0.4 class — daily driver for PoC |
+| **ov-gpu** patched | Real GPU offload; fresh long **RTF ~5** on Xe-LP; proof, not speed |
+| **ovgenai-gpu** | Warm steady **~0.7 RTF**; novel shape first hit multi-second–tens of seconds |
+
+Measurement rules we live by: name cold vs steady; discard warmup before mean RTF; ears beat vanity metrics on quality.
+
+---
+
+## 5. Architecture (short)
 
 ```text
-scripts/                 tools, patches, harness, server
-notes/                   phase reports from the sandbox
-Fable/                   Claude contributor write-up
-Grok/                    Grok contributor write-up
-artifacts/samples/       small curated audio samples
-models/                  download targets (weights gitignored)
-requirements.txt         runtime deps
+text → sentence/token chunker → per-chunk backend synth → assembly (+ trim on OV pad path)
+                              ↘ C1 full-request / C2 per-chunk disk cache (opt-in)
 ```
 
-## Important constraints
+Cache unit = synthesis unit. GenAI uses per-chunk `generate()` and `c2txt:` keys.  
+Depth: [docs/INDEX.md](docs/INDEX.md), notes/39–43, 65 (warmth-class byte-eq doctrine).
 
-- **Provider name is never offload proof.** Require `intel_gpu_top`, `EXECUTION_DEVICES`, or GPU kernel names in profiles.
-- **Alder Lake Xe-LP is not a PyTorch XPU target.** This PoC is OpenVINO/ONNX-oriented.
-- **Do not default to OV-GPU on this iGPU class** unless your measured RTF and listening tests say otherwise.
-- Raw waveform correlation can look catastrophic when GPU audio is only a few percent longer. Align first; trust ears + spectral metrics.
+---
 
-## Upstream issues worth reporting
+## 6. The story
 
-1. GPU f16 MatMul shape-validation failure on the patched graph after successful compile.
-2. f32 convolutions falling back to `convolution_gpu_ref__f32` on Xe-LP for this model (dominates RTF > 1).
-3. Residual GPU fidelity delta vs CPU (~2 dB down, mild muffling).
-4. Broader intel_gpu gaps that forced surgery: 3D `linear_onnx` Interpolate, dynamic-rank partition Parameters.
+We started with stock Kokoro ONNX that would not compile cleanly on Intel GPU, patched the graph, proved whole-graph offload, shipped a server and WebUI path, then measured an official GenAI pack into an integrated prototype. **The original PoC still runs.** Prove it to yourself with §1.
 
+Lab map: [docs/INDEX.md](docs/INDEX.md) · team process: [WORKFLOW.md](WORKFLOW.md)
 
-## Contributors
+---
 
-Human project lead: **[@bdk38](https://github.com/bdk38)**
+## 7. Upstream / filings
 
-AI contributors (full write-ups in-repo):
+Draft OpenVINO GPU issues (shape-JIT, f16 MatMul, conv ref) live under `issues/submit/` — **research hold** for duplicate check before filing (notes/69).
 
-- **Claude / Fable (Anthropic)** — diagnosis, graph surgery, tooling  
-  See [Fable/CONTRIBUTOR-Claude.md](Fable/CONTRIBUTOR-Claude.md)
-- **Grok (xAI)** — hardware validation, metrics, Open WebUI path  
-  See [Grok/CONTRIBUTOR-Grok.md](Grok/CONTRIBUTOR-Grok.md)
+Historical 2026.2.1 pins: [reproduce/2026.2.1/](reproduce/2026.2.1/).
 
-Also see [CONTRIBUTORS.md](CONTRIBUTORS.md) for how credit is represented (including why GitHub’s automatic Contributors graph is incomplete for AI collaborators).
+---
 
-## License
+## 8. Limits
 
-MIT — see [LICENSE](LICENSE).
+- ov-gpu is not a latency product on this iGPU class  
+- GenAI novel-shape tax remains  
+- GenAI blends not supported; ort blends OK  
+- Single-process server  
+- Decoder componentized spike **parked** (notes/34)  
+- Model weights downloaded separately (not in git)
 
-Kokoro model weights are third-party assets. Download and use them under their own upstream terms.
+---
+
+## 9. Credits & license
+
+- Kokoro model: hexgrad / community ONNX ecosystem (see upstream licenses)  
+- OpenVINO / GenAI: Intel  
+- This server & measurements: see [LICENSE](LICENSE), [CONTRIBUTORS.md](CONTRIBUTORS.md)
+
+**Server version:** 1.5.0 (PoC face · ort-cpu default).

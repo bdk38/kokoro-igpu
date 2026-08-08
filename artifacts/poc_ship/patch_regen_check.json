@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "method": "byte-identical sha256",
+  "committed_ref": "models/patched/kokoro-v0_19.gpu4d.stft.onnx",
+  "regenerated": "/tmp/poc_patch_regen/kokoro-v0_19.gpu4d.stft.onnx",
+  "sha256": "effa08953b35c413064953850070533afce7c8d6a11f996f87e87fbcad42983f",
+  "script": "scripts/patch_kokoro_v2.py --stamp-stft"
+}

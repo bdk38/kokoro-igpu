@@ -1,0 +1,356 @@
+{
+  "gate": "I0.3",
+  "port": 8893,
+  "voice": "af_bella",
+  "methodology": {
+    "path": "POST /v1/audio/speech",
+    "backend": "ovgenai-gpu",
+    "tts_cache": "0",
+    "warm": "KOKORO_WARM_TEXT chunk-shaped + discard first timed run/shape",
+    "steady": "mean of runs after discard",
+    "bar": "steady RTF <= 1.0 fox and multi",
+    "fable_pred_fox": "<= 0.85"
+  },
+  "runs": [
+    {
+      "tag": "fox_0",
+      "wall_s": 3.024,
+      "audio_s": 3.55,
+      "rtf": 0.8518,
+      "bytes": 170444,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.85",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_0.wav"
+    },
+    {
+      "tag": "fox_1",
+      "wall_s": 2.613,
+      "audio_s": 3.55,
+      "rtf": 0.7362,
+      "bytes": 170444,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.74",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_1.wav"
+    },
+    {
+      "tag": "fox_2",
+      "wall_s": 2.57,
+      "audio_s": 3.55,
+      "rtf": 0.724,
+      "bytes": 170444,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.72",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_2.wav"
+    },
+    {
+      "tag": "fox_3",
+      "wall_s": 2.582,
+      "audio_s": 3.55,
+      "rtf": 0.7274,
+      "bytes": 170444,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.73",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_3.wav"
+    },
+    {
+      "tag": "fox_4",
+      "wall_s": 2.567,
+      "audio_s": 3.55,
+      "rtf": 0.723,
+      "bytes": 170444,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.72",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_4.wav"
+    },
+    {
+      "tag": "multi_0",
+      "wall_s": 97.378,
+      "audio_s": 21.25,
+      "rtf": 4.5825,
+      "bytes": 1020044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "4.58",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_0.wav"
+    },
+    {
+      "tag": "multi_1",
+      "wall_s": 15.499,
+      "audio_s": 21.25,
+      "rtf": 0.7294,
+      "bytes": 1020044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.73",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_1.wav"
+    },
+    {
+      "tag": "multi_2",
+      "wall_s": 15.289,
+      "audio_s": 21.25,
+      "rtf": 0.7195,
+      "bytes": 1020044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.72",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_2.wav"
+    },
+    {
+      "tag": "multi_3",
+      "wall_s": 15.394,
+      "audio_s": 21.25,
+      "rtf": 0.7244,
+      "bytes": 1020044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.72",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_3.wav"
+    },
+    {
+      "tag": "novel_first",
+      "wall_s": 33.336,
+      "audio_s": 6.25,
+      "rtf": 5.3337,
+      "bytes": 300044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "5.33",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/novel_first.wav"
+    },
+    {
+      "tag": "novel_second",
+      "wall_s": 4.569,
+      "audio_s": 6.25,
+      "rtf": 0.7311,
+      "bytes": 300044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.73",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/novel_second.wav"
+    },
+    {
+      "tag": "overhead_punctuated",
+      "wall_s": 27.443,
+      "audio_s": 5.0,
+      "rtf": 5.4887,
+      "bytes": 240044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "5.49",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/overhead_punctuated.wav"
+    },
+    {
+      "tag": "overhead_onechunkish",
+      "wall_s": 30.147,
+      "audio_s": 5.5,
+      "rtf": 5.4813,
+      "bytes": 264044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "5.48",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/overhead_onechunkish.wav"
+    }
+  ],
+  "server_pid": 4000628,
+  "health": {
+    "status": "ok",
+    "backend": "ovgenai-gpu",
+    "model": "/data/intel-igpu-tts/models/kokoro-82M-int8-ov",
+    "gpu_precision": null,
+    "genai": true
+  },
+  "stack": {
+    "openvino": "2026.3.0-22451-8a17657b995-releases/2026/3",
+    "openvino_genai": "2026.3.0.0-3277-bd8d6542e3c",
+    "devices": [
+      "CPU",
+      "GPU"
+    ],
+    "pack": "/data/intel-igpu-tts/models/kokoro-82M-int8-ov",
+    "pack_identity": [
+      "model=OpenVINO/kokoro-82M-int8-ov",
+      "promoted=2026-08-08",
+      "source_was=spike/ov263-genai/out/kokoro-82M-int8-ov",
+      "openvino_model.bin.sha256=c879cdd88275b9bfa25e51204d969013d701ea8699e15f99fd1957caf75a29ab",
+      "openvino_model.xml.sha256=a04d5d91e8d6f8d8c1ade28ad331b65827aa148e65515acb4c6725f876257fa5",
+      "voices=54"
+    ]
+  },
+  "fox": {
+    "first": {
+      "tag": "fox_0",
+      "wall_s": 3.024,
+      "audio_s": 3.55,
+      "rtf": 0.8518,
+      "bytes": 170444,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.85",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_0.wav"
+    },
+    "steady_n": 4,
+    "steady_mean_rtf": 0.7277,
+    "steady_mean_wall_s": 2.583,
+    "steady_runs": [
+      {
+        "tag": "fox_1",
+        "wall_s": 2.613,
+        "audio_s": 3.55,
+        "rtf": 0.7362,
+        "bytes": 170444,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.74",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_1.wav"
+      },
+      {
+        "tag": "fox_2",
+        "wall_s": 2.57,
+        "audio_s": 3.55,
+        "rtf": 0.724,
+        "bytes": 170444,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.72",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_2.wav"
+      },
+      {
+        "tag": "fox_3",
+        "wall_s": 2.582,
+        "audio_s": 3.55,
+        "rtf": 0.7274,
+        "bytes": 170444,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.73",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_3.wav"
+      },
+      {
+        "tag": "fox_4",
+        "wall_s": 2.567,
+        "audio_s": 3.55,
+        "rtf": 0.723,
+        "bytes": 170444,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.72",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/fox_4.wav"
+      }
+    ]
+  },
+  "multi": {
+    "first": {
+      "tag": "multi_0",
+      "wall_s": 97.378,
+      "audio_s": 21.25,
+      "rtf": 4.5825,
+      "bytes": 1020044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "4.58",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_0.wav"
+    },
+    "steady_n": 3,
+    "steady_mean_rtf": 0.7244,
+    "steady_mean_wall_s": 15.394,
+    "steady_runs": [
+      {
+        "tag": "multi_1",
+        "wall_s": 15.499,
+        "audio_s": 21.25,
+        "rtf": 0.7294,
+        "bytes": 1020044,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.73",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_1.wav"
+      },
+      {
+        "tag": "multi_2",
+        "wall_s": 15.289,
+        "audio_s": 21.25,
+        "rtf": 0.7195,
+        "bytes": 1020044,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.72",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_2.wav"
+      },
+      {
+        "tag": "multi_3",
+        "wall_s": 15.394,
+        "audio_s": 21.25,
+        "rtf": 0.7244,
+        "bytes": 1020044,
+        "x_backend": "ovgenai-gpu",
+        "x_rtf": "0.72",
+        "x_cache": null,
+        "path": "/data/intel-igpu-tts/artifacts/i0_3/multi_3.wav"
+      }
+    ]
+  },
+  "novel_tax": {
+    "text": "Seven silver swans swam silently past bright blue boxes near the old museum.",
+    "first": {
+      "tag": "novel_first",
+      "wall_s": 33.336,
+      "audio_s": 6.25,
+      "rtf": 5.3337,
+      "bytes": 300044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "5.33",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/novel_first.wav"
+    },
+    "second": {
+      "tag": "novel_second",
+      "wall_s": 4.569,
+      "audio_s": 6.25,
+      "rtf": 0.7311,
+      "bytes": 300044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "0.73",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/novel_second.wav"
+    },
+    "delta_wall_s": 28.767
+  },
+  "chunk_overhead_report_only": {
+    "punctuated": {
+      "tag": "overhead_punctuated",
+      "wall_s": 27.443,
+      "audio_s": 5.0,
+      "rtf": 5.4887,
+      "bytes": 240044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "5.49",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/overhead_punctuated.wav"
+    },
+    "onechunkish": {
+      "tag": "overhead_onechunkish",
+      "wall_s": 30.147,
+      "audio_s": 5.5,
+      "rtf": 5.4813,
+      "bytes": 264044,
+      "x_backend": "ovgenai-gpu",
+      "x_rtf": "5.48",
+      "x_cache": null,
+      "path": "/data/intel-igpu-tts/artifacts/i0_3/overhead_onechunkish.wav"
+    },
+    "note": "report-only G3; not a kill bar"
+  },
+  "bars": {
+    "fox_steady_le_1": true,
+    "multi_steady_le_1": true,
+    "fable_pred_fox_le_0_85": true,
+    "fox_steady_mean_rtf": 0.7277,
+    "multi_steady_mean_rtf": 0.7244
+  },
+  "i0_3_verdict": "PASS"
+}

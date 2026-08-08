@@ -49,3 +49,25 @@ models/patched/*.onnx
 # Tiny OV-GPU repro graphs for filing are force-added under diagnosis/minimal_conv1d/ if needed.
 spike/out/**/*.onnx
 spike/**/__pycache__/
+
+# Side / research venvs
+venv-s0-ov263/
+venv-poc-*/
+
+# Local backups
+*.bak
+*.bak-*
+WORKFLOW.md.bak*
+
+# Large spike IR/cache (rebuild locally)
+spike/out/g2/*.bin
+spike/out/g3/ov_cache/
+spike/ov263-genai/out/kokoro-82M-int8-ov/
+spike/ov263-genai/out/**/ov_cache*/
+
+# Official pack weights (download — see MODELS.md); keep identity sidecar trackable if force-added
+models/kokoro-82M-int8-ov/**
+!models/kokoro-82M-int8-ov/SHIP_PACK_IDENTITY.txt
+!models/kokoro-82M-int8-ov/README.md
+!models/kokoro-82M-int8-ov/config.json
+!models/kokoro-82M-int8-ov/openvino_config.json

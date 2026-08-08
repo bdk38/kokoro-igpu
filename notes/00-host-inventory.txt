@@ -62,11 +62,11 @@ Pins: requirements.txt / requirements.lock.txt (ship 2026.2.1 only)
 Compile cache (post-driver-bump): cache/openvino-2026.2.1-drv2622/
 Post-rollback smoke: notes/38 — ort-cpu fox RTF~0.43; ov-gpu warm RTF~0.66
 
-### S0 probe track — side venv (not created until S0.1)
-Target: openvino==2026.3.0 + openvino-genai==2026.3.0.0 + openvino-tokenizers
-Suggested path: /data/intel-igpu-tts/venv-s0-ov263/  (or spike/ov263-genai/.venv)
+### S0 probe track — /data/intel-igpu-tts/venv-s0-ov263  (created S0.1 — notes/45)
+openvino              2026.3.0 (+ GenAI 2026.3.0.0, tokenizers 2026.3.0.0)
+OpenVINO devices: CPU + GPU (UHD iGPU) — S0.1 PASS
 Must NOT mutate ship venv above.
-Gate: notes/36 + notes/36b (Fable A1–A3); awaiting Nexus ack to run.
+Gate: notes/36 + notes/36b FULLY ACKED; work tree spike/ov263-genai/
 
 ### Stack-identity caveat
 Original measurements (notes/25–32 era): wheel 2026.2.1 + older driver (.6 / IGC 2.36.3).
@@ -100,3 +100,8 @@ Not bit-identical to historical env; new numbers must record full stack.
 - /opt/webui/kokoro-intel-models
 - Open WebUI stack
 - /data/kokoro-openvino research stash
+
+## Ship venv convergence (2026-08-08 notes/59)
+- ship venv openvino: 2026.3.0 + openvino-genai 2026.3.0.0 (was 2026.2.1)
+- product default backend: ort-cpu
+- I0.2: ovgenai-gpu selectable (notes/60)

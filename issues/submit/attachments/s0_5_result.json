@@ -1,0 +1,175 @@
+{
+  "gate": "S0.5",
+  "model": "/data/intel-igpu-tts/spike/ov263-genai/out/kokoro-82M-int8-ov",
+  "device": "GPU",
+  "voice": "af_heart",
+  "openvino": "2026.3.0-22451-8a17657b995-releases/2026/3",
+  "openvino_genai": "2026.3.0.0-3277-bd8d6542e3c",
+  "note44_rtf_comparable": 5.01,
+  "a2_direct_unforced_compile_s": 15.533,
+  "a2_unforced_direct_compile_props": {
+    "EXECUTION_DEVICES": "['GPU.0']",
+    "INFERENCE_PRECISION_HINT": "<Type: 'float16'>",
+    "DEVICE_ID": "0",
+    "PERFORMANCE_HINT": "PerformanceMode.LATENCY"
+  },
+  "a2_openvino_config_json": {
+    "dtype": "",
+    "input_info": null,
+    "optimum_version": "2.2.0.dev0",
+    "output_attentions": false,
+    "quantization_config": {
+      "_dataset_kwargs": {},
+      "dataset": null,
+      "default_config": {
+        "quant_method": "default"
+      },
+      "ignored_scope": null,
+      "num_samples": null,
+      "processor": null,
+      "quantization_configs": {},
+      "tokenizer": null
+    },
+    "save_onnx_model": false,
+    "transformers_version": "5.5.4"
+  },
+  "pipeline_load_s": 2.99,
+  "fox_runs": [
+    {
+      "tag": "fox_run0",
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "wall_s": 14.691,
+      "audio_s": 3.25,
+      "rtf": 4.52,
+      "peak_abs": 0.3056052327156067,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/fox_run0.wav"
+    },
+    {
+      "tag": "fox_run1",
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "wall_s": 2.343,
+      "audio_s": 3.25,
+      "rtf": 0.721,
+      "peak_abs": 0.30549949407577515,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/fox_run1.wav"
+    },
+    {
+      "tag": "fox_run2",
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "wall_s": 2.23,
+      "audio_s": 3.25,
+      "rtf": 0.686,
+      "peak_abs": 0.30549949407577515,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/fox_run2.wav"
+    },
+    {
+      "tag": "fox_run3",
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "wall_s": 2.273,
+      "audio_s": 3.25,
+      "rtf": 0.699,
+      "peak_abs": 0.30549949407577515,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/fox_run3.wav"
+    },
+    {
+      "tag": "fox_run4",
+      "text": "The quick brown fox jumps over the lazy dog.",
+      "wall_s": 2.239,
+      "audio_s": 3.25,
+      "rtf": 0.689,
+      "peak_abs": 0.30549949407577515,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/fox_run4.wav"
+    }
+  ],
+  "fox_steady_rtf_mean": 0.699,
+  "fox_steady_wall_mean": 2.271,
+  "fox_run0_rtf": 4.52,
+  "multi_runs": [
+    {
+      "tag": "multi_run0",
+      "text": "Kokoro is an open-weight text to speech model with eighty two million parameters. Despite its lightweight architecture, it delivers comparable quality to larger models while being significantly faster and more cost efficient.",
+      "wall_s": 63.029,
+      "audio_s": 14.3,
+      "rtf": 4.408,
+      "peak_abs": 0.39414799213409424,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/multi_run0.wav"
+    },
+    {
+      "tag": "multi_run1",
+      "text": "Kokoro is an open-weight text to speech model with eighty two million parameters. Despite its lightweight architecture, it delivers comparable quality to larger models while being significantly faster and more cost efficient.",
+      "wall_s": 9.8,
+      "audio_s": 14.3,
+      "rtf": 0.685,
+      "peak_abs": 0.39569225907325745,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/multi_run1.wav"
+    },
+    {
+      "tag": "multi_run2",
+      "text": "Kokoro is an open-weight text to speech model with eighty two million parameters. Despite its lightweight architecture, it delivers comparable quality to larger models while being significantly faster and more cost efficient.",
+      "wall_s": 9.787,
+      "audio_s": 14.3,
+      "rtf": 0.684,
+      "peak_abs": 0.39569225907325745,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/multi_run2.wav"
+    }
+  ],
+  "multi_run0_rtf": 4.408,
+  "multi_steady_rtf_mean": 0.685,
+  "a1": {
+    "novel1_first": {
+      "tag": "a1_novel1_first",
+      "text": "Seven silver swans swam silently seaward past twelve bright blue boxes of old books.",
+      "wall_s": 30.433,
+      "audio_s": 6.075,
+      "rtf": 5.01,
+      "peak_abs": 0.3877784311771393,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/a1_novel1_first.wav"
+    },
+    "novel1_second": {
+      "tag": "a1_novel1_second",
+      "text": "Seven silver swans swam silently seaward past twelve bright blue boxes of old books.",
+      "wall_s": 4.206,
+      "audio_s": 6.075,
+      "rtf": 0.692,
+      "peak_abs": 0.38769087195396423,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/a1_novel1_second.wav"
+    },
+    "novel2_first": {
+      "tag": "a1_novel2_first",
+      "text": "The museum opens at noon on Thursdays and serves tea near the marble staircase.",
+      "wall_s": 27.257,
+      "audio_s": 5.375,
+      "rtf": 5.071,
+      "peak_abs": 0.2705567181110382,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/a1_novel2_first.wav"
+    },
+    "novel2_second": {
+      "tag": "a1_novel2_second",
+      "text": "The museum opens at noon on Thursdays and serves tea near the marble staircase.",
+      "wall_s": 3.695,
+      "audio_s": 5.375,
+      "rtf": 0.687,
+      "peak_abs": 0.2703450918197632,
+      "wav": "/data/intel-igpu-tts/spike/ov263-genai/out/s0_5/a1_novel2_second.wav"
+    },
+    "novel1_first_minus_second_wall_s": 26.227,
+    "novel2_first_minus_second_wall_s": 23.562
+  },
+  "a1_interpretation": "shape_jit_penalty_seconds_class",
+  "igt_multi_profile": {
+    "samples": 21,
+    "rcs_max": 99.91,
+    "rcs_mean": 68.64
+  },
+  "s0_5_product_speed_clause": true,
+  "steady_rtf_band": {
+    "fox": 0.699,
+    "multi": 0.685,
+    "vs_note44": 5.01,
+    "beats_note44_fox": true,
+    "beats_note44_multi": true
+  },
+  "b_branch_lean": "B1_fast_product_interest",
+  "s0_verdict_word": "S0-GO-product",
+  "s0_5_complete": true
+}

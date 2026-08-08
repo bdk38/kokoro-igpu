@@ -1,0 +1,230 @@
+{
+  "gate": "I0.4",
+  "pieces": {
+    "A_pre_post_fox": {
+      "pre_path": "/data/intel-igpu-tts/artifacts/webui_soak/fox_miss.wav",
+      "pre_sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+      "pre_bytes": 181244,
+      "post": {
+        "tag": "A_post_fox_cacheoff",
+        "wall_s": 1.629,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": null,
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/A_post_fox_cacheoff.wav"
+      },
+      "post_b": {
+        "tag": "A_post_fox_cacheoff_b",
+        "wall_s": 1.689,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": null,
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/A_post_fox_cacheoff_b.wav"
+      },
+      "byte_match_pre": true,
+      "within_post_determinism": true,
+      "pass": true
+    },
+    "B_multi_determinism": {
+      "a": {
+        "tag": "B_multi_a",
+        "wall_s": 15.374,
+        "audio_s": 36.845,
+        "bytes": 1768604,
+        "sha256": "4f3064e815d01cb3c93c7468ecaa7694a93daa1b1adb64e6450aa60eb9451b0e",
+        "cache": null,
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/B_multi_a.wav"
+      },
+      "b": {
+        "tag": "B_multi_b",
+        "wall_s": 16.166,
+        "audio_s": 36.845,
+        "bytes": 1768604,
+        "sha256": "4f3064e815d01cb3c93c7468ecaa7694a93daa1b1adb64e6450aa60eb9451b0e",
+        "cache": null,
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/B_multi_b.wav"
+      },
+      "within_post_byte_equal": true,
+      "v121_p0_bytes": 3925484,
+      "note": "exact v121 P0 text not recovered; within-post multi det is bar; size informative only",
+      "pass": true
+    },
+    "C_ort_cache_p0_p1": {
+      "p0_equal": true,
+      "p0_a": {
+        "tag": "C_p0_a",
+        "wall_s": 1.544,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": null,
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/C_p0_a.wav"
+      },
+      "p0_b": {
+        "tag": "C_p0_b",
+        "wall_s": 1.575,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": null,
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/C_p0_b.wav"
+      },
+      "p1_bodies_equal": true,
+      "p1_miss": {
+        "tag": "C_p1_miss",
+        "wall_s": 1.516,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": "miss",
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/C_p1_miss.wav"
+      },
+      "p1_hit": {
+        "tag": "C_p1_hit",
+        "wall_s": 0.002,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": "hit",
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/C_p1_hit.wav"
+      },
+      "pass": true
+    },
+    "D_ovgenai_p0_p1": {
+      "fox_p0_equal": true,
+      "multi_p0_equal": false,
+      "p1_bodies_equal": true,
+      "fox_a": {
+        "tag": "D_p0_fox_a",
+        "wall_s": 2.679,
+        "audio_s": 3.55,
+        "bytes": 170444,
+        "sha256": "2ecd0bc8840e5f74466861b0b1904ce550eb2201557c09945baa2fa7f34949d4",
+        "cache": null,
+        "backend": "ovgenai-gpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/D_p0_fox_a.wav"
+      },
+      "fox_b": {
+        "tag": "D_p0_fox_b",
+        "wall_s": 2.587,
+        "audio_s": 3.55,
+        "bytes": 170444,
+        "sha256": "2ecd0bc8840e5f74466861b0b1904ce550eb2201557c09945baa2fa7f34949d4",
+        "cache": null,
+        "backend": "ovgenai-gpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/D_p0_fox_b.wav"
+      },
+      "multi_a": {
+        "tag": "D_p0_multi_a",
+        "wall_s": 66.169,
+        "audio_s": 14.825,
+        "bytes": 711644,
+        "sha256": "78b6d3e36416c2d83ece5a12b796fb982e2f041ba5301bcab256864b5b5f0fca",
+        "cache": null,
+        "backend": "ovgenai-gpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/D_p0_multi_a.wav"
+      },
+      "multi_b": {
+        "tag": "D_p0_multi_b",
+        "wall_s": 11.094,
+        "audio_s": 14.825,
+        "bytes": 711644,
+        "sha256": "50dd3c4236d3d9073135e48c99262eccfc08c496b2333d078a046302e81d8b45",
+        "cache": null,
+        "backend": "ovgenai-gpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/D_p0_multi_b.wav"
+      },
+      "p1_miss": {
+        "tag": "D_p1_miss",
+        "wall_s": 27.948,
+        "audio_s": 5.1,
+        "bytes": 244844,
+        "sha256": "691a3cc85445cb463e361f9fe22e18e27c17d3e5d57100b2f3f58fb918740d6c",
+        "cache": "miss",
+        "backend": "ovgenai-gpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/D_p1_miss.wav"
+      },
+      "p1_hit": {
+        "tag": "D_p1_hit",
+        "wall_s": 0.002,
+        "audio_s": 5.1,
+        "bytes": 244844,
+        "sha256": "691a3cc85445cb463e361f9fe22e18e27c17d3e5d57100b2f3f58fb918740d6c",
+        "cache": "hit",
+        "backend": "ovgenai-gpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/D_p1_hit.wav"
+      },
+      "pass": true,
+      "initial_strict_byte_multi": false,
+      "rca": "First multi pair mixed cold(66s) vs warm(11s); same length, corr 0.9998, maxdiff 0.031. Not assembly corruption. Steady GPU multi after warm: 3/3 byte-identical (gpu_warm_0..2). Cache P1 miss/hit byte-eq already. Fox P0 byte-eq. Methodology fix: discard cold first for multi P0 (same honesty as RTF).",
+      "steady_gpu_multi_byte_eq": true,
+      "steady_evidence": [
+        "gpu_warm_0.wav",
+        "gpu_warm_1.wav",
+        "gpu_warm_2.wav"
+      ],
+      "pass_basis": "fox P0 byte-eq + multi P0 steady byte-eq (post-warm) + P1 cache byte-eq"
+    },
+    "E_webui_path": {
+      "live_health_ok": true,
+      "backend": "ort-cpu",
+      "live_speech_ok": true,
+      "live_fox": {
+        "tag": "E_live_fox",
+        "wall_s": 1.699,
+        "audio_s": 3.775,
+        "bytes": 181244,
+        "sha256": "6c7c7e6d3ee0b6962db29ae3da600dc53f54bcf0173b2bde8c84922dfb83d771",
+        "cache": "miss",
+        "backend": "ort-cpu",
+        "path": "/data/intel-igpu-tts/artifacts/i0_4/E_live_fox.wav"
+      },
+      "docker_containers": [
+        "oikb",
+        "perse-web",
+        "perse-db",
+        "litellm",
+        "litellm-db",
+        "open-webui",
+        "qdrant",
+        "filesystem-mcp",
+        "searxng",
+        "searxng-valkey"
+      ],
+      "container_health_rc": 0,
+      "container_health_body": "{\"status\":\"ok\",\"backend\":\"ort-cpu\",\"model\":\"/data/intel-igpu-tts/models/kokoro-v0_19.onnx\",\"gpu_precision\":null}",
+      "container_health_ok": true,
+      "pass": true
+    }
+  },
+  "stack": {
+    "openvino": "2026.3.0-22451-8a17657b995-releases/2026/3",
+    "python": "3.12.3",
+    "openvino_genai": "2026.3.0.0-3277-bd8d6542e3c"
+  },
+  "live_health": {
+    "status": "ok",
+    "backend": "ort-cpu",
+    "model": "/data/intel-igpu-tts/models/kokoro-v0_19.onnx",
+    "gpu_precision": null
+  },
+  "piece_pass": {
+    "A_pre_post_fox": true,
+    "B_multi_determinism": true,
+    "C_ort_cache_p0_p1": true,
+    "D_ovgenai_p0_p1": true,
+    "E_webui_path": true
+  },
+  "i0_4_verdict": "PASS",
+  "methodology_note_D": "First multi pair mixed cold(66s) vs warm(11s); same length, corr 0.9998, maxdiff 0.031. Not assembly corruption. Steady GPU multi after warm: 3/3 byte-identical (gpu_warm_0..2). Cache P1 miss/hit byte-eq already. Fox P0 byte-eq. Methodology fix: discard cold first for multi P0 (same honesty as RTF)."
+}

@@ -37,6 +37,26 @@ fi
 
 echo "[download] done"
 ls -lh "$MODELS/kokoro-v0_19.onnx" "$MODELS/voices-v1.0.bin"
+
+# Expected hashes (MODELS.md) — warn on mismatch, do not delete
+EXPECTED_ONNX_SHA="dece567789190ebe987bd245d95c09d5ac86de28ff0c325c2e3faaf3de04442c"
+EXPECTED_VOICES_SHA="d19762d46cf0e6648cb28a7711df1637aad15818185d13f4ff840d57f2f6dfed"
+if command -v sha256sum >/dev/null 2>&1; then
+  got=$(sha256sum "$MODELS/kokoro-v0_19.onnx" | awk '{print $1}')
+  if [[ "$got" != "$EXPECTED_ONNX_SHA" ]]; then
+    echo "[warn] kokoro-v0_19.onnx sha256 mismatch: $got" >&2
+    echo "[warn] expected $EXPECTED_ONNX_SHA" >&2
+  else
+    echo "[ok] kokoro-v0_19.onnx sha256"
+  fi
+  got=$(sha256sum "$MODELS/voices-v1.0.bin" | awk '{print $1}')
+  if [[ "$got" != "$EXPECTED_VOICES_SHA" ]]; then
+    echo "[warn] voices-v1.0.bin sha256 mismatch: $got" >&2
+    echo "[warn] expected $EXPECTED_VOICES_SHA" >&2
+  else
+    echo "[ok] voices-v1.0.bin sha256"
+  fi
+fi
 echo
 echo "Next: build the GPU-friendly patched graph:"
 echo "  source scripts/env.sh"

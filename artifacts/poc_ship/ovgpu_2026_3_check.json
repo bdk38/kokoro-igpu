@@ -1,0 +1,19 @@
+{
+  "check": "ov-gpu-on-2026.3",
+  "openvino": "2026.3.0-22451-8a17657b995-releases/2026/3",
+  "model": "models/patched/kokoro-v0_19.gpu4d.stft.onnx",
+  "devices": [
+    "CPU",
+    "GPU"
+  ],
+  "compile_s": 3.145,
+  "compile_ok": true,
+  "execution_devices": "['GPU.0']",
+  "infer_ok": true,
+  "infer_s": 36.058,
+  "audio_s": 7.625,
+  "peak_abs": 1.8466531038284302,
+  "wav": "artifacts/poc_ship/ovgpu_2026_3_foxish.wav",
+  "speaks": true,
+  "pin_strategy": "single-venv-2026.3"
+}

@@ -1,0 +1,27 @@
+{
+  "openvino": "2026.3.0-22451-8a17657b995-releases/2026/3",
+  "model": "/data/intel-igpu-tts/models/patched/kokoro-v0_19.gpu4d.stft.onnx",
+  "results": {
+    "f16": {
+      "ok": false,
+      "error": "RuntimeError: Exception from src/inference/src/cpp/infer_request.cpp:224:\nCheck 'DimType::merge(merged_dimension, arg0_col_dim, arg1_row_dim) || arg0_col_dim.is_dynamic() || arg1_row_dim.is_dynamic()' failed at src/core/shape_inference/include/matmul_shape_inference.hpp:65:\nWhile validating node 'opset1::MatMul MatMul_71562 () -> ()' with friendly_name 'MatMul_71562':\nIncompatible MatMul matrix dimension. First input dimension=9 at COL_INDEX_DIM=2 doesn't match the second input dimension=1 at ROW_INDEX_DIM=0\n\n",
+      "tb_tail": [
+        "    return OVDict(super().infer(_data_dispatch(",
+        "                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "RuntimeError: Exception from src/inference/src/cpp/infer_request.cpp:224:",
+        "Check 'DimType::merge(merged_dimension, arg0_col_dim, arg1_row_dim) || arg0_col_dim.is_dynamic() || arg1_row_dim.is_dynamic()' failed at src/core/shape_inference/include/matmul_shape_inference.hpp:65:",
+        "While validating node 'opset1::MatMul MatMul_71562 () -> ()' with friendly_name 'MatMul_71562':",
+        "Incompatible MatMul matrix dimension. First input dimension=9 at COL_INDEX_DIM=2 doesn't match the second input dimension=1 at ROW_INDEX_DIM=0",
+        "",
+        ""
+      ]
+    },
+    "f32": {
+      "ok": true,
+      "compile_s": 3.6170573234558105,
+      "infer_s": 9.838824033737183,
+      "peak": 0.4976828098297119,
+      "finite": true
+    }
+  }
+}

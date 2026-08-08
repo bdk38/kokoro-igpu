@@ -2,10 +2,7 @@
 """
 kokoro_server.py — OpenAI-compatible TTS server for Kokoro on bdk-server.
 
-Phase 5 deliverable. Default backend is ORT-CPU (the proven product path);
-the OpenVINO backends remain available as flags — including ov-gpu, the
-real-iGPU path (correct speech, RTF > 1 on Alder Lake UHD; demo/offload
-use, not latency).
+OpenAI-compatible Kokoro TTS server. Product default (v1.5.0 PoC face): **ort-cpu**; Prototype: KOKORO_BACKEND=ovgenai-gpu (official Kokoro-82M int8 GenAI on Intel iGPU) per Nexus cutover after I0-GO-default-candidate. Fallback: KOKORO_BACKEND=ort-cpu (v0.19 ONNX). Legacy: ov-gpu patched ONNX (I0.5). Novel shapes still pay first-infer tax; prefer KOKORO_TTS_CACHE=1 and chunk-shaped KOKORO_WARM_TEXT in deploy.
 
 Endpoints:
   POST /v1/audio/speech     OpenAI-compatible TTS (input, voice, speed,
@@ -18,11 +15,21 @@ Configuration (env vars):
   KOKORO_MODEL      path to ONNX model
                     default: /data/intel-igpu-tts/models/kokoro-v0_19.onnx
                     (use the patched gpu4d.stft model for OV backends)
-  KOKORO_VOICES     path to voices NPZ
+                    For ovgenai-*: if this points at a directory containing
+                    openvino_model.xml, it is also accepted as the GenAI pack.
+  KOKORO_GENAI_MODEL  directory of official OpenVINO GenAI Kokoro pack
+                    (openvino_model.xml + voices/*.bin). Used by
+                    ovgenai-gpu / ovgenai-cpu.
+                    default: /data/intel-igpu-tts/models/kokoro-82M-int8-ov
+                    Note: official pack is v1.0-family int8 — a different
+                    checkpoint from the ship v0.19 ONNX (not a silent swap).
+  KOKORO_VOICES     path to voices NPZ (ort/ov token-id backends)
                     default: /data/intel-igpu-tts/models/voices-v1.0.bin
-  KOKORO_BACKEND    ort-cpu | ov-cpu | ov-gpu     (default: ort-cpu)
+  KOKORO_BACKEND    ort-cpu | ov-cpu | ov-gpu | ovgenai-gpu | ovgenai-cpu
+                    (default ort-cpu; ovgenai-gpu Prototype; ov-gpu LEGACY proof)
+                    (default: ort-cpu — PoC; set ovgenai-gpu for Prototype)
   KOKORO_GPU_PRECISION  f32 | f16                 (default: f32; f16 is
-                        broken upstream — MatMul compile bug)
+                        broken upstream — MatMul compile bug; ov-gpu only)
   KOKORO_CACHE      OpenVINO compile-cache dir (unchanged semantics)
                     default: /data/intel-igpu-tts/cache/openvino
   KOKORO_TTS_CACHE  0|1 — opt-in TTS disk cache (default: 0)
@@ -31,8 +38,11 @@ Configuration (env vars):
   KOKORO_TTS_CACHE_MAX_MB  lazy LRU-by-mtime size cap (default: 500)
   KOKORO_TTS_CACHE_TIER  response | chunk | both (default: both)
                     When KOKORO_TTS_CACHE=1: "response" = C1 full-request
-                    only; "chunk" = C2 per-chunk_text-ids only; "both" =
-                    C1 then C2 on miss. Schema v2 (per-chunk pcm roundtrip).
+                    only; "chunk" = C2 per-chunk only; "both" =
+                    C1 then C2 on miss. Schema v3: per-chunk pcm roundtrip;
+                    C2 text_unit is "c2ids:" + token-ids (ort/ov) or
+                    "c2txt:" + exact chunk string (ovgenai). backend_id
+                    firewalls cross-backend keys.
                     X-Kokoro-Cache may be hit | partial | miss.
   KOKORO_WARM_BUCKETS   comma list of token buckets to pre-warm at startup
                     on OV backends, e.g. "96,192". Warm state is SHAPE-keyed
@@ -44,6 +54,7 @@ Configuration (env vars):
                     pre-warm shape — varied Read Aloud still pays cold on
                     novel shapes. Steady ~0.9 RTF is for REPEATS of a warmed
                     shape. KOKORO_CACHE shortens OV compile, NOT shape warm.
+                    (Skipped for ovgenai-* — no _bucket attribute.)
   KOKORO_WARM_TEXT  optional; '|' -separated exact phrases to synthesize at
                     startup (after bucket pre-warm). Use to pin demo/canned
                     sentences so the first user hit of that exact text is warm
@@ -64,10 +75,10 @@ Open WebUI wiring (Admin -> Settings -> Audio):
   Response format: wav (mp3 works if ffmpeg is installed on the host)
   Response Splitting: depends on backend (see notes/15):
     ort-cpu (RTF ~0.4)  -> Punctuation is fine and gives fast first-audio
-    ov-gpu  (RTF 4-6)   -> use None or Paragraphs. Punctuation fires one
-      slow request per sentence; the client can drop late segments and
-      Read Aloud skips mid-passage. Confirmed by A/B with identical
-      server build (notes/15-webui-response-splitting.md).
+    ovgenai-gpu (steady RTF ~0.7) -> Paragraphs OK; first novel shape
+      still multi-second — enable KOKORO_TTS_CACHE=1 for repeats.
+    ort-cpu (RTF ~0.4) -> Punctuation fine.
+    legacy ov-gpu (RTF 4-6) -> None/Paragraphs only (notes/15).
 
 Notes:
   - Long input is chunked at sentence boundaries to stay under the model's
@@ -134,6 +145,7 @@ TRIM_DEBUG = os.environ.get("KOKORO_TRIM_DEBUG", "0") == "1"
 
 MODEL_PATH = os.environ.get(
     "KOKORO_MODEL", "/data/intel-igpu-tts/models/kokoro-v0_19.onnx")
+GENAI_MODEL_DEFAULT = "/data/intel-igpu-tts/models/kokoro-82M-int8-ov"
 VOICES_PATH = os.environ.get(
     "KOKORO_VOICES", "/data/intel-igpu-tts/models/voices-v1.0.bin")
 BACKEND = os.environ.get("KOKORO_BACKEND", "ort-cpu")
@@ -146,12 +158,16 @@ TTS_CACHE_DIR = os.environ.get(
     "KOKORO_TTS_CACHE_DIR", "/data/intel-igpu-tts/cache/tts")
 TTS_CACHE_MAX_MB = float(os.environ.get("KOKORO_TTS_CACHE_MAX_MB", "500"))
 TTS_CACHE_TIER = os.environ.get("KOKORO_TTS_CACHE_TIER", "both").strip().lower()
-# C1 full-request; C2 per chunk_text token-id list (shared store when either on).
+# C1 full-request; C2 per-chunk (shared store when either on).
 TTS_RESPONSE_CACHE = TTS_CACHE_ON and TTS_CACHE_TIER in ("response", "both")
 TTS_CHUNK_CACHE = TTS_CACHE_ON and TTS_CACHE_TIER in ("chunk", "both")
-# schema_ver 2: always per-chunk int16 pcm roundtrip before concat (C2 assembly).
-TTS_CACHE_SCHEMA_VER = 2
+# schema_ver 3: per-chunk int16 pcm roundtrip (from v2) + c2txt: keys for
+# ovgenai backends (exact post-chunker text strings). Bump invalidates prior
+# v2 disk entries honestly rather than mixing layouts (notes/41, I0 G2).
+TTS_CACHE_SCHEMA_VER = 3
 TTS_SAMPLE_FMT = "24000:s16le:mono"
+# Soft char budget for GenAI text chunks (phoneme budget may tighten further).
+GENAI_CHUNK_SOFT_CHARS = 400
 DEFAULT_VOICE = os.environ.get("KOKORO_DEFAULT_VOICE", "af_bella")
 WARM_BUCKETS = [int(x) for x in
                 os.environ.get("KOKORO_WARM_BUCKETS", "").split(",")
@@ -246,6 +262,81 @@ def chunk_text(text, lang):
     if current:
         chunks.append(current)
     return chunks
+
+
+def chunk_text_strings(text, lang):
+    """Sentence-merge text chunks for GenAI path.
+
+    Returns list[str] of exact chunk strings used for generate() AND for
+    C2 cache keys (``c2txt:`` + chunk). Merges short sentences; keeps each
+    chunk under a soft char budget and under MAX_TOKENS phoneme ids when
+    the espeak path is cheap enough to check.
+    """
+    sentences = [s for s in _SENT_SPLIT.split(text.strip()) if s]
+    if not sentences:
+        return []
+
+    def _over_budget(s):
+        if len(s) > GENAI_CHUNK_SOFT_CHARS:
+            return True
+        try:
+            return len(phonemes_to_ids(s, lang)) + 2 >= MAX_TOKENS
+        except Exception:
+            return len(s) > GENAI_CHUNK_SOFT_CHARS
+
+    def _split_long(s):
+        """Hard-split a pathological run-on by soft char budget at spaces."""
+        out = []
+        while len(s) > GENAI_CHUNK_SOFT_CHARS:
+            cut = s.rfind(" ", 0, GENAI_CHUNK_SOFT_CHARS)
+            if cut < GENAI_CHUNK_SOFT_CHARS // 2:
+                cut = GENAI_CHUNK_SOFT_CHARS
+            piece = s[:cut].strip()
+            if piece:
+                out.append(piece)
+            s = s[cut:].strip()
+        if s:
+            out.append(s)
+        return out
+
+    chunks, current = [], ""
+    for sent in sentences:
+        if _over_budget(sent) and not current:
+            # Single sentence already too large — emit hard-split pieces.
+            pieces = _split_long(sent)
+            # Re-merge trailing short tail into next if needed: emit all
+            # but last into chunks; last becomes current if under budget.
+            for p in pieces[:-1]:
+                chunks.append(p)
+            if pieces:
+                current = pieces[-1]
+            continue
+        candidate = (current + " " + sent).strip() if current else sent
+        if current and _over_budget(candidate):
+            chunks.append(current)
+            if _over_budget(sent):
+                pieces = _split_long(sent)
+                chunks.extend(pieces[:-1])
+                current = pieces[-1] if pieces else ""
+            else:
+                current = sent
+        else:
+            current = candidate
+    if current:
+        chunks.append(current)
+    return chunks
+
+
+def resolve_genai_model_dir():
+    """Directory of official GenAI Kokoro pack (xml + voices/*.bin)."""
+    explicit = os.environ.get("KOKORO_GENAI_MODEL")
+    if explicit:
+        return explicit
+    # Allow KOKORO_MODEL to point at a pack directory with openvino_model.xml.
+    if (os.path.isdir(MODEL_PATH)
+            and os.path.isfile(os.path.join(MODEL_PATH, "openvino_model.xml"))):
+        return MODEL_PATH
+    return GENAI_MODEL_DEFAULT
 
 
 # ----------------------------------------------------------------------
@@ -470,13 +561,105 @@ class OvBackend:
         return audio
 
 
+class OvGenAIBackend:
+    """OpenVINO GenAI Text2SpeechPipeline (official Kokoro int8 pack).
+
+    Token-id infer() is not used — GenAI owns G2P/tokenization. Synthesize
+    branches on ``kind == "genai"`` and calls generate_text() per text chunk.
+    Speed is native GenAI ``speed=`` (no server-side resample double-apply).
+    """
+
+    kind = "genai"
+
+    def __init__(self, model_dir, device):
+        # Optional G2P helper used by S0 scripts (nice-to-have on host).
+        try:
+            import espeakng_loader
+            os.environ.setdefault(
+                "MISAKI_ESPEAK_LIBRARY", espeakng_loader.get_library_path())
+            os.environ.setdefault(
+                "ESPEAK_DATA_PATH", espeakng_loader.get_data_path())
+        except Exception as e:
+            print(f"[ovgenai] espeakng_loader setup skip: {e}", flush=True)
+
+        import openvino as ov
+        import openvino_genai as og
+
+        self.ov = ov
+        self.model_dir = model_dir
+        self.device = device  # "GPU" or "CPU"
+        self.name = f"ovgenai-{device.lower()}"
+        ov_ver = getattr(ov, "__version__", ov.get_version())
+        genai_ver = getattr(og, "__version__", "unknown")
+        print(f"[{self.name}] openvino={ov_ver} genai={genai_ver}",
+              flush=True)
+        print(f"[{self.name}] model_dir={model_dir}", flush=True)
+        t0 = time.time()
+        self.pipe = og.Text2SpeechPipeline(str(model_dir), device)
+        print(f"[{self.name}] Text2SpeechPipeline loaded in "
+              f"{time.time() - t0:.1f}s", flush=True)
+        self._emb_shape = tuple(self.pipe.get_speaker_embedding_shape())
+        self._emb_cache = {}  # voice name -> ov.Tensor
+        self._lock = threading.Lock()
+        # Populate voice list before any request so parse_voice_spec works.
+        global _GENAI_VOICES
+        names = self.list_voice_names()
+        _GENAI_VOICES = set(names)
+        print(f"[{self.name}] voices={len(names)} emb_shape={self._emb_shape}",
+              flush=True)
+
+    def list_voice_names(self):
+        voices_dir = os.path.join(self.model_dir, "voices")
+        if not os.path.isdir(voices_dir):
+            return []
+        return sorted(
+            f[:-4] for f in os.listdir(voices_dir)
+            if f.endswith(".bin") and os.path.isfile(os.path.join(voices_dir, f))
+        )
+
+    def _speaker_embedding(self, voice):
+        if voice in self._emb_cache:
+            return self._emb_cache[voice]
+        path = os.path.join(self.model_dir, "voices", f"{voice}.bin")
+        if not os.path.isfile(path):
+            raise FileNotFoundError(f"genai voice embedding missing: {path}")
+        emb = np.fromfile(path, dtype=np.float32)
+        expected = int(np.prod(self._emb_shape))
+        if emb.size != expected:
+            raise ValueError(
+                f"voice {voice!r} size {emb.size} != expected {expected} "
+                f"for shape {self._emb_shape}")
+        tensor = self.ov.Tensor(emb.reshape(self._emb_shape))
+        self._emb_cache[voice] = tensor
+        return tensor
+
+    def generate_text(self, text, voice, speed, lang):
+        """Return float32 mono audio for one text chunk (native speed)."""
+        emb = self._speaker_embedding(voice)
+        with self._lock:
+            gen = self.pipe.generate(
+                text, emb, language=lang, speed=float(speed))
+        audio = np.array(gen.speeches[0].data, dtype=np.float32).reshape(-1)
+        return np.nan_to_num(audio)
+
+    def infer(self, tokens, style, speed):
+        raise NotImplementedError(
+            "OvGenAIBackend does not implement token-id infer(); "
+            "use generate_text() via kind='genai' synthesize path")
+
+
 def make_backend(name):
     if name == "ort-cpu":
         return OrtCpuBackend(MODEL_PATH)
     if name == "ov-cpu":
         return OvBackend(MODEL_PATH, "CPU", "f32", CACHE_DIR)
     if name == "ov-gpu":
+        # LEGACY I0.5 — patched ONNX demo; superseded for steady by ovgenai-gpu
         return OvBackend(MODEL_PATH, "GPU", GPU_PRECISION, CACHE_DIR)
+    if name == "ovgenai-gpu":
+        return OvGenAIBackend(resolve_genai_model_dir(), "GPU")
+    if name == "ovgenai-cpu":
+        return OvGenAIBackend(resolve_genai_model_dir(), "CPU")
     raise ValueError(f"unknown backend {name!r}")
 
 
@@ -485,13 +668,23 @@ def make_backend(name):
 # ----------------------------------------------------------------------
 
 _VOICES = None
+# Set of pack voice stems when an ovgenai backend is active; None otherwise.
+_GENAI_VOICES = None
 
 
 def voices():
+    """NPZ voices for ort/ov token-id backends."""
     global _VOICES
     if _VOICES is None:
         _VOICES = np.load(VOICES_PATH)
     return _VOICES
+
+
+def available_voice_names():
+    """Voice name set for the active backend (genai pack or NPZ)."""
+    if _GENAI_VOICES is not None:
+        return _GENAI_VOICES
+    return set(voices().keys())
 
 
 # Common leftover / alternate names from older Kokoro-FastAPI installs.
@@ -517,11 +710,12 @@ def _canon_voice_token(token):
         return None
     token = OPENAI_VOICE_MAP.get(token, token)
     token = VOICE_ALIASES.get(token, token)
-    if token not in voices() and "_v0" in token:
+    known = available_voice_names()
+    if token not in known and "_v0" in token:
         alt = token.replace("_v0", "_", 1)
-        if alt in voices():
+        if alt in known:
             token = alt
-    return token if token in voices() else None
+    return token if token in known else None
 
 
 _BLEND_PART = re.compile(
@@ -603,8 +797,13 @@ def synthesize(backend, text, voice_spec, speed, chunk_cache=None):
     concat (and gap zeros stay float). That path is identical with cache off or
     on so C2 partial assembly matches cache-off byte-for-byte.
 
-    Returns (audio, total_tokens, label, c2_hits, c2_misses). On unknown voice:
-    (None, 0, None, 0, 0).
+    Dual path:
+      - ort/ov: token-id chunks; C2 key ``c2ids:`` + comma-joined ids
+      - genai (kind=='genai'): text-string chunks; C2 key ``c2txt:`` + exact
+        chunk string; native GenAI speed (no server resample)
+
+    Returns (audio, total_tokens, label, c2_hits, c2_misses). On unknown voice
+    or genai blend: (None, 0, None, 0, 0).
     """
     parsed = parse_voice_spec(voice_spec)
     if not parsed:
@@ -612,6 +811,68 @@ def synthesize(backend, text, voice_spec, speed, chunk_cache=None):
     parts, label = parsed
     primary = parts[0][0]
     lang = "en-gb" if primary.startswith(("bf_", "bm_")) else "en-us"
+    is_genai = getattr(backend, "kind", None) == "genai"
+
+    if is_genai:
+        # I0.2: single voice only — blends not supported on GenAI path.
+        if "+" in (voice_spec or "") or len(parts) > 1:
+            print("[synthesize] ovgenai backends support a single voice only "
+                  f"(no blends); got {voice_spec!r}", flush=True)
+            return None, 0, None, 0, 0
+        text_chunks = chunk_text_strings(text, lang)
+        if not text_chunks:
+            return np.zeros(0, dtype=np.float32), 0, label, 0, 0
+        gap = np.zeros(int(SR * CHUNK_GAP_S), dtype=np.float32)
+        pieces = []
+        total_tokens = 0
+        c2_hits = 0
+        c2_misses = 0
+        for chunk_str in text_chunks:
+            total_tokens += len(chunk_str)
+            key = None
+            pcm = None
+            if chunk_cache is not None:
+                # Exact post-chunker string (I0 G2 / notes/54).
+                text_unit = "c2txt:" + chunk_str
+                key = chunk_cache.build_key(label, speed, text_unit)
+                pcm = chunk_cache.read_entry(key)
+            if pcm is not None:
+                c2_hits += 1
+            else:
+                audio = backend.generate_text(
+                    chunk_str, primary, speed, lang)
+                audio = np.nan_to_num(
+                    np.asarray(audio, dtype=np.float32)).reshape(-1)
+                pcm = audio_float_to_pcm_int16_bytes(audio)
+                c2_misses += 1
+                if chunk_cache is not None and key is not None:
+                    meta = {
+                        "schema_ver": TTS_CACHE_SCHEMA_VER,
+                        "backend_id": chunk_cache.backend_id,
+                        "model_fp": chunk_cache.model_fp,
+                        "voice": label,
+                        "speed": f"{speed:.6g}",
+                        "sample_fmt": TTS_SAMPLE_FMT,
+                        "tier": "chunk",
+                        "text_unit_prefix": ("c2txt:" + chunk_str)[:64],
+                        "created_unix": time.time(),
+                        "n_samples": len(pcm) // 2,
+                        "key_hex": key,
+                    }
+                    try:
+                        chunk_cache.write_entry(key, pcm, meta)
+                    except Exception as e:
+                        print(f"[cache] c2 write failed: {e}", flush=True)
+            piece = pcm_int16_bytes_to_float(pcm)
+            pieces.append(piece)
+            pieces.append(gap)
+        if pieces:
+            pieces = pieces[:-1]
+        audio = (np.concatenate(pieces) if pieces
+                 else np.zeros(0, np.float32))
+        return audio, total_tokens, label, c2_hits, c2_misses
+
+    # --- ort / ov token-id path (unchanged) ---
     chunks = chunk_text(text, lang)
     if not chunks:
         return np.zeros(0, dtype=np.float32), 0, label, 0, 0
@@ -721,6 +982,32 @@ def sha256_file(path):
     return h.hexdigest()
 
 
+def model_fingerprint_for_cache():
+    """model_fp field for TTS cache keys.
+
+    GenAI pack: sha256 of openvino_model.bin if present else openvino_model.xml.
+    ONNX file backends: sha256 of MODEL_PATH.
+    """
+    if BACKEND.startswith("ovgenai"):
+        model_dir = resolve_genai_model_dir()
+        bin_path = os.path.join(model_dir, "openvino_model.bin")
+        xml_path = os.path.join(model_dir, "openvino_model.xml")
+        if os.path.isfile(bin_path):
+            return sha256_file(bin_path)
+        if os.path.isfile(xml_path):
+            return sha256_file(xml_path)
+        raise FileNotFoundError(
+            f"genai model fingerprint: no openvino_model.bin/.xml in {model_dir}")
+    return sha256_file(MODEL_PATH)
+
+
+def active_model_path():
+    """Human-facing model path for health / startup logs."""
+    if BACKEND.startswith("ovgenai"):
+        return resolve_genai_model_dir()
+    return MODEL_PATH
+
+
 def build_tts_cache_key(schema_ver, backend_id, model_fp, voice, speed,
                         sample_fmt, text_unit):
     """sha256 hex of pipe-joined key fields.
@@ -748,7 +1035,9 @@ class TtsResponseCache:
     """Shared C1/C2 PCM cache on disk under $KOKORO_TTS_CACHE_DIR/v1/.
 
     Layout: v1/<ab>/<fullhex>.pcm + .json
-    C1 text_unit = full request string; C2 = 'c2ids:' + comma-joined token ids.
+    C1 text_unit = full request string; C2 = 'c2ids:' + comma-joined token ids
+    (ort/ov) or 'c2txt:' + exact chunk string (ovgenai). backend_id in the key
+    firewalls cross-backend serving.
     Meta may include tier: "response" | "chunk". Atomic writes via *.tmp +
     os.replace. Process-local lock on miss-fill write and eviction.
     """
@@ -875,7 +1164,7 @@ def build_app():
     from fastapi.responses import Response
     from pydantic import BaseModel
 
-    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.2.0")
+    app = FastAPI(title="Kokoro TTS (intel-igpu-tts)", version="1.5.0")
     state = {"backend": None, "tts_cache": None}
 
     class SpeechRequest(BaseModel):
@@ -890,8 +1179,12 @@ def build_app():
 
     @app.on_event("startup")
     def _startup():
-        print(f"[server] model={MODEL_PATH}")
-        print(f"[server] voices={VOICES_PATH}")
+        model_disp = active_model_path()
+        print(f"[server] model={model_disp}")
+        if BACKEND.startswith("ovgenai"):
+            print(f"[server] voices=pack:{model_disp}/voices/*.bin")
+        else:
+            print(f"[server] voices={VOICES_PATH}")
         print(f"[server] backend={BACKEND}"
               + (f" precision={GPU_PRECISION}" if BACKEND == "ov-gpu" else ""))
         state["backend"] = make_backend(BACKEND)
@@ -900,7 +1193,7 @@ def build_app():
             t_fp = time.time()
             print(f"[server] TTS cache: hashing model for model_fp...",
                   flush=True)
-            model_fp = sha256_file(MODEL_PATH)
+            model_fp = model_fingerprint_for_cache()
             state["tts_cache"] = TtsResponseCache(
                 TTS_CACHE_DIR, TTS_CACHE_MAX_MB, BACKEND, model_fp)
             tiers = []
@@ -931,6 +1224,7 @@ def build_app():
             # optional OV pre-warm. Warm is SHAPE-keyed (notes/19–20), not
             # bucket-wide: near-capacity bucket text only warms that shape;
             # KOKORO_WARM_TEXT pins exact demo phrases for repeat traffic.
+            # GenAI has no _bucket — WARM_BUCKETS is skipped (hasattr gate).
             be = state["backend"]
             if WARM_BUCKETS and hasattr(be, "_bucket"):
                 for b in WARM_BUCKETS:
@@ -954,8 +1248,16 @@ def build_app():
 
     @app.get("/health")
     def health():
-        return {"status": "ok", "backend": BACKEND, "model": MODEL_PATH,
-                "gpu_precision": GPU_PRECISION if BACKEND == "ov-gpu" else None}
+        body = {
+            "status": "ok",
+            "backend": BACKEND,
+            "model": active_model_path(),
+            "gpu_precision": (
+                GPU_PRECISION if BACKEND == "ov-gpu" else None),
+        }
+        if BACKEND.startswith("ovgenai"):
+            body["genai"] = True
+        return body
 
     @app.get("/v1/models")
     def models():
@@ -966,7 +1268,7 @@ def build_app():
 
     @app.get("/v1/audio/voices")
     def list_voices():
-        return {"voices": sorted(list(voices().keys())),
+        return {"voices": sorted(available_voice_names()),
                 "openai_aliases": OPENAI_VOICE_MAP,
                 "default": DEFAULT_VOICE}
 
@@ -989,10 +1291,19 @@ def build_app():
             raise HTTPException(400, "empty input")
         parsed = parse_voice_spec(req.voice)
         if parsed is None:
+            blend_hint = (
+                " (ovgenai backends: single voice only, no blends)"
+                if BACKEND.startswith("ovgenai")
+                else " (blends like a(1)+b(2) supported)")
             raise HTTPException(400, f"unknown voice {req.voice!r}; "
-                                     f"see /v1/audio/voices "
-                                     f"(blends like a(1)+b(2) supported)")
+                                     f"see /v1/audio/voices{blend_hint}")
         _parts, voice_label = parsed
+        if (BACKEND.startswith("ovgenai")
+                and ("+" in (req.voice or "") or len(_parts) > 1)):
+            raise HTTPException(
+                400,
+                f"ovgenai backends support a single voice only "
+                f"(no blends); got {req.voice!r}")
         speed = float(np.clip(req.speed, 0.5, 2.0))
         # Exact text unit passed to synthesize (and used as C1 cache key field).
         text_unit = req.input
