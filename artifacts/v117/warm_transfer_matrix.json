@@ -1,0 +1,47 @@
+{
+  "s1_well": {
+    "http": "200",
+    "tokens": 71,
+    "audio_s": 5.11,
+    "infer_s": 24.54,
+    "rtf": "4.80",
+    "class": "COLD",
+    "text": "Well, honestly, I think we should wait; however, the choice is yours."
+  },
+  "s2_wallet": {
+    "http": "200",
+    "tokens": 63,
+    "audio_s": 4.39,
+    "infer_s": 21.79,
+    "rtf": "4.96",
+    "class": "COLD",
+    "text": "Wait, did you remember the keys, the wallet, and the passport?"
+  },
+  "s3_peter": {
+    "http": "200",
+    "tokens": 51,
+    "audio_s": 3.19,
+    "infer_s": 18.92,
+    "rtf": "5.93",
+    "class": "COLD",
+    "text": "Peter packed a heavy box of bright blue berries."
+  },
+  "s4_swans": {
+    "http": "200",
+    "tokens": 59,
+    "audio_s": 4.13,
+    "infer_s": 22.17,
+    "rtf": "5.37",
+    "class": "COLD",
+    "text": "Seven silver swans swam smoothly south across the sea."
+  },
+  "fox": {
+    "http": "200",
+    "tokens": 53,
+    "audio_s": 3.21,
+    "infer_s": 18.56,
+    "rtf": "5.78",
+    "class": "COLD",
+    "text": "The quick brown fox jumps over the lazy dog."
+  }
+}

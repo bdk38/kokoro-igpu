@@ -1,0 +1,40 @@
+{
+  "a": {
+    "name": "c02",
+    "text": "My brother painted the garden fence a deep shade of green.",
+    "n_real": 62,
+    "n_samples": 119400,
+    "raw_audio_s": 4.975,
+    "wall_s": 23.44,
+    "cpu_s": 39.003,
+    "rtf_raw": 4.71,
+    "speed": 1.0,
+    "label": "COLD"
+  },
+  "b": {
+    "name": "c48",
+    "text": "Heavy fog rolled off the bay before dawn.",
+    "n_real": 45,
+    "n_samples": 119400,
+    "raw_audio_s": 4.975,
+    "wall_s": 19.552,
+    "cpu_s": 19.776,
+    "rtf_raw": 3.93,
+    "speed": 1.0,
+    "label": "COLD"
+  },
+  "control": {
+    "name": "c05",
+    "text": "Every morning the baker stacks warm loaves in the window.",
+    "n_real": 59,
+    "n_samples": 121200,
+    "raw_audio_s": 5.05,
+    "wall_s": 19.802,
+    "cpu_s": 19.981,
+    "rtf_raw": 3.92,
+    "speed": 1.0,
+    "label": "COLD"
+  },
+  "shared_n_samples": 119400,
+  "n_collision_groups": 17
+}

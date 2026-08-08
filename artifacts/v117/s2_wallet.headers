@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+date: Wed, 05 Aug 2026 01:59:52 GMT
+server: uvicorn
+x-kokoro-backend: ov-gpu
+x-kokoro-rtf: 4.96
+x-kokoro-format: wav
+content-length: 210764
+content-type: audio/wav
+

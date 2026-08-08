@@ -1,0 +1,45 @@
+{
+  "s1_well_rep2": {
+    "tokens": 71,
+    "audio_s": 5.11,
+    "infer_s": 16.14,
+    "rtf": "3.16",
+    "class": "MID/COLD"
+  },
+  "fox_rep2": {
+    "tokens": 53,
+    "audio_s": 3.21,
+    "infer_s": 3.08,
+    "rtf": "0.96",
+    "class": "WARM"
+  },
+  "s3_peter_rep2": {
+    "tokens": 51,
+    "audio_s": 3.19,
+    "infer_s": 3.13,
+    "rtf": "0.98",
+    "class": "WARM"
+  },
+  "novel_cats": {
+    "tokens": 52,
+    "audio_s": 3.47,
+    "infer_s": 23.68,
+    "rtf": "6.83",
+    "class": "COLD",
+    "text": "The quiet white cats sleep under the wooden chair."
+  },
+  "fox_rep3": {
+    "tokens": 53,
+    "audio_s": 3.21,
+    "infer_s": 2.98,
+    "rtf": "0.93",
+    "class": "WARM"
+  },
+  "s1_well_rep3": {
+    "tokens": 71,
+    "audio_s": 5.11,
+    "infer_s": 3.9,
+    "rtf": "0.76",
+    "class": "WARM"
+  }
+}
