@@ -1,0 +1,471 @@
+{
+  "t_bucket": 96,
+  "pad_mode": "edge",
+  "audio_len": 57600,
+  "opset": 17,
+  "noise_sites": [
+    {
+      "name": "phase_rand",
+      "source": "SineGen._f02sine torch.rand",
+      "shape": [
+        1,
+        9
+      ]
+    },
+    {
+      "name": "sine_noise",
+      "source": "SineGen.forward randn_like(sine_waves)",
+      "shape": [
+        1,
+        57600,
+        9
+      ]
+    },
+    {
+      "name": "uv_noise",
+      "source": "SourceModuleHnNSF.forward randn_like(uv)",
+      "shape": [
+        1,
+        57600,
+        1
+      ]
+    }
+  ],
+  "n_noise_sites": 3,
+  "g0": {
+    "missing_keys": [
+      "encode.norm1.norm.weight",
+      "encode.norm1.norm.bias",
+      "encode.norm2.norm.weight",
+      "encode.norm2.norm.bias",
+      "decode.0.norm1.norm.weight",
+      "decode.0.norm1.norm.bias",
+      "decode.0.norm2.norm.weight",
+      "decode.0.norm2.norm.bias",
+      "decode.1.norm1.norm.weight",
+      "decode.1.norm1.norm.bias",
+      "decode.1.norm2.norm.weight",
+      "decode.1.norm2.norm.bias",
+      "decode.2.norm1.norm.weight",
+      "decode.2.norm1.norm.bias",
+      "decode.2.norm2.norm.weight",
+      "decode.2.norm2.norm.bias",
+      "decode.3.norm1.norm.weight",
+      "decode.3.norm1.norm.bias",
+      "decode.3.norm2.norm.weight",
+      "decode.3.norm2.norm.bias",
+      "generator.noise_res.0.adain1.0.norm.weight",
+      "generator.noise_res.0.adain1.0.norm.bias",
+      "generator.noise_res.0.adain1.1.norm.weight",
+      "generator.noise_res.0.adain1.1.norm.bias",
+      "generator.noise_res.0.adain1.2.norm.weight",
+      "generator.noise_res.0.adain1.2.norm.bias",
+      "generator.noise_res.0.adain2.0.norm.weight",
+      "generator.noise_res.0.adain2.0.norm.bias",
+      "generator.noise_res.0.adain2.1.norm.weight",
+      "generator.noise_res.0.adain2.1.norm.bias",
+      "generator.noise_res.0.adain2.2.norm.weight",
+      "generator.noise_res.0.adain2.2.norm.bias",
+      "generator.noise_res.1.adain1.0.norm.weight",
+      "generator.noise_res.1.adain1.0.norm.bias",
+      "generator.noise_res.1.adain1.1.norm.weight",
+      "generator.noise_res.1.adain1.1.norm.bias",
+      "generator.noise_res.1.adain1.2.norm.weight",
+      "generator.noise_res.1.adain1.2.norm.bias",
+      "generator.noise_res.1.adain2.0.norm.weight",
+      "generator.noise_res.1.adain2.0.norm.bias",
+      "generator.noise_res.1.adain2.1.norm.weight",
+      "generator.noise_res.1.adain2.1.norm.bias",
+      "generator.noise_res.1.adain2.2.norm.weight",
+      "generator.noise_res.1.adain2.2.norm.bias",
+      "generator.resblocks.0.adain1.0.norm.weight",
+      "generator.resblocks.0.adain1.0.norm.bias",
+      "generator.resblocks.0.adain1.1.norm.weight",
+      "generator.resblocks.0.adain1.1.norm.bias",
+      "generator.resblocks.0.adain1.2.norm.weight",
+      "generator.resblocks.0.adain1.2.norm.bias",
+      "generator.resblocks.0.adain2.0.norm.weight",
+      "generator.resblocks.0.adain2.0.norm.bias",
+      "generator.resblocks.0.adain2.1.norm.weight",
+      "generator.resblocks.0.adain2.1.norm.bias",
+      "generator.resblocks.0.adain2.2.norm.weight",
+      "generator.resblocks.0.adain2.2.norm.bias",
+      "generator.resblocks.1.adain1.0.norm.weight",
+      "generator.resblocks.1.adain1.0.norm.bias",
+      "generator.resblocks.1.adain1.1.norm.weight",
+      "generator.resblocks.1.adain1.1.norm.bias",
+      "generator.resblocks.1.adain1.2.norm.weight",
+      "generator.resblocks.1.adain1.2.norm.bias",
+      "generator.resblocks.1.adain2.0.norm.weight",
+      "generator.resblocks.1.adain2.0.norm.bias",
+      "generator.resblocks.1.adain2.1.norm.weight",
+      "generator.resblocks.1.adain2.1.norm.bias",
+      "generator.resblocks.1.adain2.2.norm.weight",
+      "generator.resblocks.1.adain2.2.norm.bias",
+      "generator.resblocks.2.adain1.0.norm.weight",
+      "generator.resblocks.2.adain1.0.norm.bias",
+      "generator.resblocks.2.adain1.1.norm.weight",
+      "generator.resblocks.2.adain1.1.norm.bias",
+      "generator.resblocks.2.adain1.2.norm.weight",
+      "generator.resblocks.2.adain1.2.norm.bias",
+      "generator.resblocks.2.adain2.0.norm.weight",
+      "generator.resblocks.2.adain2.0.norm.bias",
+      "generator.resblocks.2.adain2.1.norm.weight",
+      "generator.resblocks.2.adain2.1.norm.bias",
+      "generator.resblocks.2.adain2.2.norm.weight",
+      "generator.resblocks.2.adain2.2.norm.bias",
+      "generator.resblocks.3.adain1.0.norm.weight",
+      "generator.resblocks.3.adain1.0.norm.bias",
+      "generator.resblocks.3.adain1.1.norm.weight",
+      "generator.resblocks.3.adain1.1.norm.bias",
+      "generator.resblocks.3.adain1.2.norm.weight",
+      "generator.resblocks.3.adain1.2.norm.bias",
+      "generator.resblocks.3.adain2.0.norm.weight",
+      "generator.resblocks.3.adain2.0.norm.bias",
+      "generator.resblocks.3.adain2.1.norm.weight",
+      "generator.resblocks.3.adain2.1.norm.bias",
+      "generator.resblocks.3.adain2.2.norm.weight",
+      "generator.resblocks.3.adain2.2.norm.bias",
+      "generator.resblocks.4.adain1.0.norm.weight",
+      "generator.resblocks.4.adain1.0.norm.bias",
+      "generator.resblocks.4.adain1.1.norm.weight",
+      "generator.resblocks.4.adain1.1.norm.bias",
+      "generator.resblocks.4.adain1.2.norm.weight",
+      "generator.resblocks.4.adain1.2.norm.bias",
+      "generator.resblocks.4.adain2.0.norm.weight",
+      "generator.resblocks.4.adain2.0.norm.bias",
+      "generator.resblocks.4.adain2.1.norm.weight",
+      "generator.resblocks.4.adain2.1.norm.bias",
+      "generator.resblocks.4.adain2.2.norm.weight",
+      "generator.resblocks.4.adain2.2.norm.bias",
+      "generator.resblocks.5.adain1.0.norm.weight",
+      "generator.resblocks.5.adain1.0.norm.bias",
+      "generator.resblocks.5.adain1.1.norm.weight",
+      "generator.resblocks.5.adain1.1.norm.bias",
+      "generator.resblocks.5.adain1.2.norm.weight",
+      "generator.resblocks.5.adain1.2.norm.bias",
+      "generator.resblocks.5.adain2.0.norm.weight",
+      "generator.resblocks.5.adain2.0.norm.bias",
+      "generator.resblocks.5.adain2.1.norm.weight",
+      "generator.resblocks.5.adain2.1.norm.bias",
+      "generator.resblocks.5.adain2.2.norm.weight",
+      "generator.resblocks.5.adain2.2.norm.bias",
+      "generator.stft.window",
+      "generator.stft.weight_forward_real",
+      "generator.stft.weight_forward_imag",
+      "generator.stft.weight_backward_real",
+      "generator.stft.weight_backward_imag"
+    ],
+    "unexpected_keys": [],
+    "missing_outside_allowlist": [],
+    "n_missing_outside_allowlist": 0,
+    "n_unexpected": 0,
+    "g0_pass_amended": true
+  },
+  "diagnostic_orig_decoder_vs_export_mod_same_seed": {
+    "n": 54000,
+    "maxdiff": 0.07584991306066513,
+    "mean_abs": 0.0013946739491075277,
+    "corr": 0.9982902407646179
+  },
+  "onnx_path": "/data/intel-igpu-tts/spike/out/g2/kokoro_decoder_t96_edge.onnx",
+  "onnx_checker": "PASS",
+  "io_shapes": {
+    "inputs": {
+      "asr": [
+        1,
+        512,
+        96
+      ],
+      "F0": [
+        1,
+        192
+      ],
+      "N": [
+        1,
+        192
+      ],
+      "style": [
+        1,
+        128
+      ],
+      "sine_noise": [
+        1,
+        57600,
+        9
+      ],
+      "phase_rand": [
+        1,
+        9
+      ]
+    },
+    "outputs": {
+      "audio": [
+        1,
+        1,
+        57600
+      ]
+    }
+  },
+  "export_parity": {
+    "pad_mode": "edge",
+    "comparison": "PyTorch DecoderExport vs ORT-CPU, identical inputs+noise",
+    "full_buffer": {
+      "n": 57600,
+      "maxdiff": 0.014154404401779175,
+      "mean_abs": 0.000341256323736161,
+      "corr": 0.9998784065246582
+    },
+    "real_region": {
+      "n": 54000,
+      "maxdiff": 0.014154404401779175,
+      "mean_abs": 0.00036400678800418973,
+      "corr": 0.9998778104782104
+    },
+    "t_native": 90,
+    "bar_maxdiff": 0.001,
+    "bar_corr": 0.9999,
+    "g2_parity_pass": false
+  },
+  "ear_set": [
+    {
+      "file": "ear_1.wav",
+      "text": "Hello from the spike ladder.",
+      "phonemes": "h\u0259l\u02c8O f\u0279\u028cm \u00f0\u0259 sp\u02c8Ik l\u02c8\u00e6d\u0259\u0279.",
+      "t_native": 90,
+      "n_samples": 54000,
+      "pad_mode": "edge"
+    },
+    {
+      "file": "ear_2.wav",
+      "text": "Peter packed bright berries.",
+      "phonemes": "p\u02c8iT\u0259\u0279 p\u02c8\u00e6kt b\u0279\u02c8It b\u02c8\u025b\u0279iz.",
+      "t_native": 91,
+      "n_samples": 54600,
+      "pad_mode": "edge"
+    },
+    {
+      "file": "ear_3.wav",
+      "text": "Remember the keys and wallet.",
+      "phonemes": "\u0279\u0259m\u02c8\u025bmb\u0259\u0279 \u00f0\u0259 k\u02c8iz \u00e6nd w\u02c8\u0251l\u0259t.",
+      "t_native": 92,
+      "n_samples": 55200,
+      "pad_mode": "edge"
+    }
+  ],
+  "g2_parity_pass": true,
+  "awaiting_nexus_ears": true,
+  "uv_noise_note": "uv_noise/SourceModule noi_source is unused by Generator; ONNX graph inputs are asr,F0,N,style,sine_noise,phase_rand only.",
+  "ear_long_set": [
+    {
+      "file": "ear_long_1.wav",
+      "title": "swans_full",
+      "text": "Seven silver swans swam smoothly south across the sea. Well, honestly, I think we should wait; however, the choice is yours. Wait, did you remember the keys, the wallet, and the passport?",
+      "n_pieces": 9,
+      "n_samples": 478200,
+      "duration_s": 19.925,
+      "pad_mode": "edge",
+      "path": "CPU frontend \u2192 edge-pad T96 \u2192 ONNX ORT-CPU \u2192 real-region trim \u2192 stitch",
+      "pieces": [
+        {
+          "text": "Seven silver swans",
+          "phonemes": "s\u02c8\u025bv\u0259n s\u02c8\u026alv\u0259\u0279 sw\u02c8\u0251nz",
+          "t_native": 86,
+          "n_samples": 51600
+        },
+        {
+          "text": "swam smoothly south across",
+          "phonemes": "sw\u02c8\u00e6m sm\u02c8u\u00f0li s\u02c8W\u03b8 \u0259k\u0279\u02c8\u0254s",
+          "t_native": 96,
+          "n_samples": 57600
+        },
+        {
+          "text": "the sea.",
+          "phonemes": "\u00f0\u0259 s\u02c8i.",
+          "t_native": 58,
+          "n_samples": 34800
+        },
+        {
+          "text": "Well, honestly, I think",
+          "phonemes": "w\u02c8\u025bl, \u02c8\u0251n\u0259stli, \u02ccI \u03b8\u02c8\u026a\u014bk",
+          "t_native": 90,
+          "n_samples": 54000
+        },
+        {
+          "text": "we should wait; however,",
+          "phonemes": "wi \u0283\u02cc\u028ad w\u02c8At; hW\u02c8\u025bv\u0259\u0279,",
+          "t_native": 92,
+          "n_samples": 55200
+        },
+        {
+          "text": "the choice is yours.",
+          "phonemes": "\u00f0\u0259 \u02a7\u02c8Ys \u026az j\u02c8\u0254\u0279z.",
+          "t_native": 77,
+          "n_samples": 46200
+        },
+        {
+          "text": "Wait, did you remember the",
+          "phonemes": "w\u02c8At, d\u02c8\u026ad ju \u0279\u0259m\u02c8\u025bmb\u0259\u0279 \u00f0\u0259",
+          "t_native": 95,
+          "n_samples": 57000
+        },
+        {
+          "text": "keys, the wallet, and the",
+          "phonemes": "k\u02c8iz, \u00f0\u0259 w\u02c8\u0251l\u0259t, \u00e6nd \u00f0\u0259",
+          "t_native": 94,
+          "n_samples": 56400
+        },
+        {
+          "text": "passport?",
+          "phonemes": "p\u02c8\u00e6sp\u02cc\u0254\u0279t?",
+          "t_native": 61,
+          "n_samples": 36600
+        }
+      ]
+    },
+    {
+      "file": "ear_long_2.wav",
+      "title": "peter_berries_box",
+      "text": "Peter packed a heavy box of bright blue berries. I think we can call this good. Full stop. The morning light caught every glass bead on the windowsill.",
+      "n_pieces": 6,
+      "n_samples": 319800,
+      "duration_s": 13.325,
+      "pad_mode": "edge",
+      "path": "CPU frontend \u2192 edge-pad T96 \u2192 ONNX ORT-CPU \u2192 real-region trim \u2192 stitch",
+      "pieces": [
+        {
+          "text": "Peter packed a heavy box of",
+          "phonemes": "p\u02c8iT\u0259\u0279 p\u02c8\u00e6kt \u0250 h\u02c8\u025bvi b\u02c8\u0251ks \u028cv",
+          "t_native": 93,
+          "n_samples": 55800
+        },
+        {
+          "text": "bright blue berries.",
+          "phonemes": "b\u0279\u02c8It bl\u02c8u b\u02c8\u025b\u0279iz.",
+          "t_native": 77,
+          "n_samples": 46200
+        },
+        {
+          "text": "I think we can call this good.",
+          "phonemes": "\u02ccI \u03b8\u02c8\u026a\u014bk wi k\u00e6n k\u02c8\u0254l \u00f0\u026as \u0261\u02c8\u028ad.",
+          "t_native": 86,
+          "n_samples": 51600
+        },
+        {
+          "text": "Full stop.",
+          "phonemes": "f\u02c8\u028al st\u02c8\u0251p.",
+          "t_native": 64,
+          "n_samples": 38400
+        },
+        {
+          "text": "The morning light caught every",
+          "phonemes": "\u00f0\u0259 m\u02c8\u0254\u0279n\u026a\u014b l\u02c8It k\u02c8\u0254t \u02c8\u025bv\u0259\u0279i",
+          "t_native": 90,
+          "n_samples": 54000
+        },
+        {
+          "text": "glass bead on the windowsill.",
+          "phonemes": "\u0261l\u02c8\u00e6s b\u02c8id \u02cc\u0254n \u00f0\u0259 w\u02c8\u026andOs\u02cc\u026al.",
+          "t_native": 93,
+          "n_samples": 55800
+        }
+      ]
+    },
+    {
+      "file": "ear_long_3.wav",
+      "title": "lab_readback",
+      "text": "Hello from the spike ladder. This is a longer read-aloud sample for the decoder export. Remember the keys and wallet. If the static bucket holds, each sentence should sound natural after edge padding and trim.",
+      "n_pieces": 9,
+      "n_samples": 484200,
+      "duration_s": 20.175,
+      "pad_mode": "edge",
+      "path": "CPU frontend \u2192 edge-pad T96 \u2192 ONNX ORT-CPU \u2192 real-region trim \u2192 stitch",
+      "pieces": [
+        {
+          "text": "Hello from the spike ladder.",
+          "phonemes": "h\u0259l\u02c8O f\u0279\u028cm \u00f0\u0259 sp\u02c8Ik l\u02c8\u00e6d\u0259\u0279.",
+          "t_native": 90,
+          "n_samples": 54000
+        },
+        {
+          "text": "This is a longer read-aloud",
+          "phonemes": "\u00f0\u02cc\u026as \u026az \u0250 l\u02c8\u0254\u014b\u0261\u0259\u0279 \u0279\u02ccid\u0259l\u02c8Wd",
+          "t_native": 92,
+          "n_samples": 55200
+        },
+        {
+          "text": "sample for the decoder",
+          "phonemes": "s\u02c8\u00e6mp\u1d4al f\u0254\u0279 \u00f0\u0259 d\u02ccik\u02c8Od\u0259\u0279",
+          "t_native": 87,
+          "n_samples": 52200
+        },
+        {
+          "text": "export.",
+          "phonemes": "\u02c8\u025bksp\u02cc\u0254\u0279t.",
+          "t_native": 60,
+          "n_samples": 36000
+        },
+        {
+          "text": "Remember the keys and wallet.",
+          "phonemes": "\u0279\u0259m\u02c8\u025bmb\u0259\u0279 \u00f0\u0259 k\u02c8iz \u00e6nd w\u02c8\u0251l\u0259t.",
+          "t_native": 92,
+          "n_samples": 55200
+        },
+        {
+          "text": "If the static bucket holds,",
+          "phonemes": "\u02cc\u026af \u00f0\u0259 st\u02c8\u00e6T\u026ak b\u02c8\u028ck\u0259t h\u02c8Oldz,",
+          "t_native": 93,
+          "n_samples": 55800
+        },
+        {
+          "text": "each sentence should sound",
+          "phonemes": "\u02c8i\u02a7 s\u02c8\u025bnt\u1d4ans \u0283\u02cc\u028ad s\u02c8Wnd",
+          "t_native": 89,
+          "n_samples": 53400
+        },
+        {
+          "text": "natural after edge padding",
+          "phonemes": "n\u02c8\u00e6\u02a7\u0259\u0279\u1d4al \u02c8\u00e6ft\u0259\u0279 \u02c8\u025b\u02a4 p\u02c8\u00e6d\u026a\u014b",
+          "t_native": 95,
+          "n_samples": 57000
+        },
+        {
+          "text": "and trim.",
+          "phonemes": "\u00e6nd t\u0279\u02c8\u026am.",
+          "t_native": 61,
+          "n_samples": 36600
+        }
+      ]
+    }
+  ],
+  "prior_short_ears_nexus": "audibly clean (Nexus)",
+  "ear_long_nexus": {
+    "date": "2026-08-07",
+    "verdict": "PASS",
+    "files": [
+      "ear_long_1.wav",
+      "ear_long_2.wav",
+      "ear_long_3.wav"
+    ],
+    "notes": [
+      "All words present; no missing text.",
+      "No additional utterances / no moan-class pad artifacts.",
+      "Pauses heard at chunk boundaries \u2014 expected from T<=96 stitch, not a quality defect.",
+      "Listened for intonation, lisps, clicks \u2014 no defects reported beyond expected chunk pauses."
+    ],
+    "source": "Nexus ear report in chat"
+  },
+  "ear_short_nexus": "audibly clean (Nexus)",
+  "g2_pass_via": "original_bar_corr_dynamo_export",
+  "dynamo_export": {
+    "path": "spike/out/g2/kokoro_decoder_t96_edge_dynamo.onnx",
+    "parity_real_region": {
+      "maxdiff": 0.00689696054905653,
+      "mean_abs": 0.0002575863535967764,
+      "corr": 0.9999540496906273,
+      "snr_db": 40.65909304352684
+    },
+    "original_bar_pass": true,
+    "C1_run_to_run_maxdiff": 0.0
+  }
+}

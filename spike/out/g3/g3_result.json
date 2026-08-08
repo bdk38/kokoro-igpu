@@ -1,0 +1,288 @@
+{
+  "onnx": "spike/out/g2/kokoro_decoder_t96_edge_dynamo_nchw.onnx",
+  "contingency_B_fix": "Unsqueeze NCL->NC1L around all 1D Convs; weights to 4D; OV-GPU compiles",
+  "g3_1_offload": {
+    "EXECUTION_DEVICES": [
+      "GPU.0"
+    ],
+    "compile_cold_s": 2.487051327014342,
+    "PASS": true
+  },
+  "g3_2_no_jit": {
+    "rows": [
+      {
+        "i": 0,
+        "text": "Hello from the spike ladder.",
+        "t_native": 90,
+        "infer_s": 11.13459786400199,
+        "audio_real_s": 2.25,
+        "rtf_real": 4.948710161778662
+      },
+      {
+        "i": 1,
+        "text": "Peter packed bright berries.",
+        "t_native": 91,
+        "infer_s": 10.964587284019217,
+        "audio_real_s": 2.275,
+        "rtf_real": 4.819598806162293
+      },
+      {
+        "i": 2,
+        "text": "Remember the keys and wallet.",
+        "t_native": 92,
+        "infer_s": 11.017742704949342,
+        "audio_real_s": 2.3,
+        "rtf_real": 4.790322915195366
+      },
+      {
+        "i": 3,
+        "text": "I think we can call this good.",
+        "t_native": 86,
+        "infer_s": 11.013948675012216,
+        "audio_real_s": 2.15,
+        "rtf_real": 5.122766825587077
+      },
+      {
+        "i": 4,
+        "text": "The morning light was gentle.",
+        "t_native": 91,
+        "infer_s": 10.979223220027052,
+        "audio_real_s": 2.275,
+        "rtf_real": 4.826032184627276
+      },
+      {
+        "i": 5,
+        "text": "Full stop after the sentence.",
+        "t_native": 96,
+        "infer_s": 11.077500929008238,
+        "audio_real_s": 2.4,
+        "rtf_real": 4.615625387086766
+      },
+      {
+        "i": 6,
+        "text": "Bright blue glass on the sill.",
+        "t_native": 94,
+        "infer_s": 11.044532220927067,
+        "audio_real_s": 2.35,
+        "rtf_real": 4.6998009450753475
+      },
+      {
+        "i": 7,
+        "text": "Call this a clean bucket test.",
+        "t_native": 95,
+        "infer_s": 11.031291772960685,
+        "audio_real_s": 2.375,
+        "rtf_real": 4.644754430720289
+      },
+      {
+        "i": 8,
+        "text": "Short lines fit the lattice.",
+        "t_native": 90,
+        "infer_s": 11.044267167104408,
+        "audio_real_s": 2.25,
+        "rtf_real": 4.908563185379737
+      },
+      {
+        "i": 9,
+        "text": "Blue berries in a small box.",
+        "t_native": 96,
+        "infer_s": 11.064157257089391,
+        "audio_real_s": 2.4,
+        "rtf_real": 4.610065523787247
+      },
+      {
+        "i": 10,
+        "text": "The keys are on the table.",
+        "t_native": 84,
+        "infer_s": 11.041563265025616,
+        "audio_real_s": 2.1,
+        "rtf_real": 5.257887269059816
+      },
+      {
+        "i": "rep0",
+        "text": "Hello from the spike ladder.",
+        "t_native": 90,
+        "infer_s": 11.05458666908089,
+        "audio_real_s": 2.25,
+        "rtf_real": 4.913149630702618,
+        "repeat": true
+      },
+      {
+        "i": "rep1",
+        "text": "Hello from the spike ladder.",
+        "t_native": 90,
+        "infer_s": 11.004932250012644,
+        "audio_real_s": 2.25,
+        "rtf_real": 4.891081000005619,
+        "repeat": true
+      }
+    ],
+    "warm_mean_s": 11.037582941829566,
+    "warm_plus_10pct": 12.141341236012524,
+    "jit_17s_events": [],
+    "n_multi_second_infers": 11,
+    "all_within_10pct": true,
+    "cold_first_infer_s": 11.070827706018463,
+    "max_infer_s": 11.13459786400199,
+    "min_infer_s": 10.964587284019217,
+    "PASS_no_17s_shape_jit": true,
+    "PASS_strict_zero_multi_second": false,
+    "PASS": false,
+    "interpretation": "Uniform ~11s/infer across novel T \u2014 no shape-keyed 17-25s JIT, but every infer is multi-second; fails written \"zero multi-second first-infers\" and product realtime intent."
+  },
+  "g3_3_restart": {
+    "compile_cold_s": 2.487051327014342,
+    "compile_cached_s": 0.27781779400538653,
+    "first_infer_s": 11.138206499977969,
+    "next5_mean_s": 11.18442783523351,
+    "cache": {
+      "n_files": 1,
+      "bytes": 221474277
+    },
+    "PASS": true
+  },
+  "g3_4_realtime": {
+    "rows": [
+      {
+        "text": "Hello from the spike ladder.",
+        "t_native": 90,
+        "frontend_s": 0.5152089319890365,
+        "infer_s": 11.181284258957021,
+        "e2e_s": 11.697310455027036,
+        "audio_real_s": 2.25,
+        "rtf_e2e_real": 5.198804646678683,
+        "rtf_infer_real": 4.969459670647565
+      },
+      {
+        "text": "Peter packed bright berries.",
+        "t_native": 91,
+        "frontend_s": 0.5438860279973596,
+        "infer_s": 11.23146097897552,
+        "e2e_s": 11.776517377002165,
+        "audio_real_s": 2.275,
+        "rtf_e2e_real": 5.176491154726227,
+        "rtf_infer_real": 4.936905924824404
+      },
+      {
+        "text": "Remember the keys and wallet.",
+        "t_native": 92,
+        "frontend_s": 0.5318415450165048,
+        "infer_s": 11.13054525910411,
+        "e2e_s": 11.66371746500954,
+        "audio_real_s": 2.3,
+        "rtf_e2e_real": 5.071181506525887,
+        "rtf_infer_real": 4.839367503958309
+      },
+      {
+        "text": "I think we can call this good.",
+        "t_native": 86,
+        "frontend_s": 0.6616494280751795,
+        "infer_s": 11.077600691001862,
+        "e2e_s": 11.740110364044085,
+        "audio_real_s": 2.15,
+        "rtf_e2e_real": 5.460516448392598,
+        "rtf_infer_real": 5.152372414419471
+      },
+      {
+        "text": "The morning light was gentle.",
+        "t_native": 91,
+        "frontend_s": 0.502221020986326,
+        "infer_s": 11.164730574004352,
+        "e2e_s": 11.667812056955881,
+        "audio_real_s": 2.275,
+        "rtf_e2e_real": 5.128708596464124,
+        "rtf_infer_real": 4.907573878683232
+      },
+      {
+        "text": "Full stop after the sentence.",
+        "t_native": 96,
+        "frontend_s": 0.5067548489896581,
+        "infer_s": 11.095859073917381,
+        "e2e_s": 11.603480691090226,
+        "audio_real_s": 2.4,
+        "rtf_e2e_real": 4.8347836212875945,
+        "rtf_infer_real": 4.623274614132242
+      },
+      {
+        "text": "Bright blue glass on the sill.",
+        "t_native": 94,
+        "frontend_s": 0.4909721789881587,
+        "infer_s": 11.175197016098537,
+        "e2e_s": 11.667011242941953,
+        "audio_real_s": 2.35,
+        "rtf_e2e_real": 4.964685635294448,
+        "rtf_infer_real": 4.755402985573845
+      },
+      {
+        "text": "Call this a clean bucket test.",
+        "t_native": 95,
+        "frontend_s": 0.5135410709772259,
+        "infer_s": 11.087734728003852,
+        "e2e_s": 11.602210495970212,
+        "audio_real_s": 2.375,
+        "rtf_e2e_real": 4.885141261461142,
+        "rtf_infer_real": 4.668519885475306
+      },
+      {
+        "text": "Short lines fit the lattice.",
+        "t_native": 90,
+        "frontend_s": 0.4899711770704016,
+        "infer_s": 11.061116203083657,
+        "e2e_s": 11.551940724020824,
+        "audio_real_s": 2.25,
+        "rtf_e2e_real": 5.134195877342588,
+        "rtf_infer_real": 4.916051645814958
+      },
+      {
+        "text": "Blue berries in a small box.",
+        "t_native": 96,
+        "frontend_s": 0.503840816905722,
+        "infer_s": 11.113171290955506,
+        "e2e_s": 11.617884181905538,
+        "audio_real_s": 2.4,
+        "rtf_e2e_real": 4.840785075793974,
+        "rtf_infer_real": 4.630488037898128
+      }
+    ],
+    "mean_rtf_e2e_real": 5.069529382396726,
+    "max_rtf_e2e_real": 5.460516448392598,
+    "PASS": false,
+    "methodology": "warm steady-state; real-region denom; frontend+noise+OV included"
+  },
+  "g3_5_quality": {
+    "ov_vs_ort_real_region": {
+      "maxdiff": 0.5403649210929871,
+      "mean_abs": 0.016397749019694007,
+      "corr": 0.7517778630425045,
+      "snr_db": 3.3423142437359448,
+      "n": 54000
+    }
+  },
+  "ear_set": [
+    {
+      "file": "ear_g3_1.wav",
+      "text": "Hello from the spike ladder.",
+      "t_native": 90
+    },
+    {
+      "file": "ear_g3_2.wav",
+      "text": "Peter packed bright berries.",
+      "t_native": 91
+    },
+    {
+      "file": "ear_g3_3.wav",
+      "text": "Remember the keys and wallet.",
+      "t_native": 92
+    }
+  ],
+  "awaiting_nexus_ears": true,
+  "subgates": {
+    "offload": true,
+    "no_jit": false,
+    "restart": true,
+    "realtime": false
+  },
+  "G3_PASS": false,
+  "spike_go": false,
+  "spike_outcome": "KILL_or_park"
+}

@@ -1,0 +1,7270 @@
+{
+  "g0": {
+    "missing_keys": [
+      "encode.norm1.norm.weight",
+      "encode.norm1.norm.bias",
+      "encode.norm2.norm.weight",
+      "encode.norm2.norm.bias",
+      "decode.0.norm1.norm.weight",
+      "decode.0.norm1.norm.bias",
+      "decode.0.norm2.norm.weight",
+      "decode.0.norm2.norm.bias",
+      "decode.1.norm1.norm.weight",
+      "decode.1.norm1.norm.bias",
+      "decode.1.norm2.norm.weight",
+      "decode.1.norm2.norm.bias",
+      "decode.2.norm1.norm.weight",
+      "decode.2.norm1.norm.bias",
+      "decode.2.norm2.norm.weight",
+      "decode.2.norm2.norm.bias",
+      "decode.3.norm1.norm.weight",
+      "decode.3.norm1.norm.bias",
+      "decode.3.norm2.norm.weight",
+      "decode.3.norm2.norm.bias",
+      "generator.noise_res.0.adain1.0.norm.weight",
+      "generator.noise_res.0.adain1.0.norm.bias",
+      "generator.noise_res.0.adain1.1.norm.weight",
+      "generator.noise_res.0.adain1.1.norm.bias",
+      "generator.noise_res.0.adain1.2.norm.weight",
+      "generator.noise_res.0.adain1.2.norm.bias",
+      "generator.noise_res.0.adain2.0.norm.weight",
+      "generator.noise_res.0.adain2.0.norm.bias",
+      "generator.noise_res.0.adain2.1.norm.weight",
+      "generator.noise_res.0.adain2.1.norm.bias",
+      "generator.noise_res.0.adain2.2.norm.weight",
+      "generator.noise_res.0.adain2.2.norm.bias",
+      "generator.noise_res.1.adain1.0.norm.weight",
+      "generator.noise_res.1.adain1.0.norm.bias",
+      "generator.noise_res.1.adain1.1.norm.weight",
+      "generator.noise_res.1.adain1.1.norm.bias",
+      "generator.noise_res.1.adain1.2.norm.weight",
+      "generator.noise_res.1.adain1.2.norm.bias",
+      "generator.noise_res.1.adain2.0.norm.weight",
+      "generator.noise_res.1.adain2.0.norm.bias",
+      "generator.noise_res.1.adain2.1.norm.weight",
+      "generator.noise_res.1.adain2.1.norm.bias",
+      "generator.noise_res.1.adain2.2.norm.weight",
+      "generator.noise_res.1.adain2.2.norm.bias",
+      "generator.resblocks.0.adain1.0.norm.weight",
+      "generator.resblocks.0.adain1.0.norm.bias",
+      "generator.resblocks.0.adain1.1.norm.weight",
+      "generator.resblocks.0.adain1.1.norm.bias",
+      "generator.resblocks.0.adain1.2.norm.weight",
+      "generator.resblocks.0.adain1.2.norm.bias",
+      "generator.resblocks.0.adain2.0.norm.weight",
+      "generator.resblocks.0.adain2.0.norm.bias",
+      "generator.resblocks.0.adain2.1.norm.weight",
+      "generator.resblocks.0.adain2.1.norm.bias",
+      "generator.resblocks.0.adain2.2.norm.weight",
+      "generator.resblocks.0.adain2.2.norm.bias",
+      "generator.resblocks.1.adain1.0.norm.weight",
+      "generator.resblocks.1.adain1.0.norm.bias",
+      "generator.resblocks.1.adain1.1.norm.weight",
+      "generator.resblocks.1.adain1.1.norm.bias",
+      "generator.resblocks.1.adain1.2.norm.weight",
+      "generator.resblocks.1.adain1.2.norm.bias",
+      "generator.resblocks.1.adain2.0.norm.weight",
+      "generator.resblocks.1.adain2.0.norm.bias",
+      "generator.resblocks.1.adain2.1.norm.weight",
+      "generator.resblocks.1.adain2.1.norm.bias",
+      "generator.resblocks.1.adain2.2.norm.weight",
+      "generator.resblocks.1.adain2.2.norm.bias",
+      "generator.resblocks.2.adain1.0.norm.weight",
+      "generator.resblocks.2.adain1.0.norm.bias",
+      "generator.resblocks.2.adain1.1.norm.weight",
+      "generator.resblocks.2.adain1.1.norm.bias",
+      "generator.resblocks.2.adain1.2.norm.weight",
+      "generator.resblocks.2.adain1.2.norm.bias",
+      "generator.resblocks.2.adain2.0.norm.weight",
+      "generator.resblocks.2.adain2.0.norm.bias",
+      "generator.resblocks.2.adain2.1.norm.weight",
+      "generator.resblocks.2.adain2.1.norm.bias",
+      "generator.resblocks.2.adain2.2.norm.weight",
+      "generator.resblocks.2.adain2.2.norm.bias",
+      "generator.resblocks.3.adain1.0.norm.weight",
+      "generator.resblocks.3.adain1.0.norm.bias",
+      "generator.resblocks.3.adain1.1.norm.weight",
+      "generator.resblocks.3.adain1.1.norm.bias",
+      "generator.resblocks.3.adain1.2.norm.weight",
+      "generator.resblocks.3.adain1.2.norm.bias",
+      "generator.resblocks.3.adain2.0.norm.weight",
+      "generator.resblocks.3.adain2.0.norm.bias",
+      "generator.resblocks.3.adain2.1.norm.weight",
+      "generator.resblocks.3.adain2.1.norm.bias",
+      "generator.resblocks.3.adain2.2.norm.weight",
+      "generator.resblocks.3.adain2.2.norm.bias",
+      "generator.resblocks.4.adain1.0.norm.weight",
+      "generator.resblocks.4.adain1.0.norm.bias",
+      "generator.resblocks.4.adain1.1.norm.weight",
+      "generator.resblocks.4.adain1.1.norm.bias",
+      "generator.resblocks.4.adain1.2.norm.weight",
+      "generator.resblocks.4.adain1.2.norm.bias",
+      "generator.resblocks.4.adain2.0.norm.weight",
+      "generator.resblocks.4.adain2.0.norm.bias",
+      "generator.resblocks.4.adain2.1.norm.weight",
+      "generator.resblocks.4.adain2.1.norm.bias",
+      "generator.resblocks.4.adain2.2.norm.weight",
+      "generator.resblocks.4.adain2.2.norm.bias",
+      "generator.resblocks.5.adain1.0.norm.weight",
+      "generator.resblocks.5.adain1.0.norm.bias",
+      "generator.resblocks.5.adain1.1.norm.weight",
+      "generator.resblocks.5.adain1.1.norm.bias",
+      "generator.resblocks.5.adain1.2.norm.weight",
+      "generator.resblocks.5.adain1.2.norm.bias",
+      "generator.resblocks.5.adain2.0.norm.weight",
+      "generator.resblocks.5.adain2.0.norm.bias",
+      "generator.resblocks.5.adain2.1.norm.weight",
+      "generator.resblocks.5.adain2.1.norm.bias",
+      "generator.resblocks.5.adain2.2.norm.weight",
+      "generator.resblocks.5.adain2.2.norm.bias",
+      "generator.stft.window",
+      "generator.stft.weight_forward_real",
+      "generator.stft.weight_forward_imag",
+      "generator.stft.weight_backward_real",
+      "generator.stft.weight_backward_imag"
+    ],
+    "unexpected_keys": [],
+    "n_missing": 121,
+    "n_unexpected": 0,
+    "strict_clean": false,
+    "n_ckpt_decoder_keys": 375
+  },
+  "constants": {
+    "seed": 0,
+    "text": "Hello from the spike ladder.",
+    "phonemes": "h\u0259l\u02c8O f\u0279\u028cm \u00f0\u0259 sp\u02c8Ik l\u02c8\u00e6d\u0259\u0279.",
+    "voice": "af_bella",
+    "voice_path": "/data/kokoro-openvino/huggingface/Kokoro-82M/voices/af_bella.pt",
+    "speed": 1.0,
+    "device": "cpu",
+    "dtype": "f32",
+    "disable_complex": true
+  },
+  "rungs": [
+    {
+      "name": "seam.asr",
+      "shape_ref": [
+        1,
+        512,
+        90
+      ],
+      "shape_mir": [
+        1,
+        512,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "seam.F0_pred",
+      "shape_ref": [
+        1,
+        180
+      ],
+      "shape_mir": [
+        1,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "seam.N_pred",
+      "shape_ref": [
+        1,
+        180
+      ],
+      "shape_mir": [
+        1,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "seam.style",
+      "shape_ref": [
+        1,
+        128
+      ],
+      "shape_mir": [
+        1,
+        128
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "encode.actv",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000014305114746,
+      "status": "OK"
+    },
+    {
+      "name": "F0_conv.parametrizations.weight.0",
+      "shape_ref": [
+        1,
+        1,
+        3
+      ],
+      "shape_mir": [
+        1,
+        1,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "F0_conv.parametrizations.weight",
+      "shape_ref": [
+        1,
+        1,
+        3
+      ],
+      "shape_mir": [
+        1,
+        1,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "F0_conv",
+      "shape_ref": [
+        1,
+        1,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "N_conv.parametrizations.weight.0",
+      "shape_ref": [
+        1,
+        1,
+        3
+      ],
+      "shape_mir": [
+        1,
+        1,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "N_conv.parametrizations.weight",
+      "shape_ref": [
+        1,
+        1,
+        3
+      ],
+      "shape_mir": [
+        1,
+        1,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "N_conv",
+      "shape_ref": [
+        1,
+        1,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "encode.norm1.fc",
+      "shape_ref": [
+        1,
+        1028
+      ],
+      "shape_mir": [
+        1,
+        1028
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "encode.norm1.norm",
+      "shape_ref": [
+        1,
+        514,
+        90
+      ],
+      "shape_mir": [
+        1,
+        514,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000019073486328,
+      "status": "OK"
+    },
+    {
+      "name": "encode.norm1",
+      "shape_ref": [
+        1,
+        514,
+        90
+      ],
+      "shape_mir": [
+        1,
+        514,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "encode.pool",
+      "shape_ref": [
+        1,
+        514,
+        90
+      ],
+      "shape_mir": [
+        1,
+        514,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000011920928955,
+      "status": "OK"
+    },
+    {
+      "name": "encode.dropout",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        514,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        514,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000483989715576,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        514,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        514,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000483989715576,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001072883606,
+      "status": "OK"
+    },
+    {
+      "name": "encode.norm2.fc",
+      "shape_ref": [
+        1,
+        2048
+      ],
+      "shape_mir": [
+        1,
+        2048
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "encode.norm2.norm",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "encode.norm2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv2.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000123143196106,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv2.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000123143196106,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "encode.upsample",
+      "shape_ref": [
+        1,
+        514,
+        90
+      ],
+      "shape_mir": [
+        1,
+        514,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv1x1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        514,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        514,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000098943710327,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv1x1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        514,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        514,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000098943710327,
+      "status": "OK"
+    },
+    {
+      "name": "encode.conv1x1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000015497207642,
+      "status": "OK"
+    },
+    {
+      "name": "encode",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "asr_res.0.parametrizations.weight.0",
+      "shape_ref": [
+        64,
+        512,
+        1
+      ],
+      "shape_mir": [
+        64,
+        512,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "asr_res.0.parametrizations.weight",
+      "shape_ref": [
+        64,
+        512,
+        1
+      ],
+      "shape_mir": [
+        64,
+        512,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "asr_res.0",
+      "shape_ref": [
+        1,
+        64,
+        90
+      ],
+      "shape_mir": [
+        1,
+        64,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999995231628418,
+      "status": "OK"
+    },
+    {
+      "name": "asr_res",
+      "shape_ref": [
+        1,
+        64,
+        90
+      ],
+      "shape_mir": [
+        1,
+        64,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999995231628418,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.norm1.fc",
+      "shape_ref": [
+        1,
+        2180
+      ],
+      "shape_mir": [
+        1,
+        2180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.norm1.norm",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000003576278687,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.norm1",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.pool",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000032186508179,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.dropout",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000017881393433,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001534223556519,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001534223556519,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000008344650269,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.norm2.fc",
+      "shape_ref": [
+        1,
+        2048
+      ],
+      "shape_mir": [
+        1,
+        2048
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.norm2.norm",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.norm2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv2.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.00011146068573,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv2.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.00011146068573,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.upsample",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv1x1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000028371810913,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv1x1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000028371810913,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0.conv1x1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001311302185,
+      "status": "OK"
+    },
+    {
+      "name": "decode.0",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000003576278687,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.norm1.fc",
+      "shape_ref": [
+        1,
+        2180
+      ],
+      "shape_mir": [
+        1,
+        2180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.norm1.norm",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998211860657,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.norm1",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001072883606,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.pool",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.dropout",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000015497207642,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001479387283325,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001479387283325,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001311302185,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.norm2.fc",
+      "shape_ref": [
+        1,
+        2048
+      ],
+      "shape_mir": [
+        1,
+        2048
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.norm2.norm",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998211860657,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.norm2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv2.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001400709152222,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv2.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001400709152222,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.upsample",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv1x1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000032663345337,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv1x1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000032663345337,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1.conv1x1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000016689300537,
+      "status": "OK"
+    },
+    {
+      "name": "decode.1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.norm1.fc",
+      "shape_ref": [
+        1,
+        2180
+      ],
+      "shape_mir": [
+        1,
+        2180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.norm1.norm",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.norm1",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000019073486328,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.pool",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000017881393433,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.dropout",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000154972076416,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000154972076416,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000008344650269,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.norm2.fc",
+      "shape_ref": [
+        1,
+        2048
+      ],
+      "shape_mir": [
+        1,
+        2048
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.norm2.norm",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.norm2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv2.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001280307769775,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv2.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1024,
+        3
+      ],
+      "shape_mir": [
+        1024,
+        1024,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001280307769775,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.upsample",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv1x1.parametrizations.weight.0",
+      "shape_ref": [
+        1024,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000331401824951,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv1x1.parametrizations.weight",
+      "shape_ref": [
+        1024,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        1024,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000331401824951,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2.conv1x1",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000011920928955,
+      "status": "OK"
+    },
+    {
+      "name": "decode.2",
+      "shape_ref": [
+        1,
+        1024,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1024,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000003576278687,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.norm1.fc",
+      "shape_ref": [
+        1,
+        2180
+      ],
+      "shape_mir": [
+        1,
+        2180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.norm1.norm",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.norm1",
+      "shape_ref": [
+        1,
+        1090,
+        90
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        90
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001311302185,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.pool.parametrizations.weight.0",
+      "shape_ref": [
+        1090,
+        1,
+        3
+      ],
+      "shape_mir": [
+        1090,
+        1,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.pool.parametrizations.weight",
+      "shape_ref": [
+        1090,
+        1,
+        3
+      ],
+      "shape_mir": [
+        1090,
+        1,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.pool",
+      "shape_ref": [
+        1,
+        1090,
+        180
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001311302185,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.dropout",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000014305114746,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv1.parametrizations.weight.0",
+      "shape_ref": [
+        512,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        512,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000049352645874,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv1.parametrizations.weight",
+      "shape_ref": [
+        512,
+        1090,
+        3
+      ],
+      "shape_mir": [
+        512,
+        1090,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000049352645874,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv1",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001311302185,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.norm2.fc",
+      "shape_ref": [
+        1,
+        1024
+      ],
+      "shape_mir": [
+        1,
+        1024
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.norm2.norm",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.norm2",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv2.parametrizations.weight.0",
+      "shape_ref": [
+        512,
+        512,
+        3
+      ],
+      "shape_mir": [
+        512,
+        512,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000016689300537,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv2.parametrizations.weight",
+      "shape_ref": [
+        512,
+        512,
+        3
+      ],
+      "shape_mir": [
+        512,
+        512,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000016689300537,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv2",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000008344650269,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.upsample",
+      "shape_ref": [
+        1,
+        1090,
+        180
+      ],
+      "shape_mir": [
+        1,
+        1090,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000027418136597,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv1x1.parametrizations.weight.0",
+      "shape_ref": [
+        512,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        512,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000126361846924,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv1x1.parametrizations.weight",
+      "shape_ref": [
+        512,
+        1090,
+        1
+      ],
+      "shape_mir": [
+        512,
+        1090,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000126361846924,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3.conv1x1",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999997615814209,
+      "status": "OK"
+    },
+    {
+      "name": "decode.3",
+      "shape_ref": [
+        1,
+        512,
+        180
+      ],
+      "shape_mir": [
+        1,
+        512,
+        180
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.f0_upsamp",
+      "shape_ref": [
+        1,
+        1,
+        54000
+      ],
+      "shape_mir": [
+        1,
+        1,
+        54000
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000066757202148,
+      "status": "OK"
+    },
+    {
+      "name": "generator.m_source.l_sin_gen",
+      "shape_ref": [
+        1026000
+      ],
+      "shape_mir": [
+        1026000
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001682043075562,
+      "status": "OK"
+    },
+    {
+      "name": "generator.m_source.l_linear",
+      "shape_ref": [
+        1,
+        54000,
+        1
+      ],
+      "shape_mir": [
+        1,
+        54000,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.m_source.l_tanh",
+      "shape_ref": [
+        1,
+        54000,
+        1
+      ],
+      "shape_mir": [
+        1,
+        54000,
+        1
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.m_source",
+      "shape_ref": [
+        162000
+      ],
+      "shape_mir": [
+        162000
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_convs.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000065565109253,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000038146972656,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000122785568237,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000088214874268,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000073909759521,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000061988830566,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000159740447998,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000159740447998,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000081062316895,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000065565109253,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000070333480835,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000070333480835,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000063180923462,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000054836273193,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006914138794,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000090599060059,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000090599060059,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000072717666626,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000056028366089,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000083446502686,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000083446502686,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000083446502686,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000066757202148,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000081062316895,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.adain2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000087022781372,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000131130218506,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000131130218506,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0.convs2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000085830688477,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.ups.0.parametrizations.weight.0",
+      "shape_ref": [
+        512,
+        256,
+        20
+      ],
+      "shape_mir": [
+        512,
+        256,
+        20
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001052618026733,
+      "status": "OK"
+    },
+    {
+      "name": "generator.ups.0.parametrizations.weight",
+      "shape_ref": [
+        512,
+        256,
+        20
+      ],
+      "shape_mir": [
+        512,
+        256,
+        20
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001052618026733,
+      "status": "OK"
+    },
+    {
+      "name": "generator.ups.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000096559524536,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000077486038208,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000008225440979,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000014305114746,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000014305114746,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000078678131104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000050067901611,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000005841255188,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000016689300537,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000016689300537,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000078678131104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000076293945312,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006079673767,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000087022781372,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000067949295044,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000028610229492,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000028610229492,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000009298324585,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000075101852417,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000052452087402,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000017881393433,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000017881393433,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000077486038208,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.adain2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000079870224,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000033378601074,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        3
+      ],
+      "shape_mir": [
+        256,
+        256,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000033378601074,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0.convs2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000009298324585,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000057220458984,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000077486038208,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000005841255188,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000090599060059,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000090599060059,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000072717666626,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000000238418579,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000048875808716,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000075101852417,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006079673767,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006079673767,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000079870224,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000076293945312,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006914138794,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000100135803223,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000100135803223,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000061988830566,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000101327896118,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000085830688477,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000085830688477,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000008463859558,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000087022781372,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000066757202148,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000054836273193,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000054836273193,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006914138794,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.adain2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000083446502686,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000125169754028,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        7
+      ],
+      "shape_mir": [
+        256,
+        256,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000125169754028,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1.convs2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000132322311401,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000100135803223,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000077486038208,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000038146972656,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000014305114746,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000014305114746,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006914138794,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.0.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.0.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000072717666626,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000087022781372,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000015139579773,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000015139579773,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.0",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000078678131104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006914138794,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000007152557373,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000118017196655,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000118017196655,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000067949295044,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.1.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.1.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000077486038208,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000081062316895,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000011920928955,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000011920928955,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.1",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000076293945312,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000054836273193,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000088214874268,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000156164169312,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000156164169312,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs1.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000012755393982,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.2.fc",
+      "shape_ref": [
+        1,
+        512
+      ],
+      "shape_mir": [
+        1,
+        512
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.2.norm",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000076293945312,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.adain2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000088214874268,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000015139579773,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        256,
+        256,
+        11
+      ],
+      "shape_mir": [
+        256,
+        256,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000015139579773,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2.convs2.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000098943710327,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.2",
+      "shape_ref": [
+        1,
+        256,
+        1800
+      ],
+      "shape_mir": [
+        1,
+        256,
+        1800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000091791152954,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_convs.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000150203704834,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000371932983398,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000042200088501,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000280141830444,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000405311584473,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000174045562744,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000054836273193,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000054836273193,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000463724136353,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.00004243850708,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000031590461731,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000035762786865,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000035762786865,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000386238098145,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000038504600525,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000567436218262,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006079673767,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000006079673767,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001503229141235,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000425577163696,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000208616256714,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000029802322388,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000029802322388,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000604391098022,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000036597251892,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.adain2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000065803527832,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000131130218506,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000131130218506,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1.convs2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000706911087036,
+      "status": "OK"
+    },
+    {
+      "name": "generator.noise_res.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000938177108765,
+      "status": "OK"
+    },
+    {
+      "name": "generator.ups.1.parametrizations.weight.0",
+      "shape_ref": [
+        256,
+        128,
+        12
+      ],
+      "shape_mir": [
+        256,
+        128,
+        12
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000009298324585,
+      "status": "OK"
+    },
+    {
+      "name": "generator.ups.1.parametrizations.weight",
+      "shape_ref": [
+        256,
+        128,
+        12
+      ],
+      "shape_mir": [
+        256,
+        128,
+        12
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000009298324585,
+      "status": "OK"
+    },
+    {
+      "name": "generator.ups.1",
+      "shape_ref": [
+        1,
+        128,
+        10800
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10800
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001001358032227,
+      "status": "OK"
+    },
+    {
+      "name": "generator.reflection_pad",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001004934310913,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000635385513306,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000338554382324,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000047206878662,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000055193901062,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000555515289307,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999993443489075,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999993443489075,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000667572021484,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000507831573486,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000373125076294,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000429153442383,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000042200088501,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000412464141846,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000004768371582,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000004768371582,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000925064086914,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000044822692871,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000038981437683,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.999999463558197,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.999999463558197,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000256299972534,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000442266464233,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.adain2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000677108764648,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000003576278687,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        3
+      ],
+      "shape_mir": [
+        128,
+        128,
+        3
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000003576278687,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3.convs2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001418590545654,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.3",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000790357589722,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000635385513306,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000386238098145,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000015497207642,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000015497207642,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000344514846802,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000492334365845,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000501871109009,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000035762786865,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000035762786865,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000966787338257,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000560283660889,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000364780426025,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000001192092896,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000044822692871,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000045657157898,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000470876693726,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000059604644775,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001131296157837,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000524520874023,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000299215316772,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000015497207642,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000015497207642,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000154972076416,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000391006469727,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.adain2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000043511390686,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000022649765015,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        7
+      ],
+      "shape_mir": [
+        128,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000022649765015,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4.convs2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001351833343506,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.4",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001249313354492,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000635385513306,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000413656234741,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001072883606,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000001072883606,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000348091125488,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.0.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999999403953552,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.0.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000046968460083,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000367164611816,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.0.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000070333480835,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.0.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000070333480835,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.0",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000910758972168,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999998807907104,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000466108322144,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.00003981590271,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000029802322388,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000029802322388,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000045895576477,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.1.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.1.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000045895576477,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000399351119995,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.1.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000144243240356,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.1.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000144243240356,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.1",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001766681671143,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000460147857666,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000392198562622,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000009536743164,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs1.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000031590461731,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.2.fc",
+      "shape_ref": [
+        1,
+        256
+      ],
+      "shape_mir": [
+        1,
+        256
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 0.9999997615814209,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.2.norm",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000354051589966,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.adain2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000371932983398,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.2.parametrizations.weight.0",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000101327896118,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.2.parametrizations.weight",
+      "shape_ref": [
+        128,
+        128,
+        11
+      ],
+      "shape_mir": [
+        128,
+        128,
+        11
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000101327896118,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5.convs2.2",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0001393556594849,
+      "status": "OK"
+    },
+    {
+      "name": "generator.resblocks.5",
+      "shape_ref": [
+        1,
+        128,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        128,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000119686126709,
+      "status": "OK"
+    },
+    {
+      "name": "generator.conv_post.parametrizations.weight.0",
+      "shape_ref": [
+        22,
+        128,
+        7
+      ],
+      "shape_mir": [
+        22,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "generator.conv_post.parametrizations.weight",
+      "shape_ref": [
+        22,
+        128,
+        7
+      ],
+      "shape_mir": [
+        22,
+        128,
+        7
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000005960464478,
+      "status": "OK"
+    },
+    {
+      "name": "generator.conv_post",
+      "shape_ref": [
+        1,
+        22,
+        10801
+      ],
+      "shape_mir": [
+        1,
+        22,
+        10801
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.0000494718551636,
+      "status": "OK"
+    },
+    {
+      "name": "generator",
+      "shape_ref": [
+        1,
+        1,
+        54000
+      ],
+      "shape_mir": [
+        1,
+        1,
+        54000
+      ],
+      "maxdiff": 0.0,
+      "mean_abs_diff": 0.0,
+      "cosine_similarity": 1.000003695487976,
+      "status": "OK"
+    }
+  ],
+  "waveform_maxdiffs": {
+    "ref_vs_standalone_captured": 0.0,
+    "ref_vs_standalone_constructed": 0.0,
+    "standalone_captured_vs_constructed": 0.0
+  },
+  "branch_verdict": "A",
+  "g1_pass": true,
+  "g1_threshold": 0.0001,
+  "n_ref_hooks": 422,
+  "n_mir_hooks": 422,
+  "audio_samples_ref": 54000,
+  "audio_samples_mir_captured": 54000,
+  "audio_samples_mir_constructed": 54000
+}

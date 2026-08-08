@@ -1,0 +1,137 @@
+{
+  "items": {
+    "H3_stft_constant_audit": {
+      "results": [
+        {
+          "pt_buffer": "window",
+          "shape": [
+            20
+          ],
+          "best_match": null,
+          "n_shape_matches": 0
+        },
+        {
+          "pt_buffer": "weight_forward_real",
+          "shape": [
+            11,
+            1,
+            20
+          ],
+          "best_match": [
+            "core.decoder.generator.stft.weight_forward_real",
+            0.0,
+            0.0
+          ],
+          "n_shape_matches": 1
+        },
+        {
+          "pt_buffer": "weight_forward_imag",
+          "shape": [
+            11,
+            1,
+            20
+          ],
+          "best_match": [
+            "core.decoder.generator.stft.weight_forward_imag",
+            0.0,
+            0.0
+          ],
+          "n_shape_matches": 1
+        },
+        {
+          "pt_buffer": "weight_backward_real",
+          "shape": [
+            11,
+            1,
+            20
+          ],
+          "best_match": [
+            "core.decoder.generator.stft.weight_backward_real",
+            0.0,
+            0.0
+          ],
+          "n_shape_matches": 1
+        },
+        {
+          "pt_buffer": "weight_backward_imag",
+          "shape": [
+            11,
+            1,
+            20
+          ],
+          "best_match": [
+            "core.decoder.generator.stft.weight_backward_imag",
+            0.0,
+            0.0
+          ],
+          "n_shape_matches": 1
+        }
+      ],
+      "bit_exact_all": false
+    },
+    "H1_dynamo_op18": {
+      "status": "ok",
+      "input_names": [
+        "asr",
+        "F0",
+        "N",
+        "style",
+        "sine_noise",
+        "phase_rand"
+      ],
+      "parity": {
+        "n": 54000,
+        "maxdiff": 0.006896925158798695,
+        "mean_abs": 0.00025758693202441844,
+        "corr": 0.9999540496599838,
+        "snr_db": 40.659090334653925
+      },
+      "path": "spike/out/g2/hardening/decoder_t96_dynamo_op18.onnx"
+    },
+    "H2_in_decomposition": {
+      "status": "ok",
+      "pt_baseline_vs_pt_decomp": {
+        "n": 54000,
+        "maxdiff": 2.3245811462402344e-06,
+        "mean_abs": 4.699436171130353e-08,
+        "corr": 0.9999999999982151,
+        "snr_db": 114.76657256218631
+      },
+      "n_swapped": 58,
+      "path": "spike/out/g2/hardening/decoder_t96_in_decomp_legacy.onnx",
+      "parity_decomp_pt_vs_ort": {
+        "n": 54000,
+        "maxdiff": 0.014156043529510498,
+        "mean_abs": 0.00036400808635991,
+        "corr": 0.9998779276457144,
+        "snr_db": 36.415318460021865
+      },
+      "parity_baseline_pt_vs_decomp_ort": {
+        "n": 54000,
+        "maxdiff": 0.014155343174934387,
+        "mean_abs": 0.0003640076861754404,
+        "corr": 0.999877928372259,
+        "snr_db": 36.415344092220494
+      }
+    }
+  },
+  "baseline_legacy_ort": {
+    "n": 54000,
+    "maxdiff": 0.01415473222732544,
+    "mean_abs": 0.0003640065704320417,
+    "corr": 0.9998779288319981,
+    "snr_db": 36.415359892665066
+  },
+  "best": {
+    "name": "H1_dynamo",
+    "metrics": {
+      "n": 54000,
+      "maxdiff": 0.006896925158798695,
+      "mean_abs": 0.00025758693202441844,
+      "corr": 0.9999540496599838,
+      "snr_db": 40.659090334653925
+    },
+    "original_bar_pass": true
+  },
+  "any_original_bar_pass": true
+}

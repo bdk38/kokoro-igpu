@@ -1,0 +1,427 @@
+name,shape_ref,shape_mir,maxdiff,mean_abs_diff,cosine_similarity,status
+seam.asr,"[1, 512, 90]","[1, 512, 90]",0.0,0.0,1.000000238418579,OK
+seam.F0_pred,"[1, 180]","[1, 180]",0.0,0.0,1.0,OK
+seam.N_pred,"[1, 180]","[1, 180]",0.0,0.0,0.9999998807907104,OK
+seam.style,"[1, 128]","[1, 128]",0.0,0.0,1.0,OK
+encode.actv,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.0000014305114746,OK
+F0_conv.parametrizations.weight.0,"[1, 1, 3]","[1, 1, 3]",0.0,0.0,1.0,OK
+F0_conv.parametrizations.weight,"[1, 1, 3]","[1, 1, 3]",0.0,0.0,1.0,OK
+F0_conv,"[1, 1, 90]","[1, 1, 90]",0.0,0.0,1.0000001192092896,OK
+N_conv.parametrizations.weight.0,"[1, 1, 3]","[1, 1, 3]",0.0,0.0,1.0000001192092896,OK
+N_conv.parametrizations.weight,"[1, 1, 3]","[1, 1, 3]",0.0,0.0,1.0000001192092896,OK
+N_conv,"[1, 1, 90]","[1, 1, 90]",0.0,0.0,1.0,OK
+encode.norm1.fc,"[1, 1028]","[1, 1028]",0.0,0.0,0.9999999403953552,OK
+encode.norm1.norm,"[1, 514, 90]","[1, 514, 90]",0.0,0.0,1.0000019073486328,OK
+encode.norm1,"[1, 514, 90]","[1, 514, 90]",0.0,0.0,1.0000001192092896,OK
+encode.pool,"[1, 514, 90]","[1, 514, 90]",0.0,0.0,1.0000011920928955,OK
+encode.dropout,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000005960464478,OK
+encode.conv1.parametrizations.weight.0,"[1024, 514, 3]","[1024, 514, 3]",0.0,0.0,1.0000483989715576,OK
+encode.conv1.parametrizations.weight,"[1024, 514, 3]","[1024, 514, 3]",0.0,0.0,1.0000483989715576,OK
+encode.conv1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.000001072883606,OK
+encode.norm2.fc,"[1, 2048]","[1, 2048]",0.0,0.0,1.0000001192092896,OK
+encode.norm2.norm,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000007152557373,OK
+encode.norm2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.000000238418579,OK
+encode.conv2.parametrizations.weight.0,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.000123143196106,OK
+encode.conv2.parametrizations.weight,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.000123143196106,OK
+encode.conv2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000007152557373,OK
+encode.upsample,"[1, 514, 90]","[1, 514, 90]",0.0,0.0,1.0000001192092896,OK
+encode.conv1x1.parametrizations.weight.0,"[1024, 514, 1]","[1024, 514, 1]",0.0,0.0,1.0000098943710327,OK
+encode.conv1x1.parametrizations.weight,"[1024, 514, 1]","[1024, 514, 1]",0.0,0.0,1.0000098943710327,OK
+encode.conv1x1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000015497207642,OK
+encode,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000007152557373,OK
+asr_res.0.parametrizations.weight.0,"[64, 512, 1]","[64, 512, 1]",0.0,0.0,1.0000007152557373,OK
+asr_res.0.parametrizations.weight,"[64, 512, 1]","[64, 512, 1]",0.0,0.0,1.0000007152557373,OK
+asr_res.0,"[1, 64, 90]","[1, 64, 90]",0.0,0.0,0.9999995231628418,OK
+asr_res,"[1, 64, 90]","[1, 64, 90]",0.0,0.0,0.9999995231628418,OK
+decode.0.norm1.fc,"[1, 2180]","[1, 2180]",0.0,0.0,1.0000001192092896,OK
+decode.0.norm1.norm,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000003576278687,OK
+decode.0.norm1,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.000000238418579,OK
+decode.0.pool,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000032186508179,OK
+decode.0.dropout,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000017881393433,OK
+decode.0.conv1.parametrizations.weight.0,"[1024, 1090, 3]","[1024, 1090, 3]",0.0,0.0,1.0001534223556519,OK
+decode.0.conv1.parametrizations.weight,"[1024, 1090, 3]","[1024, 1090, 3]",0.0,0.0,1.0001534223556519,OK
+decode.0.conv1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000008344650269,OK
+decode.0.norm2.fc,"[1, 2048]","[1, 2048]",0.0,0.0,1.0000001192092896,OK
+decode.0.norm2.norm,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000009536743164,OK
+decode.0.norm2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000009536743164,OK
+decode.0.conv2.parametrizations.weight.0,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.00011146068573,OK
+decode.0.conv2.parametrizations.weight,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.00011146068573,OK
+decode.0.conv2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000007152557373,OK
+decode.0.upsample,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.000000238418579,OK
+decode.0.conv1x1.parametrizations.weight.0,"[1024, 1090, 1]","[1024, 1090, 1]",0.0,0.0,1.000028371810913,OK
+decode.0.conv1x1.parametrizations.weight,"[1024, 1090, 1]","[1024, 1090, 1]",0.0,0.0,1.000028371810913,OK
+decode.0.conv1x1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.000001311302185,OK
+decode.0,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000003576278687,OK
+decode.1.norm1.fc,"[1, 2180]","[1, 2180]",0.0,0.0,1.0,OK
+decode.1.norm1.norm,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,0.9999998211860657,OK
+decode.1.norm1,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.000001072883606,OK
+decode.1.pool,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000005960464478,OK
+decode.1.dropout,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000015497207642,OK
+decode.1.conv1.parametrizations.weight.0,"[1024, 1090, 3]","[1024, 1090, 3]",0.0,0.0,1.0001479387283325,OK
+decode.1.conv1.parametrizations.weight,"[1024, 1090, 3]","[1024, 1090, 3]",0.0,0.0,1.0001479387283325,OK
+decode.1.conv1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.000001311302185,OK
+decode.1.norm2.fc,"[1, 2048]","[1, 2048]",0.0,0.0,1.0,OK
+decode.1.norm2.norm,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,0.9999998211860657,OK
+decode.1.norm2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.000000238418579,OK
+decode.1.conv2.parametrizations.weight.0,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.0001400709152222,OK
+decode.1.conv2.parametrizations.weight,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.0001400709152222,OK
+decode.1.conv2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.000000238418579,OK
+decode.1.upsample,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000001192092896,OK
+decode.1.conv1x1.parametrizations.weight.0,"[1024, 1090, 1]","[1024, 1090, 1]",0.0,0.0,1.000032663345337,OK
+decode.1.conv1x1.parametrizations.weight,"[1024, 1090, 1]","[1024, 1090, 1]",0.0,0.0,1.000032663345337,OK
+decode.1.conv1x1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000016689300537,OK
+decode.1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000005960464478,OK
+decode.2.norm1.fc,"[1, 2180]","[1, 2180]",0.0,0.0,0.9999999403953552,OK
+decode.2.norm1.norm,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,0.9999999403953552,OK
+decode.2.norm1,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000019073486328,OK
+decode.2.pool,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000017881393433,OK
+decode.2.dropout,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000009536743164,OK
+decode.2.conv1.parametrizations.weight.0,"[1024, 1090, 3]","[1024, 1090, 3]",0.0,0.0,1.000154972076416,OK
+decode.2.conv1.parametrizations.weight,"[1024, 1090, 3]","[1024, 1090, 3]",0.0,0.0,1.000154972076416,OK
+decode.2.conv1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000008344650269,OK
+decode.2.norm2.fc,"[1, 2048]","[1, 2048]",0.0,0.0,0.9999999403953552,OK
+decode.2.norm2.norm,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000001192092896,OK
+decode.2.norm2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0,OK
+decode.2.conv2.parametrizations.weight.0,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.0001280307769775,OK
+decode.2.conv2.parametrizations.weight,"[1024, 1024, 3]","[1024, 1024, 3]",0.0,0.0,1.0001280307769775,OK
+decode.2.conv2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000005960464478,OK
+decode.2.upsample,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000007152557373,OK
+decode.2.conv1x1.parametrizations.weight.0,"[1024, 1090, 1]","[1024, 1090, 1]",0.0,0.0,1.0000331401824951,OK
+decode.2.conv1x1.parametrizations.weight,"[1024, 1090, 1]","[1024, 1090, 1]",0.0,0.0,1.0000331401824951,OK
+decode.2.conv1x1,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000011920928955,OK
+decode.2,"[1, 1024, 90]","[1, 1024, 90]",0.0,0.0,1.0000003576278687,OK
+decode.3.norm1.fc,"[1, 2180]","[1, 2180]",0.0,0.0,0.9999998807907104,OK
+decode.3.norm1.norm,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.0000001192092896,OK
+decode.3.norm1,"[1, 1090, 90]","[1, 1090, 90]",0.0,0.0,1.000001311302185,OK
+decode.3.pool.parametrizations.weight.0,"[1090, 1, 3]","[1090, 1, 3]",0.0,0.0,0.9999998807907104,OK
+decode.3.pool.parametrizations.weight,"[1090, 1, 3]","[1090, 1, 3]",0.0,0.0,0.9999998807907104,OK
+decode.3.pool,"[1, 1090, 180]","[1, 1090, 180]",0.0,0.0,1.000001311302185,OK
+decode.3.dropout,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.0000014305114746,OK
+decode.3.conv1.parametrizations.weight.0,"[512, 1090, 3]","[512, 1090, 3]",0.0,0.0,1.000049352645874,OK
+decode.3.conv1.parametrizations.weight,"[512, 1090, 3]","[512, 1090, 3]",0.0,0.0,1.000049352645874,OK
+decode.3.conv1,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.000001311302185,OK
+decode.3.norm2.fc,"[1, 1024]","[1, 1024]",0.0,0.0,1.0,OK
+decode.3.norm2.norm,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.000000238418579,OK
+decode.3.norm2,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.0000007152557373,OK
+decode.3.conv2.parametrizations.weight.0,"[512, 512, 3]","[512, 512, 3]",0.0,0.0,1.000016689300537,OK
+decode.3.conv2.parametrizations.weight,"[512, 512, 3]","[512, 512, 3]",0.0,0.0,1.000016689300537,OK
+decode.3.conv2,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.0000008344650269,OK
+decode.3.upsample,"[1, 1090, 180]","[1, 1090, 180]",0.0,0.0,1.0000027418136597,OK
+decode.3.conv1x1.parametrizations.weight.0,"[512, 1090, 1]","[512, 1090, 1]",0.0,0.0,1.0000126361846924,OK
+decode.3.conv1x1.parametrizations.weight,"[512, 1090, 1]","[512, 1090, 1]",0.0,0.0,1.0000126361846924,OK
+decode.3.conv1x1,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,0.9999997615814209,OK
+decode.3,"[1, 512, 180]","[1, 512, 180]",0.0,0.0,1.0000001192092896,OK
+generator.f0_upsamp,"[1, 1, 54000]","[1, 1, 54000]",0.0,0.0,1.0000066757202148,OK
+generator.m_source.l_sin_gen,[1026000],[1026000],0.0,0.0,1.0001682043075562,OK
+generator.m_source.l_linear,"[1, 54000, 1]","[1, 54000, 1]",0.0,0.0,1.0,OK
+generator.m_source.l_tanh,"[1, 54000, 1]","[1, 54000, 1]",0.0,0.0,0.9999998807907104,OK
+generator.m_source,[162000],[162000],0.0,0.0,1.0000001192092896,OK
+generator.noise_convs.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000065565109253,OK
+generator.noise_res.0.adain1.0.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.noise_res.0.adain1.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000038146972656,OK
+generator.noise_res.0.adain1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000122785568237,OK
+generator.noise_res.0.convs1.0.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000059604644775,OK
+generator.noise_res.0.convs1.0.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000059604644775,OK
+generator.noise_res.0.convs1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000088214874268,OK
+generator.noise_res.0.adain2.0.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.noise_res.0.adain2.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000073909759521,OK
+generator.noise_res.0.adain2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000061988830566,OK
+generator.noise_res.0.convs2.0.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000159740447998,OK
+generator.noise_res.0.convs2.0.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000159740447998,OK
+generator.noise_res.0.convs2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000081062316895,OK
+generator.noise_res.0.adain1.1.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.noise_res.0.adain1.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000007152557373,OK
+generator.noise_res.0.adain1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000065565109253,OK
+generator.noise_res.0.convs1.1.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000070333480835,OK
+generator.noise_res.0.convs1.1.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000070333480835,OK
+generator.noise_res.0.convs1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000063180923462,OK
+generator.noise_res.0.adain2.1.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999999403953552,OK
+generator.noise_res.0.adain2.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000054836273193,OK
+generator.noise_res.0.adain2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000006914138794,OK
+generator.noise_res.0.convs2.1.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000090599060059,OK
+generator.noise_res.0.convs2.1.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000090599060059,OK
+generator.noise_res.0.convs2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000072717666626,OK
+generator.noise_res.0.adain1.2.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999998807907104,OK
+generator.noise_res.0.adain1.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000056028366089,OK
+generator.noise_res.0.adain1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000083446502686,OK
+generator.noise_res.0.convs1.2.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000083446502686,OK
+generator.noise_res.0.convs1.2.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000083446502686,OK
+generator.noise_res.0.convs1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000066757202148,OK
+generator.noise_res.0.adain2.2.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999998807907104,OK
+generator.noise_res.0.adain2.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000081062316895,OK
+generator.noise_res.0.adain2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000087022781372,OK
+generator.noise_res.0.convs2.2.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000131130218506,OK
+generator.noise_res.0.convs2.2.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000131130218506,OK
+generator.noise_res.0.convs2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000085830688477,OK
+generator.noise_res.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000059604644775,OK
+generator.ups.0.parametrizations.weight.0,"[512, 256, 20]","[512, 256, 20]",0.0,0.0,1.0001052618026733,OK
+generator.ups.0.parametrizations.weight,"[512, 256, 20]","[512, 256, 20]",0.0,0.0,1.0001052618026733,OK
+generator.ups.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000096559524536,OK
+generator.resblocks.0.adain1.0.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.resblocks.0.adain1.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000077486038208,OK
+generator.resblocks.0.adain1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000008225440979,OK
+generator.resblocks.0.convs1.0.parametrizations.weight.0,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000014305114746,OK
+generator.resblocks.0.convs1.0.parametrizations.weight,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000014305114746,OK
+generator.resblocks.0.convs1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000078678131104,OK
+generator.resblocks.0.adain2.0.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.0.adain2.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000050067901611,OK
+generator.resblocks.0.adain2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000005841255188,OK
+generator.resblocks.0.convs2.0.parametrizations.weight.0,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000016689300537,OK
+generator.resblocks.0.convs2.0.parametrizations.weight,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000016689300537,OK
+generator.resblocks.0.convs2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000078678131104,OK
+generator.resblocks.0.adain1.1.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.resblocks.0.adain1.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000076293945312,OK
+generator.resblocks.0.adain1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000006079673767,OK
+generator.resblocks.0.convs1.1.parametrizations.weight.0,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.0.convs1.1.parametrizations.weight,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.0.convs1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000059604644775,OK
+generator.resblocks.0.adain2.1.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.0.adain2.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000087022781372,OK
+generator.resblocks.0.adain2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000067949295044,OK
+generator.resblocks.0.convs2.1.parametrizations.weight.0,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000028610229492,OK
+generator.resblocks.0.convs2.1.parametrizations.weight,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000028610229492,OK
+generator.resblocks.0.convs2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000009298324585,OK
+generator.resblocks.0.adain1.2.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.0.adain1.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000075101852417,OK
+generator.resblocks.0.adain1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000052452087402,OK
+generator.resblocks.0.convs1.2.parametrizations.weight.0,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000017881393433,OK
+generator.resblocks.0.convs1.2.parametrizations.weight,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000017881393433,OK
+generator.resblocks.0.convs1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000007152557373,OK
+generator.resblocks.0.adain2.2.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.resblocks.0.adain2.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000077486038208,OK
+generator.resblocks.0.adain2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000079870224,OK
+generator.resblocks.0.convs2.2.parametrizations.weight.0,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000033378601074,OK
+generator.resblocks.0.convs2.2.parametrizations.weight,"[256, 256, 3]","[256, 256, 3]",0.0,0.0,1.0000033378601074,OK
+generator.resblocks.0.convs2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000009298324585,OK
+generator.resblocks.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000057220458984,OK
+generator.resblocks.1.adain1.0.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.1.adain1.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000077486038208,OK
+generator.resblocks.1.adain1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000005841255188,OK
+generator.resblocks.1.convs1.0.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000090599060059,OK
+generator.resblocks.1.convs1.0.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000090599060059,OK
+generator.resblocks.1.convs1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000072717666626,OK
+generator.resblocks.1.adain2.0.fc,"[1, 512]","[1, 512]",0.0,0.0,1.000000238418579,OK
+generator.resblocks.1.adain2.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000048875808716,OK
+generator.resblocks.1.adain2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000075101852417,OK
+generator.resblocks.1.convs2.0.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.000006079673767,OK
+generator.resblocks.1.convs2.0.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.000006079673767,OK
+generator.resblocks.1.convs2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000079870224,OK
+generator.resblocks.1.adain1.1.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.1.adain1.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000076293945312,OK
+generator.resblocks.1.adain1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000006914138794,OK
+generator.resblocks.1.convs1.1.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000100135803223,OK
+generator.resblocks.1.convs1.1.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000100135803223,OK
+generator.resblocks.1.convs1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000059604644775,OK
+generator.resblocks.1.adain2.1.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.resblocks.1.adain2.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000061988830566,OK
+generator.resblocks.1.adain2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000101327896118,OK
+generator.resblocks.1.convs2.1.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000085830688477,OK
+generator.resblocks.1.convs2.1.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000085830688477,OK
+generator.resblocks.1.convs2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000008463859558,OK
+generator.resblocks.1.adain1.2.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.1.adain1.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000087022781372,OK
+generator.resblocks.1.adain1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000066757202148,OK
+generator.resblocks.1.convs1.2.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000054836273193,OK
+generator.resblocks.1.convs1.2.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000054836273193,OK
+generator.resblocks.1.convs1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000059604644775,OK
+generator.resblocks.1.adain2.2.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.1.adain2.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000006914138794,OK
+generator.resblocks.1.adain2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000083446502686,OK
+generator.resblocks.1.convs2.2.parametrizations.weight.0,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000125169754028,OK
+generator.resblocks.1.convs2.2.parametrizations.weight,"[256, 256, 7]","[256, 256, 7]",0.0,0.0,1.0000125169754028,OK
+generator.resblocks.1.convs2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000132322311401,OK
+generator.resblocks.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000100135803223,OK
+generator.resblocks.2.adain1.0.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.2.adain1.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000077486038208,OK
+generator.resblocks.2.adain1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000038146972656,OK
+generator.resblocks.2.convs1.0.parametrizations.weight.0,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000014305114746,OK
+generator.resblocks.2.convs1.0.parametrizations.weight,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000014305114746,OK
+generator.resblocks.2.convs1.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000006914138794,OK
+generator.resblocks.2.adain2.0.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.2.adain2.0.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000072717666626,OK
+generator.resblocks.2.adain2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000087022781372,OK
+generator.resblocks.2.convs2.0.parametrizations.weight.0,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000015139579773,OK
+generator.resblocks.2.convs2.0.parametrizations.weight,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000015139579773,OK
+generator.resblocks.2.convs2.0,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000078678131104,OK
+generator.resblocks.2.adain1.1.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.2.adain1.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000006914138794,OK
+generator.resblocks.2.adain1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000007152557373,OK
+generator.resblocks.2.convs1.1.parametrizations.weight.0,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.0000118017196655,OK
+generator.resblocks.2.convs1.1.parametrizations.weight,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.0000118017196655,OK
+generator.resblocks.2.convs1.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000067949295044,OK
+generator.resblocks.2.adain2.1.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0,OK
+generator.resblocks.2.adain2.1.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000077486038208,OK
+generator.resblocks.2.adain2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000081062316895,OK
+generator.resblocks.2.convs2.1.parametrizations.weight.0,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000011920928955,OK
+generator.resblocks.2.convs2.1.parametrizations.weight,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000011920928955,OK
+generator.resblocks.2.convs2.1,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000076293945312,OK
+generator.resblocks.2.adain1.2.fc,"[1, 512]","[1, 512]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.2.adain1.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000054836273193,OK
+generator.resblocks.2.adain1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000088214874268,OK
+generator.resblocks.2.convs1.2.parametrizations.weight.0,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.0000156164169312,OK
+generator.resblocks.2.convs1.2.parametrizations.weight,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.0000156164169312,OK
+generator.resblocks.2.convs1.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.000012755393982,OK
+generator.resblocks.2.adain2.2.fc,"[1, 512]","[1, 512]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.2.adain2.2.norm,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000076293945312,OK
+generator.resblocks.2.adain2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000088214874268,OK
+generator.resblocks.2.convs2.2.parametrizations.weight.0,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000015139579773,OK
+generator.resblocks.2.convs2.2.parametrizations.weight,"[256, 256, 11]","[256, 256, 11]",0.0,0.0,1.000015139579773,OK
+generator.resblocks.2.convs2.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000098943710327,OK
+generator.resblocks.2,"[1, 256, 1800]","[1, 256, 1800]",0.0,0.0,1.0000091791152954,OK
+generator.noise_convs.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000150203704834,OK
+generator.noise_res.1.adain1.0.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.noise_res.1.adain1.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000371932983398,OK
+generator.noise_res.1.adain1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000042200088501,OK
+generator.noise_res.1.convs1.0.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000009536743164,OK
+generator.noise_res.1.convs1.0.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000009536743164,OK
+generator.noise_res.1.convs1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000280141830444,OK
+generator.noise_res.1.adain2.0.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999999403953552,OK
+generator.noise_res.1.adain2.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000405311584473,OK
+generator.noise_res.1.adain2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000174045562744,OK
+generator.noise_res.1.convs2.0.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000054836273193,OK
+generator.noise_res.1.convs2.0.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000054836273193,OK
+generator.noise_res.1.convs2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000463724136353,OK
+generator.noise_res.1.adain1.1.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999999403953552,OK
+generator.noise_res.1.adain1.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.00004243850708,OK
+generator.noise_res.1.adain1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000031590461731,OK
+generator.noise_res.1.convs1.1.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000035762786865,OK
+generator.noise_res.1.convs1.1.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000035762786865,OK
+generator.noise_res.1.convs1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000386238098145,OK
+generator.noise_res.1.adain2.1.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.noise_res.1.adain2.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000038504600525,OK
+generator.noise_res.1.adain2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000567436218262,OK
+generator.noise_res.1.convs2.1.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.000006079673767,OK
+generator.noise_res.1.convs2.1.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.000006079673767,OK
+generator.noise_res.1.convs2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001503229141235,OK
+generator.noise_res.1.adain1.2.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0000001192092896,OK
+generator.noise_res.1.adain1.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000425577163696,OK
+generator.noise_res.1.adain1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000208616256714,OK
+generator.noise_res.1.convs1.2.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000029802322388,OK
+generator.noise_res.1.convs1.2.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000029802322388,OK
+generator.noise_res.1.convs1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000604391098022,OK
+generator.noise_res.1.adain2.2.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999999403953552,OK
+generator.noise_res.1.adain2.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000036597251892,OK
+generator.noise_res.1.adain2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000065803527832,OK
+generator.noise_res.1.convs2.2.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000131130218506,OK
+generator.noise_res.1.convs2.2.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000131130218506,OK
+generator.noise_res.1.convs2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000706911087036,OK
+generator.noise_res.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000938177108765,OK
+generator.ups.1.parametrizations.weight.0,"[256, 128, 12]","[256, 128, 12]",0.0,0.0,1.000009298324585,OK
+generator.ups.1.parametrizations.weight,"[256, 128, 12]","[256, 128, 12]",0.0,0.0,1.000009298324585,OK
+generator.ups.1,"[1, 128, 10800]","[1, 128, 10800]",0.0,0.0,1.0001001358032227,OK
+generator.reflection_pad,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001004934310913,OK
+generator.resblocks.3.adain1.0.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.3.adain1.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000635385513306,OK
+generator.resblocks.3.adain1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000338554382324,OK
+generator.resblocks.3.convs1.0.parametrizations.weight.0,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,1.0000005960464478,OK
+generator.resblocks.3.convs1.0.parametrizations.weight,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,1.0000005960464478,OK
+generator.resblocks.3.convs1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000047206878662,OK
+generator.resblocks.3.adain2.0.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.3.adain2.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000055193901062,OK
+generator.resblocks.3.adain2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000555515289307,OK
+generator.resblocks.3.convs2.0.parametrizations.weight.0,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,0.9999993443489075,OK
+generator.resblocks.3.convs2.0.parametrizations.weight,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,0.9999993443489075,OK
+generator.resblocks.3.convs2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000667572021484,OK
+generator.resblocks.3.adain1.1.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.3.adain1.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000507831573486,OK
+generator.resblocks.3.adain1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000373125076294,OK
+generator.resblocks.3.convs1.1.parametrizations.weight.0,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.3.convs1.1.parametrizations.weight,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.3.convs1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000429153442383,OK
+generator.resblocks.3.adain2.1.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.3.adain2.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000042200088501,OK
+generator.resblocks.3.adain2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000412464141846,OK
+generator.resblocks.3.convs2.1.parametrizations.weight.0,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,1.0000004768371582,OK
+generator.resblocks.3.convs2.1.parametrizations.weight,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,1.0000004768371582,OK
+generator.resblocks.3.convs2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000925064086914,OK
+generator.resblocks.3.adain1.2.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.3.adain1.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000044822692871,OK
+generator.resblocks.3.adain1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000038981437683,OK
+generator.resblocks.3.convs1.2.parametrizations.weight.0,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,0.999999463558197,OK
+generator.resblocks.3.convs1.2.parametrizations.weight,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,0.999999463558197,OK
+generator.resblocks.3.convs1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000256299972534,OK
+generator.resblocks.3.adain2.2.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.3.adain2.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000442266464233,OK
+generator.resblocks.3.adain2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000677108764648,OK
+generator.resblocks.3.convs2.2.parametrizations.weight.0,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,1.0000003576278687,OK
+generator.resblocks.3.convs2.2.parametrizations.weight,"[128, 128, 3]","[128, 128, 3]",0.0,0.0,1.0000003576278687,OK
+generator.resblocks.3.convs2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001418590545654,OK
+generator.resblocks.3,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000790357589722,OK
+generator.resblocks.4.adain1.0.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.4.adain1.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000635385513306,OK
+generator.resblocks.4.adain1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000386238098145,OK
+generator.resblocks.4.convs1.0.parametrizations.weight.0,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000015497207642,OK
+generator.resblocks.4.convs1.0.parametrizations.weight,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000015497207642,OK
+generator.resblocks.4.convs1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000344514846802,OK
+generator.resblocks.4.adain2.0.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.4.adain2.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000492334365845,OK
+generator.resblocks.4.adain2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000501871109009,OK
+generator.resblocks.4.convs2.0.parametrizations.weight.0,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000035762786865,OK
+generator.resblocks.4.convs2.0.parametrizations.weight,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000035762786865,OK
+generator.resblocks.4.convs2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000966787338257,OK
+generator.resblocks.4.adain1.1.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.4.adain1.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000560283660889,OK
+generator.resblocks.4.adain1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000364780426025,OK
+generator.resblocks.4.convs1.1.parametrizations.weight.0,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.4.convs1.1.parametrizations.weight,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000001192092896,OK
+generator.resblocks.4.convs1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000044822692871,OK
+generator.resblocks.4.adain2.1.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.4.adain2.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000045657157898,OK
+generator.resblocks.4.adain2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000470876693726,OK
+generator.resblocks.4.convs2.1.parametrizations.weight.0,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000059604644775,OK
+generator.resblocks.4.convs2.1.parametrizations.weight,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000059604644775,OK
+generator.resblocks.4.convs2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001131296157837,OK
+generator.resblocks.4.adain1.2.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.4.adain1.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000524520874023,OK
+generator.resblocks.4.adain1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000299215316772,OK
+generator.resblocks.4.convs1.2.parametrizations.weight.0,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000015497207642,OK
+generator.resblocks.4.convs1.2.parametrizations.weight,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000015497207642,OK
+generator.resblocks.4.convs1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000154972076416,OK
+generator.resblocks.4.adain2.2.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.4.adain2.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000391006469727,OK
+generator.resblocks.4.adain2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000043511390686,OK
+generator.resblocks.4.convs2.2.parametrizations.weight.0,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000022649765015,OK
+generator.resblocks.4.convs2.2.parametrizations.weight,"[128, 128, 7]","[128, 128, 7]",0.0,0.0,1.0000022649765015,OK
+generator.resblocks.4.convs2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001351833343506,OK
+generator.resblocks.4,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001249313354492,OK
+generator.resblocks.5.adain1.0.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.5.adain1.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000635385513306,OK
+generator.resblocks.5.adain1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000413656234741,OK
+generator.resblocks.5.convs1.0.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.000001072883606,OK
+generator.resblocks.5.convs1.0.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.000001072883606,OK
+generator.resblocks.5.convs1.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000348091125488,OK
+generator.resblocks.5.adain2.0.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999999403953552,OK
+generator.resblocks.5.adain2.0.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000046968460083,OK
+generator.resblocks.5.adain2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000367164611816,OK
+generator.resblocks.5.convs2.0.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000070333480835,OK
+generator.resblocks.5.convs2.0.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000070333480835,OK
+generator.resblocks.5.convs2.0,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000910758972168,OK
+generator.resblocks.5.adain1.1.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999998807907104,OK
+generator.resblocks.5.adain1.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000466108322144,OK
+generator.resblocks.5.adain1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.00003981590271,OK
+generator.resblocks.5.convs1.1.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000029802322388,OK
+generator.resblocks.5.convs1.1.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000029802322388,OK
+generator.resblocks.5.convs1.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000045895576477,OK
+generator.resblocks.5.adain2.1.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.5.adain2.1.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000045895576477,OK
+generator.resblocks.5.adain2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000399351119995,OK
+generator.resblocks.5.convs2.1.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000144243240356,OK
+generator.resblocks.5.convs2.1.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000144243240356,OK
+generator.resblocks.5.convs2.1,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001766681671143,OK
+generator.resblocks.5.adain1.2.fc,"[1, 256]","[1, 256]",0.0,0.0,1.0,OK
+generator.resblocks.5.adain1.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000460147857666,OK
+generator.resblocks.5.adain1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000392198562622,OK
+generator.resblocks.5.convs1.2.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000009536743164,OK
+generator.resblocks.5.convs1.2.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000009536743164,OK
+generator.resblocks.5.convs1.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000031590461731,OK
+generator.resblocks.5.adain2.2.fc,"[1, 256]","[1, 256]",0.0,0.0,0.9999997615814209,OK
+generator.resblocks.5.adain2.2.norm,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000354051589966,OK
+generator.resblocks.5.adain2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0000371932983398,OK
+generator.resblocks.5.convs2.2.parametrizations.weight.0,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000101327896118,OK
+generator.resblocks.5.convs2.2.parametrizations.weight,"[128, 128, 11]","[128, 128, 11]",0.0,0.0,1.0000101327896118,OK
+generator.resblocks.5.convs2.2,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.0001393556594849,OK
+generator.resblocks.5,"[1, 128, 10801]","[1, 128, 10801]",0.0,0.0,1.000119686126709,OK
+generator.conv_post.parametrizations.weight.0,"[22, 128, 7]","[22, 128, 7]",0.0,0.0,1.0000005960464478,OK
+generator.conv_post.parametrizations.weight,"[22, 128, 7]","[22, 128, 7]",0.0,0.0,1.0000005960464478,OK
+generator.conv_post,"[1, 22, 10801]","[1, 22, 10801]",0.0,0.0,1.0000494718551636,OK
+generator,"[1, 1, 54000]","[1, 1, 54000]",0.0,0.0,1.000003695487976,OK

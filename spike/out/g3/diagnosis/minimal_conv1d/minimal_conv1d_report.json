@@ -1,0 +1,712 @@
+{
+  "purpose": "O2 blame: dynamo Conv1d rank mismatch \u2014 exporter vs OV-GPU plugin",
+  "note": "Fable/note_23 \u00a74",
+  "dynamo_export": "ok",
+  "dynamo_path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_conv1d_dynamo.onnx",
+  "dynamo_size_bytes": 18410,
+  "dynamo_onnx_convs": [
+    {
+      "name": "node_conv1d",
+      "data_input": "x",
+      "weight_input": "conv_k1.weight",
+      "weight_source": "initializer",
+      "weight_shape": [
+        32,
+        64,
+        1
+      ],
+      "attrs": {
+        "group": 1,
+        "pads": [
+          0,
+          0
+        ],
+        "strides": [
+          1
+        ],
+        "dilations": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "node_conv1d_1",
+      "data_input": "relu",
+      "weight_input": "conv_k3.weight",
+      "weight_source": "initializer",
+      "weight_shape": [
+        16,
+        32,
+        3
+      ],
+      "attrs": {
+        "group": 1,
+        "pads": [
+          1,
+          1
+        ],
+        "strides": [
+          1
+        ],
+        "dilations": [
+          1
+        ]
+      }
+    }
+  ],
+  "dynamo_ort_vs_pt_maxdiff": 1.1920928955078125e-07,
+  "dynamo_ov_cpu": {
+    "status": "ok",
+    "device": "CPU",
+    "EXECUTION_DEVICES": [
+      "CPU"
+    ],
+    "inputs": [
+      [
+        "x",
+        "[1,64,192]"
+      ]
+    ],
+    "outputs": [
+      [
+        "y",
+        "[1,16,192]"
+      ]
+    ],
+    "out_shape": [
+      1,
+      16,
+      192
+    ]
+  },
+  "dynamo_ov_gpu": {
+    "status": "ok",
+    "device": "GPU",
+    "EXECUTION_DEVICES": [
+      "GPU.0"
+    ],
+    "inputs": [
+      [
+        "x",
+        "[1,64,192]"
+      ]
+    ],
+    "outputs": [
+      [
+        "y",
+        "[1,16,192]"
+      ]
+    ],
+    "out_shape": [
+      1,
+      16,
+      192
+    ]
+  },
+  "legacy_path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_conv1d_legacy.onnx",
+  "legacy_onnx_convs": [
+    {
+      "name": "/conv_k1/Conv",
+      "data_input": "x",
+      "weight_input": "conv_k1.weight",
+      "weight_source": "initializer",
+      "weight_shape": [
+        32,
+        64,
+        1
+      ],
+      "attrs": {
+        "dilations": [
+          1
+        ],
+        "group": 1,
+        "kernel_shape": [
+          1
+        ],
+        "pads": [
+          0,
+          0
+        ],
+        "strides": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "/conv_k3/Conv",
+      "data_input": "/Relu_output_0",
+      "weight_input": "conv_k3.weight",
+      "weight_source": "initializer",
+      "weight_shape": [
+        16,
+        32,
+        3
+      ],
+      "attrs": {
+        "dilations": [
+          1
+        ],
+        "group": 1,
+        "kernel_shape": [
+          3
+        ],
+        "pads": [
+          1,
+          1
+        ],
+        "strides": [
+          1
+        ]
+      }
+    }
+  ],
+  "legacy_ov_cpu": {
+    "status": "ok",
+    "device": "CPU",
+    "EXECUTION_DEVICES": [
+      "CPU"
+    ],
+    "inputs": [
+      [
+        "x",
+        "[1,64,192]"
+      ]
+    ],
+    "outputs": [
+      [
+        "y",
+        "[1,16,192]"
+      ]
+    ],
+    "out_shape": [
+      1,
+      16,
+      192
+    ]
+  },
+  "legacy_ov_gpu": {
+    "status": "ok",
+    "device": "GPU",
+    "EXECUTION_DEVICES": [
+      "GPU.0"
+    ],
+    "inputs": [
+      [
+        "x",
+        "[1,64,192]"
+      ]
+    ],
+    "outputs": [
+      [
+        "y",
+        "[1,16,192]"
+      ]
+    ],
+    "out_shape": [
+      1,
+      16,
+      192
+    ]
+  },
+  "conv2d_as_1d_path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_conv2d_as_1d_dynamo.onnx",
+  "conv2d_as_1d_onnx_convs": [
+    {
+      "name": "node_conv2d",
+      "data_input": "unsqueeze",
+      "weight_input": "conv_k1.weight",
+      "weight_source": "initializer",
+      "weight_shape": [
+        32,
+        64,
+        1,
+        1
+      ],
+      "attrs": {
+        "group": 1,
+        "pads": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "strides": [
+          1,
+          1
+        ],
+        "dilations": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "name": "node_conv2d_1",
+      "data_input": "relu",
+      "weight_input": "conv_k3.weight",
+      "weight_source": "initializer",
+      "weight_shape": [
+        16,
+        32,
+        1,
+        3
+      ],
+      "attrs": {
+        "group": 1,
+        "pads": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "strides": [
+          1,
+          1
+        ],
+        "dilations": [
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "conv2d_as_1d_ov_gpu": {
+    "status": "ok",
+    "device": "GPU",
+    "EXECUTION_DEVICES": [
+      "GPU.0"
+    ],
+    "inputs": [
+      [
+        "x",
+        "[1,64,192]"
+      ]
+    ],
+    "outputs": [
+      [
+        "y",
+        "[1,16,192]"
+      ]
+    ],
+    "out_shape": [
+      1,
+      16,
+      192
+    ]
+  },
+  "conv2d_as_1d_ov_cpu": {
+    "status": "ok",
+    "device": "CPU",
+    "EXECUTION_DEVICES": [
+      "CPU"
+    ],
+    "inputs": [
+      [
+        "x",
+        "[1,64,192]"
+      ]
+    ],
+    "outputs": [
+      [
+        "y",
+        "[1,16,192]"
+      ]
+    ],
+    "out_shape": [
+      1,
+      16,
+      192
+    ]
+  },
+  "blame": "not_reproduced_on_minimal",
+  "blame_detail": "Minimal Conv1d dynamo works on OV-GPU; Kokoro failure needs richer pattern (weight_norm Mul, etc.).",
+  "onnx_looks_1d": true,
+  "input_shape_ncl": [
+    1,
+    64,
+    192
+  ],
+  "escalation_weight_norm": {
+    "weight_norm_small": {
+      "path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_weight_norm_small_dynamo.onnx",
+      "convs": [
+        {
+          "name": "node_conv1d",
+          "w": "mul",
+          "wsrc": "init",
+          "wshape": [
+            32,
+            64,
+            1
+          ],
+          "attrs": {
+            "group": 1,
+            "pads": [
+              0,
+              0
+            ],
+            "strides": [
+              1
+            ],
+            "dilations": [
+              1
+            ]
+          },
+          "xin": "x"
+        },
+        {
+          "name": "node_conv1d_1",
+          "w": "mul_1",
+          "wsrc": "init",
+          "wshape": [
+            16,
+            32,
+            3
+          ],
+          "attrs": {
+            "group": 1,
+            "pads": [
+              1,
+              1
+            ],
+            "strides": [
+              1
+            ],
+            "dilations": [
+              1
+            ]
+          },
+          "xin": "relu"
+        },
+        {
+          "name": "node_conv1d_2",
+          "w": "plain.weight",
+          "wsrc": "init",
+          "wshape": [
+            8,
+            16,
+            1
+          ],
+          "attrs": {
+            "group": 1,
+            "pads": [
+              0,
+              0
+            ],
+            "strides": [
+              1
+            ],
+            "dilations": [
+              1
+            ]
+          },
+          "xin": "conv1d_1"
+        }
+      ],
+      "ort_maxdiff": 6.332993507385254e-08,
+      "ov_cpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "CPU"
+        ]
+      },
+      "ov_gpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "GPU.0"
+        ]
+      }
+    },
+    "weight_norm_k1_wide": {
+      "path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_weight_norm_k1_wide_dynamo.onnx",
+      "convs": [
+        {
+          "name": "node_Conv_12",
+          "w": "mul",
+          "wsrc": "init",
+          "wshape": [
+            64,
+            128,
+            1
+          ],
+          "attrs": {
+            "group": 1,
+            "pads": [
+              0,
+              0
+            ],
+            "strides": [
+              1
+            ],
+            "dilations": [
+              1
+            ]
+          },
+          "xin": "x"
+        }
+      ],
+      "ort_maxdiff": 7.152557373046875e-07,
+      "ov_cpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "CPU"
+        ]
+      },
+      "ov_gpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "GPU.0"
+        ]
+      }
+    },
+    "weight_norm_1090_512_k1": {
+      "path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_weight_norm_1090_512_k1_dynamo.onnx",
+      "convs": [
+        {
+          "name": "node_Conv_12",
+          "w": "mul",
+          "wsrc": "Mul:node_mul<-conv.parametrizations.weight.original1",
+          "wshape": [
+            512,
+            1090,
+            1
+          ],
+          "attrs": {
+            "group": 1,
+            "pads": [
+              0,
+              0
+            ],
+            "strides": [
+              1
+            ],
+            "dilations": [
+              1
+            ]
+          },
+          "xin": "x"
+        }
+      ],
+      "ov_cpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "CPU"
+        ]
+      },
+      "ov_gpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "GPU.0"
+        ]
+      }
+    },
+    "plain_1090_512_k1": {
+      "path": "spike/out/g3/diagnosis/minimal_conv1d/tiny_plain_1090_512_k1_dynamo.onnx",
+      "convs": [
+        {
+          "name": "node_Conv_9",
+          "w": "conv.weight",
+          "wsrc": "init",
+          "wshape": [
+            512,
+            1090,
+            1
+          ],
+          "attrs": {
+            "group": 1,
+            "pads": [
+              0,
+              0
+            ],
+            "strides": [
+              1
+            ],
+            "dilations": [
+              1
+            ]
+          },
+          "xin": "x"
+        }
+      ],
+      "ov_cpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "CPU"
+        ]
+      },
+      "ov_gpu": {
+        "status": "ok",
+        "EXECUTION_DEVICES": [
+          "GPU.0"
+        ]
+      }
+    }
+  },
+  "o2_final_blame": "not_minimal_conv1d_requires_full_decoder_repro",
+  "o2_final_detail": "Isolated dynamo exports of plain Conv1d, weight_norm Conv1d (including 1090\u2192512 k=1), Unsqueeze-then-Conv, and Cat-then-weight_norm all compile and run on OV-GPU 2026.2.1. Therefore the Kokoro decoder Conv-rank failure is NOT explained by Conv1d or weight_norm alone. Filing should use the full `kokoro_decoder_t96_edge_dynamo.onnx` as the reproducer against OpenVINO GPU; optionally attach the working minimal Conv1d ONNX as a contrast (\"simple Conv1d OK, full decoder fails\"). Split export-vs-plugin remains open at the subgraph level (O2 undetermined for a one-op minimal case); the actionable upstream packet is OV-GPU + full dynamo decoder ONNX.",
+  "escalation_unsqueeze_cat": {
+    "unsqueeze_wn": {
+      "status": "ok",
+      "dev": [
+        "GPU.0"
+      ]
+    },
+    "cat_wn": {
+      "status": "ok",
+      "dev": [
+        "GPU.0"
+      ]
+    }
+  },
+  "full_decoder_ov_ir_conv_sample": [
+    {
+      "name": "node_conv1d/WithoutBiases",
+      "ins": [
+        "[1,1,192]",
+        "[1,1,3]"
+      ],
+      "outs": [
+        "[1,1,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_1/WithoutBiases",
+      "ins": [
+        "[1,1,192]",
+        "[1,1,3]"
+      ],
+      "outs": [
+        "[1,1,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_2/WithoutBiases",
+      "ins": [
+        "[1,514,96]",
+        "[1024,514,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_3/WithoutBiases",
+      "ins": [
+        "[1,1024,96]",
+        "[1024,1024,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_Conv_987",
+      "ins": [
+        "[1,514,96]",
+        "[1024,514,1]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_5/WithoutBiases",
+      "ins": [
+        "[1,512,96]",
+        "[64,512,1]"
+      ],
+      "outs": [
+        "[1,64,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_6/WithoutBiases",
+      "ins": [
+        "[1,1090,96]",
+        "[1024,1090,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_7/WithoutBiases",
+      "ins": [
+        "[1,1024,96]",
+        "[1024,1024,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_Conv_988",
+      "ins": [
+        "[1,1090,96]",
+        "[1024,1090,1]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_9/WithoutBiases",
+      "ins": [
+        "[1,1090,96]",
+        "[1024,1090,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_10/WithoutBiases",
+      "ins": [
+        "[1,1024,96]",
+        "[1024,1024,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_Conv_989",
+      "ins": [
+        "[1,1090,96]",
+        "[1024,1090,1]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_12/WithoutBiases",
+      "ins": [
+        "[1,1090,96]",
+        "[1024,1090,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_conv1d_13/WithoutBiases",
+      "ins": [
+        "[1,1024,96]",
+        "[1024,1024,3]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    },
+    {
+      "name": "node_Conv_990",
+      "ins": [
+        "[1,1090,96]",
+        "[1024,1090,1]"
+      ],
+      "outs": [
+        "[1,1024,96]"
+      ]
+    }
+  ]
+}
