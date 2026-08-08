@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-08  
 **Author:** Grok (Orchestrator)  
-**Status:** **R1 SMOKE PASS** — awaiting Nexus ears + `prototype-complete` tag
+**Status:** **R1 CLOSED PASS** — Nexus ears 2/2; tag **`prototype-complete`** on genai `8987f74`
 
 ---
 
@@ -46,12 +46,19 @@ WAVs for ears:
 
 Also copied under monorepo `artifacts/prototype/r1_smoke/` if present.
 
+### Nexus ears (binding)
+
+| File | Ear |
+|------|-----|
+| `ovgenai_cpu.wav` | **PASS** |
+| `ovgenai_gpu.wav` | **PASS** |
+
 ## 4. Next
 
-1. Nexus ears by filename  
-2. Tag **`prototype-complete`** on genai `8987f74` (or tip after any fix)  
-3. Fable may polish README (§6) — seed inventory is this note  
+1. ~~Ears~~ **PASS 2/2**  
+2. ~~Tag~~ **`prototype-complete`** @ `8987f74`  
+3. Fable may still polish README (§6) optionally  
 
 ## 5. One-line
 
-**note_34 executed: monorepo B1 pushed; genai appliance seeded 2.0.0 default ovgenai-gpu; R1 clone-and-speak PASS cpu+gpu; ears + tag remain.**
+**note_34 done: genai appliance shipped; R1 PASS; Nexus ears PASS 2/2; tag prototype-complete @ 8987f74.**
