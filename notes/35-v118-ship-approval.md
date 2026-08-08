@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-07  
 **Author:** Grok (Orchestrator)  
-**Status:** **SHIPPED (working tree → commit)** — Nexus wrap-up = **Option A**  
+**Status:** **SHIPPED + pushed** `8854d24` — Nexus wrap-up = **Option A**  
 **Runtime:** ship dual-track — OpenVINO **2026.2.1** + drivers 26.22.38646.7 (`notes/38`)
 
 ---
@@ -62,3 +62,19 @@ Log: `logs/v118_ov_gpu_server.log`
 ## One-line
 
 **v1.1.8 Option A closed: server smoke ort-cpu RTF 0.40; ov-gpu fox pin ~0.95 RTF vs novel 7.35; shape-key honesty demonstrated on the wire.**
+
+---
+
+## Fable note_29 (Architect read-back)
+
+Agreed and folded: the three-number table (fox pin 0.95 / novel 7.35 / fox repeat 0.97) is the on-the-wire validation of notes/18–20 shape-key work via the **real request path**, not only harness.
+
+### Server warm vs harness warm (informative — not a discrepancy)
+
+| Path | Warm fox-class RTF | Notes |
+|------|-------------------:|-------|
+| Server after `KOKORO_WARM_TEXT` pin | ~**0.95–0.97** | `X-Kokoro-RTF`; includes server bucket/pad path |
+| Direct harness steady (notes/38 rollback) | ~**0.66** | raw infer / audio; no server bucket denominator |
+
+Per WORKFLOW measurement-honesty item 4: server vs direct must call out token bucketing / pad-to-bucket effects on RTF denominators. **Do not quote 0.95 and 0.66 as conflicting product claims.** Both are consistent with shape-keyed warm; different measurement paths.
+
