@@ -1,0 +1,14 @@
+[smoke] root=/data/kokoro-igpu-genai pack=/data/kokoro-igpu-genai/models/kokoro-82M-int8-ov
+=== ovgenai-cpu (required) ===
+[smoke] ovgenai_cpu health={"status":"ok","backend":"ovgenai-cpu","model":"/data/kokoro-igpu-genai/models/kokoro-82M-int8-ov","gpu_precision":null,"genai":true}
+wrote /data/kokoro-igpu-genai/artifacts/smoke/ovgenai_cpu.wav
+[smoke] ovgenai_cpu bytes=169244 path=/data/kokoro-igpu-genai/artifacts/smoke/ovgenai_cpu.wav
+=== ovgenai-gpu ===
+[smoke] ovgenai_gpu health={"status":"ok","backend":"ovgenai-gpu","model":"/data/kokoro-igpu-genai/models/kokoro-82M-int8-ov","gpu_precision":null,"genai":true}
+wrote /data/kokoro-igpu-genai/artifacts/smoke/ovgenai_gpu.wav
+[smoke] ovgenai_gpu bytes=170444 path=/data/kokoro-igpu-genai/artifacts/smoke/ovgenai_gpu.wav
+[smoke] tip: intel_gpu_top during GPU synth for RCS fingerprint
+-rw-r--r-- 1 bdk bdk 169244 Aug  8 12:40 /data/kokoro-igpu-genai/artifacts/smoke/ovgenai_cpu.wav
+-rw-r--r-- 1 bdk bdk 170444 Aug  8 12:41 /data/kokoro-igpu-genai/artifacts/smoke/ovgenai_gpu.wav
+[smoke] PASS
+GENAI_EXIT=0

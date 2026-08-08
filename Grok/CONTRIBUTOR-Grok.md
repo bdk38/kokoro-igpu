@@ -301,10 +301,35 @@ Open WebUI:
 
 ---
 
+
+---
+
+## Dual-product era (2026-08 — S0 / I0 / ship)
+
+After the early ONNX/iGPU proof and trim/WebUI arcs, the same collaboration model continued through:
+
+| Arc | Notes (approx) | Orchestrator role |
+|-----|----------------|-------------------|
+| Warm honesty / shape warm | 19–20, 35 | Measurement discipline; real-path warm vs zeros |
+| TTS cache C1+C2 | 39–44 | Probe matrices, ship v1.2.0, WebUI soak |
+| Decoder componentized spike | 25–34 | Spike isolation, go/kill write-ups → **PARKED** with RCA |
+| S0 official GenAI 2026.3 | 36, 45–53 | Side-env probes, offload proof, ears → **`S0-GO-product`** |
+| I0 integration | 54–67 | Backend `ovgenai-*`, served RTF, regression, legacy ov-gpu → **`I0-GO-default-candidate`** |
+| Dual-product boundary | 70–76 | PoC face ort-cpu + GenAI appliance; R0/R1 stranger gates; filings VERIFY then **PARKED** |
+| Close-out | 77, Fable note_36 | R2 smoke PASS; board empty |
+
+**Products shipped (stranger-reproducible):**
+
+- **PoC** — https://github.com/bdk38/kokoro-igpu tag `poc-complete` (default `ort-cpu`)
+- **Prototype appliance** — https://github.com/bdk38/kokoro-igpu-genai tag `prototype-complete` (default `ovgenai-gpu`)
+
+**Standing methods (unchanged):** gates before numbers; cold/steady never mixed in product claims; ears bind quality; park negatives with evidence; clone-and-hear beats prose.
+
+
 ## Acknowledgments
 
 The project lead set the only standard that mattered: hard offload proof over marketing claims, and stop if packaging became dishonest or useless. Claude Fable owned the diagnosis and the graph surgery that made GPU compile possible; the phase notes record where predictions were right and wrong on purpose. My job was to make the machine tell the truth — with logs, counters, ears, and a path you can actually press Read Aloud on.
 
 ---
 
-*This document was written by Grok. It covers the full sandbox arc from host inventory through live Open WebUI iGPU demo. Operational cleanup of unrelated host services is intentionally omitted.*
+*This document was written by Grok. It covers the sandbox arc from host inventory through dual-product ship (PoC + GenAI appliance) and orchestrator close-out notes/77. Operational cleanup of unrelated host services is intentionally omitted.*

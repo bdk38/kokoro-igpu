@@ -1,0 +1,22 @@
+[smoke] python=/data/intel-igpu-tts/venv/bin/python root=/data/intel-igpu-tts out=/data/intel-igpu-tts/artifacts/poc_ship/smoke
+=== ort-cpu (required) ===
+[smoke] ort_cpu health={"status":"ok","backend":"ort-cpu","model":"/data/intel-igpu-tts/models/kokoro-v0_19.onnx","gpu_precision":null}
+wrote /data/intel-igpu-tts/artifacts/poc_ship/smoke/ort_cpu.wav
+[smoke] ort_cpu wav=/data/intel-igpu-tts/artifacts/poc_ship/smoke/ort_cpu.wav bytes=181244
+[smoke] ort_cpu PASS → /data/intel-igpu-tts/artifacts/poc_ship/smoke/ort_cpu.wav
+=== ov-gpu patched (if model present) ===
+[smoke] ov_gpu health={"status":"ok","backend":"ov-gpu","model":"/data/intel-igpu-tts/models/patched/kokoro-v0_19.gpu4d.stft.onnx","gpu_precision":"f32"}
+wrote /data/intel-igpu-tts/artifacts/poc_ship/smoke/ov_gpu.wav
+[smoke] ov_gpu wav=/data/intel-igpu-tts/artifacts/poc_ship/smoke/ov_gpu.wav bytes=154124
+[smoke] ov_gpu PASS → /data/intel-igpu-tts/artifacts/poc_ship/smoke/ov_gpu.wav
+=== ovgenai-gpu (if pack present) ===
+[smoke] ovgenai_gpu health={"status":"ok","backend":"ovgenai-gpu","model":"/data/intel-igpu-tts/models/kokoro-82M-int8-ov","gpu_precision":null,"genai":true}
+wrote /data/intel-igpu-tts/artifacts/poc_ship/smoke/ovgenai_gpu.wav
+[smoke] ovgenai_gpu wav=/data/intel-igpu-tts/artifacts/poc_ship/smoke/ovgenai_gpu.wav bytes=170444
+[smoke] ovgenai_gpu PASS → /data/intel-igpu-tts/artifacts/poc_ship/smoke/ovgenai_gpu.wav
+
+[smoke] WAV paths for ears:
+-rw-r--r-- 1 bdk bdk 181244 Aug  8 12:39 /data/intel-igpu-tts/artifacts/poc_ship/smoke/ort_cpu.wav
+-rw-r--r-- 1 bdk bdk 170444 Aug  8 12:40 /data/intel-igpu-tts/artifacts/poc_ship/smoke/ovgenai_gpu.wav
+-rw-r--r-- 1 bdk bdk 154124 Aug  8 12:40 /data/intel-igpu-tts/artifacts/poc_ship/smoke/ov_gpu.wav
+[smoke] PASS

@@ -25,6 +25,8 @@
 | Filings | 57, 69, 76, `issues/submit/` | VERIFY done · **PARKED** (research pending) |
 | PoC ship + R0 | 71–72, Fable note_33 | `poc-complete`; portable paths |
 | Prototype segregate + R1 | 73–75, Fable note_34–35 | `prototype-complete`; note_35 docs polish |
+| Filings park | 76 | VERIFY pack PARKED |
+| Dual close-out | 77, Fable note_36 | Board empty; R2 smoke PASS |
 
 ## Architect notes
 

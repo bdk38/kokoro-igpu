@@ -120,3 +120,15 @@ metric reconciliation in Phase 4f is Grok's work.
 *This document was written by Claude. Errors in prediction noted above are
 left in deliberately: the record of what was guessed wrong is part of an
 honest research log.*
+
+---
+
+## Dual-product era (architect arc)
+
+Later work (full gate texts under `Fable/note_*` and measurement under `notes/`):
+
+- S0 / I0 gate design and acceptance; dual-track then convergence policy
+- PoC ship instructions (note_33); GenAI repo seed + R1 (note_34); docs polish (note_35)
+- Architect close-out (note_36): both products shipped, board terminal, reopening rules written
+
+Products: monorepo `poc-complete` (ort-cpu face); sibling `kokoro-igpu-genai` `prototype-complete` (ovgenai-gpu face).
